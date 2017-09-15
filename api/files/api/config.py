@@ -59,7 +59,13 @@ ACCOUNT_DEFAULT_CREDENTIALS = {
     'admin': True,
 }
 
-ACCOUNT_CREATION_DEFAULT_AWS_KEY = {}
+ACCOUNT_CREATION_DEFAULT_AWS_KEY = {
+    'key': u'AKIAIP6TNMURRO3WMHTQ',
+    'secret': u'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',
+    'billing_bucket_name': u'trackit-billing-report',
+    'pretty': u'MSolution.IO',
+    'import_s3': True
+}
 
 BILLING_FILE_REGEX = re.compile(
     r'(?:^|/)(?P<basename>(?P<account_id>\d+)'
