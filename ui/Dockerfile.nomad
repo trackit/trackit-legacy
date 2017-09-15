@@ -4,7 +4,7 @@ FROM nginx:stable-alpine
 EXPOSE 80
 
 # Installing npm as grunt is needed to build the production version of the app
-RUN apk update && apk add nodejs git python build-base perl
+RUN apk update && apk add nodejs git python build-base
 
 # To make sure the node binary is found
 #RUN ln -s /usr/bin/nodejs /usr/bin/node
