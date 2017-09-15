@@ -9,8 +9,8 @@ cd /usr/share/nginx/html/
 # does not change all occurences.
 # TODO: Ensure config.js actually changes all occurences, and make it modifiable
 #       at the time the container is run
-find . -type f | xargs perl -i -p \
-	-e "s/(?<!blog\.)\btrackit\.io\b/${TRACKIT_DOMAIN}/g"
+find . -type f | xargs sed -i -r \
+	-e "s/\btrackit\.io\b/${TRACKIT_DOMAIN}/g"
 find landing/ -type f | xargs sed -i -r \
 	-e "s/\"\\/#/\"https:\\/\\/app.${TRACKIT_DOMAIN}\\/#/g"
 

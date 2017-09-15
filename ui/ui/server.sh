@@ -10,8 +10,6 @@ cd /usr/share/nginx/html/
 # TODO: Ensure config.js actually changes all occurences, and make it modifiable
 #       at the time the container is run
 API_TRACKIT_DOMAIN=$(echo ${API_TRACKIT_DOMAIN} | sed "s./.\\\/.g")
-find . -type f | xargs sed -i -re "s/\btrackit\.io\b/${TRACKIT_DOMAIN}/g"
-find . -type f | xargs sed -i -re "s/\bblog\.${TRACKIT_DOMAIN}\b/blog\.trackit\.io/g"
 find . -type f | xargs sed -i -re "s/\bENV\.API_TRACKIT_DOMAIN\b/$API_TRACKIT_DOMAIN/g"
 
 nginx -g 'daemon off;'
