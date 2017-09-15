@@ -1,0 +1,64 @@
+<div class="panel panel-default ">
+    <div class="panel-body">
+        <div class="table-responsive">
+            <h4 style="text-align: center" ng-if="!elbDataLoaded && !elbMissingDataMessage">No data available. Please try again later.</h4>
+            <h4 style="text-align: center" ng-if="!elbDataLoaded && elbMissingDataMessage">{{elbMissingDataMessage}}</h4>
+            <table class="table table-striped estimation-table" ng-if="elbDataLoaded">
+                <thead>
+                <tr>
+                    <th class="clickable" ng-click="orderELB('name')"><i class="fa fa-server"></i> Name
+                        <i class="fa fa-arrow-up" ng-if="predicateELB === 'name' && reverseELB"></i>
+                        <i class="fa fa-arrow-down" ng-if="predicateELB === 'name' && !reverseELB"></i>
+                    </th>
+                    <th class="clickable" ng-click="orderELB('region')"><i class="fa fa-globe"></i> Region
+                        <i class="fa fa-arrow-up" ng-if="predicateELB === 'region' && reverseELB"></i>
+                        <i class="fa fa-arrow-down" ng-if="predicateELB === 'region' && !reverseELB"></i>
+                    </th>
+                    <th>
+                        <span uib-tooltip="ELB associated with instances"> In use</span>
+                    </th>
+                    <th>
+                        <span class="clickable" ng-click="orderELB('hours')" uib-tooltip="Average hours by day"> Hours</span>
+                        <i class="fa fa-arrow-up" ng-if="predicateELB === 'hours' && reverseELB"></i>
+                        <i class="fa fa-arrow-down" ng-if="predicateELB === 'hours' && !reverseELB"></i>
+                    </th>
+                    <th>
+                        <span class="clickable" ng-click="orderELB('bytes')" uib-tooltip="Average traffic by day"> Traffic</span>
+                        <i class="fa fa-arrow-up" ng-if="predicateELB === 'bytes' && reverseELB"></i>
+                        <i class="fa fa-arrow-down" ng-if="predicateELB === 'bytes' && !reverseELB"></i>
+                    </th>
+                    <th class="clickable" ng-click="orderELB('cost')"> Cost
+                        <i class="fa fa-arrow-up" ng-if="predicateELB === 'cost' && reverseELB"></i>
+                        <i class="fa fa-arrow-down" ng-if="predicateELB === 'cost' && !reverseELB"></i>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="resource-item ngfade" ng-repeat="elb in elbs">
+                    <td><strong>{{elb.name}}</strong></td>
+                    <td>{{elb.region}}</td>
+                    <td>
+                        <i ng-if="elb['instances'].length" class="fa fa-check-circle green" style="font-size: 20px;"></i>
+                        <i ng-if="!elb['instances'].length" class="fa fa-times" style="font-size: 20px;"></i>
+                    </td>
+                    <td>{{elb.hours | number : 0}}h</td>
+                    <td>{{elb.bytes | bytes}}</td>
+                    <td><strong>{{elb.cost | currency:'$':3}}/day</strong></td>
+                </tr>
+
+                </tbody>
+                <tfoot>
+
+                    <tr>
+                        <td colspan="5"><strong>TOTAL</strong></td>
+                        <td class="total-value">{{elbsTotalCost | currency:'$':3}}/day</td>
+                    </tr>
+                    <tr>
+                        <td colspan="5"><strong>COST ESTIMATION</strong></td>
+                        <td colspan="6" class="total-value">{{getMonthEstimationFromDailyPrice(elbsTotalCost) | currency}}/month</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>

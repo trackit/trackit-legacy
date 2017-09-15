@@ -1,0 +1,70 @@
+<div class="panel panel-default">
+    <div class="panel-body" ng-controller="AWSBandwidthCtrl">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="spinner" ng-if="!dataLoaded">
+                    <div class="rect1"></div>
+                    <div class="rect2"></div>
+                    <div class="rect3"></div>
+                    <div class="rect4"></div>
+                    <div class="rect5"></div>
+                </div>
+                <md-tabs md-dynamic-height="true" ng-if="dataLoaded">
+
+                    <md-tab label="{{service.name}}" md-on-select="selectService(service)" ng-repeat="service in aws_services">
+                        <h4 style="text-align: center" ng-if="selectedService.message">{{selectedService.message}}</h4>
+                        <div class="col-md-12" ng-if="dataLoaded && !selectedService.message">
+                            <h3 class="blue monts">Total cost over the last 30 days: {{selectedService.total_cost | currency:'$':2}}</h3>
+                            <h4>Total usage over the last 30 days: {{selectedService.total_gb | number : 2}}GB</h4>
+
+                            <div class="col-md-7" ng-if="dataLoaded && !selectedService.message">
+                                <md-input-container class="md-block" style="margin-bottom:0px;">
+                                    <label><i class="fa fa-search"></i> Search</label>
+                                    <input ng-model="transferSearch" ng-change="currentPage = 1">
+                                </md-input-container>
+                                <table class="table table-striped" style="max-height:500px; overflow-y: scroll;">
+                                    <thead>
+                                        <tr>
+                                            <th class="clickable" style="text-align: left;" ng-click="order('type')">
+                                                Type
+                                                <i class="fa fa-arrow-up" ng-if="predicate === 'type' && reverse"></i>
+                                                <i class="fa fa-arrow-down" ng-if="predicate === 'type' && !reverse"></i>
+                                            </th>
+                                            <th class="clickable" style="text-align: left;" ng-click="order('quantity')">
+                                                Quantity (GB)
+                                                <i class="fa fa-arrow-up" ng-if="predicate === 'quantity' && reverse"></i>
+                                                <i class="fa fa-arrow-down" ng-if="predicate === 'quantity' && !reverse"></i>
+                                            </th>
+                                            <th class="clickable" style="text-align: right;" ng-click="order('cost')">
+                                                <i class="fa fa-money"></i> Cost
+                                                <i class="fa fa-arrow-up" ng-if="predicate === 'cost' && reverse"></i>
+                                                <i class="fa fa-arrow-down" ng-if="predicate === 'cost' && !reverse"></i>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="transfer in selectedService.transfers | filter:transferSearch | startFrom:(currentPage - 1)*pageSize | limitTo:pageSize">
+                                            <td style="text-align: left;">{{transfer.type}}</td>
+                                            <td style="text-align: left;">{{transfer.quantity | number:3}}</td>
+                                            <td style="text-align: right;"><strong>{{transfer.cost | currency}}</strong></td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                    </tfoot>
+                                </table>
+                                <ul uib-pagination total-items="selectedService.transfers.length" items-per-page="pageSize" ng-model="currentPage"></ul>
+                            </div>
+                            <div class="col-md-5" ng-if="dataLoaded && !selectedService.message">
+                                <nvd3 style="width:100% !important" options="chartOptions" data="chartData" api="api"></nvd3>
+                            </div>
+                            <div style="clear:both;"></div>
+                        </div>
+                    </md-tab>
+
+                </md-tabs>
+                <div style="clear:both;"></div>
+            </div>
+            <div style="clear:both;"></div>
+        </div>
+    </div>
+</div>

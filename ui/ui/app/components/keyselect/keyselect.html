@@ -1,0 +1,160 @@
+<style media="screen">
+  li.gc-item > i.fa.fa-times {
+    display: none;
+  }
+  li.gc-item:hover > i.fa.fa-times {
+    display: inline;
+  }
+
+</style>
+
+<div class="container">
+    <div class="row m-b-20">
+        <div class="col-md-12">
+            <div class="col-md-6  monts">
+                <div ng-if="selectedAWS.length != 0">
+                    <h3 style="text-align:center;" ng-repeat="account in selectedAWS">
+                <span class="fa-stack fa-1x">
+                    <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                    <i class="fa fa-key fa-stack-1x fa-inverse"></i>
+                </span>
+                {{account.pretty || account.key}}
+                <span ng-click="unselectAWS(account)" class="fa fa-times clickable" style="color: #c3c3c3;"></span>
+              </h3>
+                </div>
+                <div ng-if="selectedAWS.length == 0">
+                    <h3 style="text-align: center; color: #c3c3c3">No AWS key selected</h3>
+                </div>
+            </div>
+
+            <div class="col-md-6  monts">
+                <div ng-if="selectedGC.email">
+                    <h3 style="text-align:center;">
+                <span class="fa-stack fa-1x">
+                    <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                    <i class="fa fa-user fa-stack-1x fa-inverse"></i>
+                </span>
+                {{selectedGC.email}}
+                <span ng-click="selectGC({})" class="fa fa-times clickable" style="color: #c3c3c3;"></span>
+              </h3>
+                </div>
+                <div ng-if="!selectedGC.email">
+                    <h3 style="text-align: center; color: #c3c3c3">No GC account selected</h3>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-12" uib-collapse="!(selectedGC.id || selectedAWS.length)">
+            <hr>
+            <button ng-click="launchTrackit()" class="btn monts" style="display: block;margin: auto;margin-bottom: 30px;padding: 12px 30px;font-size: 18px;">
+            <i class="fa fa-fighter-jet"></i> Launch TrackIt.IO
+          </button>
+        </div>
+
+        <!-- AWS PANEL -->
+        <div class="col-md-6 col-md-offset-0">
+            <div class="panel panel-default large-font">
+                <div class="panel-body monts keyselect">
+                    <img src="img/aws-logo.png" style="width: 40%; display:block; margin: auto;" alt="">
+                    <hr>
+                    <div id="keyselect-btn">
+                        <button class="btn" ng-click="showNewKeyForm = !showNewKeyForm" ng-show="keys.accounts.length > 0"><i class="fa fa-plus"></i> Add a new key</button>
+                        <a class="btn btn-setup" href="/#/app/setupguide"><i class="fa fa-question"></i> How to setup my AWS account</a>
+                    </div>
+                    <div class="alert alert-info" role="alert" ng-if="!keys.accounts.length">You have no registered keys</div>
+                    <div class="alert alert-warning" role="alert" ng-if="errorKey">There was a problem with the API. Please try signing out and in again.</div>
+                    <hr>
+                    <div class="keyselect-chooser" ng-if="keys.accounts.length > 0">
+                        <strong>Select AWS key to use :</strong>
+                        <ul class="list-group m-t-10">
+                            <li class="list-group-item" ng-repeat="account in keys.accounts">
+                                <a class="clickable" ng-click="toggleAWS(account)">
+                                    <i class="fa fa-key" style="color:green;" ng-if="account.is_valid_key && account.has_data_month && account.has_data_full" title="Everything is ok!"></i>
+                                    <i class="fa fa-key" style="color:darkorange;" ng-if="account.is_valid_key && !account.has_data_month && account.has_data_full" title="Data missing for this month"></i>
+                                    <i class="fa fa-key" style="color:red;" ng-if="account.is_valid_key && !account.has_data_full" title="Data missing"></i>
+                                    <i class="fa fa-key" style="color:red;" ng-if="!account.is_valid_key" title="Invalid credentials"></i>
+                                    {{account.pretty}} [ {{account.key}} ]
+                                </a>
+                                <div class="alert alert-warning" role="alert" ng-if="account.error_status" style="font-size: 12px; margin-top: 10px;">
+                                    <strong>{{account.error_status}}</strong> : {{getErrorMessage(account.error_status)}}
+                                </div>
+
+                                <button class="change" ng-click="showChangeKeyForm = !showChangeKeyForm" ng-show="keys.accounts.length > 0"><i class="fa fa-pencil"></i></button>
+                                <button class="remove" ng-click="removeKey(account)"><i class="fa fa-times"></i></button>
+                                <div class="keyselect-form m-t-10" uib-collapse="!showChangeKeyForm">
+                                    <form name="changeKeyForm" novalidate>
+                                        <div class="form-group">
+                                            <label for="">Key<span class="red">*</span>:</label>
+                                            <input class="form-control" type="text" placeholder="Key" ng-model="account.key" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="">Secret<span class="red">*</span>:</label>
+                                            <input class="form-control" type="text" placeholder="Secret" ng-model="account.secret" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="">Billing data S3 Bucket:</label>
+                                            <input class="form-control" type="text" placeholder="S3 Bucket name" ng-model="account.billing_bucket_name">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="">Give it a friendly name:</label>
+                                            <input class="form-control" type="text" placeholder="Friendly name" ng-model="account.pretty">
+                                        </div>
+                                        <button type="submit" ng-click="changeKey(account)" class="btn btn-change" ng-disabled="changeKeyForm.$invalid">Change</button>
+                                        <button type="submit" ng-click="openPolicy(account)" class="btn btn-policy" ng-disabled="changeKeyForm.$invalid">Generate Policy</button>
+                                    </form>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="keyselect-form m-t-10" uib-collapse=" !showNewKeyForm ">
+                        <form name="newKeyForm" novalidate>
+                            <div class="form-group">
+                                <label for="">Key<span class="red">*</span>: </label>
+                                <input class="form-control" type="text" placeholder="Key" ng-model="key.key" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Secret<span class="red">*</span>:</label>
+                                <input class="form-control" type="text" placeholder="Secret" ng-model="key.secret" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Billing data S3 Bucket:</label>
+                                <input class="form-control" type="text" placeholder="S3 Bucket name" ng-model="key.billing_bucket_name">
+                            </div>
+                            <div class="form-group">
+                                <label for="">Give it a friendly name:</label>
+                                <input class="form-control" type="text" placeholder="Friendly name" ng-model="key.pretty">
+                            </div>
+                            <button type="submit" ng-click="addKey(key)" class="btn" ng-disabled="newKeyForm.$invalid">Submit</button>
+                            <button type="submit" ng-click="openPolicy(key)" class="btn btn-policy" ng-disabled="newKeyForm.$invalid">Generate Policy</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- GCLOUD PANEL -->
+        <div class="col-md-6">
+            <div class="panel panel-default large-font">
+                <div class="panel-body monts keyselect">
+                    <img src="img/google-cloud-logo.png" style="width: 70%; display:block; margin: auto;" alt="">
+                    <hr>
+                    <button ng-click="gcloudInit()" class="btn btn-default btn-google">Register Google Cloud account</button>
+                    <hr>
+                    <div ng-if="identities.length">
+                        <ul class="list-group">
+                            <li class="list-group-item clickable gc-item" ng-click="selectGC(identity)" ng-repeat="identity in identities">
+                                <span class="fa-stack fa-2x">
+                                    <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                                    <i class="fa fa-user fa-stack-1x fa-inverse"></i>
+                                </span>
+                                {{identity.email}}
+                                <i class="fa fa-times pull-right" ng-click="removeGCIdentity(identity.id)"></i>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

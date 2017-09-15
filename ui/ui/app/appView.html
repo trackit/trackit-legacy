@@ -1,0 +1,88 @@
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-shrink" ng-show="currentState != 'app.setupguide'">
+  <div class="container">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header page-scroll">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand page-scroll" ui-sref="app.home">
+        <img src="img/logo-white-stroke.png" style=" width: 180px; margin-top: -16px;" alt="">
+      </a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="hidden">
+          <a href="#page-top"></a>
+        </li>
+        <li ng-class="{'active' : currentState == 'app.home'}">
+          <a class="page-scroll" ui-sref="app.home">Home</a>
+        </li>
+        <li ng-class="{'active' : currentState == 'app.costestimation'}">
+          <a class="page-scroll" ui-sref="app.costestimation">My resources</a>
+        </li>
+        <!--<li ng-class="{'active' : currentState == 'app.statistics'}">
+          <a class="page-scroll" ui-sref="app.statistics">Statistics</a>
+        </li>-->
+        <li ng-class="{'active' : currentState == 'app.s3map'}">
+          <a class="page-scroll" ui-sref="app.s3map">Storage Map</a>
+        </li>
+        <li ng-class="{'active' : currentState == 'app.prediction'}">
+          <a class="page-scroll" ui-sref="app.prediction">Prediction</a>
+        </li>
+        <li ng-class="{'active' : currentState == 'app.cloudmover'}">
+          <a class="page-scroll" ui-sref="app.cloudmover">Cloudmover</a>
+        </li>
+      </ul>
+
+
+
+
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown" uib-dropdown>
+          <a href="#"  class="dropdown-toggle" uib-dropdown-toggle>
+            {{user.email}}
+            <b class="caret"></b>
+          </a>
+          <ul class="dropdown-menu" uib-dropdown-menu>
+            <li>
+              <div id="providerStateContainer" style="">
+                <span class="badge pull-right" style="background-color: #f1f1f1;color: #ee3e3d; margin:5px; font-weight: normal;">
+                  <img class="pull-left" src="img/gc-square.png" style="max-height: 20px;" alt="">
+                  <span class="montslight" style="padding: 0 6px;margin-top: 4px;display: inline-block;">Google Cloud Status</span>
+                  <i class="fa pull-right" ng-class="{'fa-check-circle' : gcSelectedKey, 'fa-minus-circle' : !gcSelectedKey}" style="font-size: 20px;"></i>
+                </span>
+                <span class="badge pull-right" style="background-color: #f1f1f1;color: #ee3e3d; margin:5px; font-weight: normal;">
+                  <img class="pull-left" src="img/s3-square.png" style="max-height: 20px;" alt="">
+                  <span class="montslight" style="padding: 0 6px;margin-top: 4px;display: inline-block;">AWS Status</span>
+                  <i class="fa  pull-right" ng-class="{'fa-check-circle' : awsSelectedKey, 'fa-minus-circle' : !awsSelectedKey}" style="font-size: 20px;"></i>
+                </span>
+              </div>
+              <div style="clear:both;"></div>
+            </li>
+            <li class="divider"></li>
+            <li class="clickable">
+              <a style="color: #ee3e3d;" ng-click="openEditUser()"><i class="fa fa-user"></i> Edit User infos</a>
+            </li>
+            <li>
+              <a ui-sref="app.keyselect"style="color: #ee3e3d;"><i class="fa fa-key"></i> Change selected keys/accounts</a>
+            </li>
+            <li>
+              <a href ng-click="logout()" style="color: #ee3e3d;"><i class="fa fa-sign-out"></i> Sign out</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+
+    </div>
+    <!-- /.navbar-collapse -->
+  </div>
+  <!-- /.container-fluid -->
+</nav>
+
+<div ui-view></div>

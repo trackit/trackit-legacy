@@ -1,0 +1,38 @@
+<div class="panel panel-default ">
+  <div class="panel-body" ng-controller="CSVExportCtrl">
+    <div class="table-responsive">
+      <h4 style="text-align: center" ng-show="!awsCSVNoDataMessage && !dataLoaded">No data available. Please try again later.</h4>
+      <h4 style="text-align: center" ng-show="awsCSVNoDataMessage && !dataLoaded">{{awsCSVNoDataMessage}}</h4>
+      <div ng-if="dataLoaded">
+        <table class="table table-striped estimation-table" ng-if="dataLoaded">
+          <tbody>
+            <tr ng-if="csvExport && !itemsLength">
+              <td colspan="4">
+                <strong>No results</strong>
+              </td>
+            </tr>
+            <tr class="resource-item ngfade" ng-repeat="csv in csv_export | limitTo:show">
+              <td>
+                <strong class="pull-left"><h4>{{csv.name}}</h4></strong>
+              </td>
+              <td>
+                <h4>{{csv.description}}</h4>
+              </td>
+              <td>
+                <h5><a ng-click="download(csv.link)"><i class="fa fa-download fa-2x"></i></a></h5>
+              </td>
+            </tr>
+            <tr ng-if="show < csv_export.length && itemsLength > 0">
+              <td><strong>...</strong></td>
+
+              <td colspan="2"><strong><button class="btn" ng-click="showMore()">Show more</button></strong></td>
+
+              <td><strong>...</strong></td>
+
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

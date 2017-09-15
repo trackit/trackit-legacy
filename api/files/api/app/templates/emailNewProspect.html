@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>New prospect</title>
+	</head>
+	<body>
+		<h1>New prospect</h1>
+		<p>A new prospect just registered!</p>
+		<dl>
+			<dt>Name<dt>
+			<dd>{{ name|e }}</dd>
+			<dt>E-mail<dt>
+			<dd>{{ email|e }}</dd>
+			<dt>Phone number<dt>
+			<dd>{{ phone_number|default('nil')|e }}</dd>
+			<dt>Company name<dt>
+			<dd>{{ company_name|default('nil')|e }}</dd>
+			<dt>Address<dt>
+			<dd>{{ address|default('nil')|e }}</dd>
+			<dt>Preferred cloud provider</dt>
+			<dd>
+				<ul>
+					{%- for cloud in which_cloud %}
+					<li>{{ cloud|e }}</li>
+					{%- endfor %}
+				</ul>
+			</dt>
+			<dt>Employees</dt>
+			<dd>{{ employees|default('nil') }}</dt>
+			<dt>Annual revenue</dt>
+			<dd>{{ annual_revenue|default('nil') }}</dt>
+			<dt>Concerns</dt>
+			<dd>
+				<ul>
+					{%- for concern in cloud_concerns %}
+					<li>{{ concern|e }}</li>
+					{%- endfor %}
+				</ul>
+			</dd>
+		</dl>
+	</body>
+</html>

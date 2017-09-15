@@ -1,0 +1,401 @@
+<style media="screen">
+    .estimation-table th>img {}
+
+    table .provider-icon {
+        width: 28px;
+    }
+
+    .provider-icon.xs {
+        width: 15px;
+    }
+
+    .db-logo {
+        width: 66px;
+    }
+
+    table.estimation-table>thead>tr>th {
+        text-align: center;
+        font-size: 17px;
+        padding-bottom: 20px;
+    }
+
+    .estimation-table td {
+        text-align: center;
+        font-size: 15px;
+    }
+
+    .estimation-table tfoot {
+        border-top: 3px solid #DDD;
+    }
+
+    td.total-value,
+    .total-value {
+        font-weight: bold;
+        font-size: 20px;
+    }
+
+    td.selectedPrice {
+        font-weight: bolder;
+    }
+
+    td.unselectedPrice {
+        font-weight: 100;
+    }
+
+    .row.selection-item.ng-scope {
+        border-bottom: 1px solid #ECECEC;
+    }
+
+    .row.selection-item.ng-scope:last-child {
+        border-bottom: none;
+    }
+
+    .ngfade.ng-enter {
+        transition: 0.5s linear all;
+        opacity: 0;
+    }
+
+    .ngfade.ng-enter.ng-enter-active {
+        opacity: 1;
+    }
+
+    .progress.ng-isolate-scope {
+        width: 31%;
+        float: left;
+        margin: 1%;
+    }
+
+    div.resourcesTab>ul.nav {
+        padding-left: 0px;
+    }
+
+    div.panel.panel-default>div.panel-body {
+        border: none !important;
+        -webkit-box-shadow: 1px 1px 12px 0px rgba(0, 0, 0, 0.20);
+        -moz-box-shadow: 1px 1px 12px 0px rgba(0, 0, 0, 0.20);
+        box-shadow: 1px 1px 12px 0px rgba(0, 0, 0, 0.20);
+    }
+</style>
+
+<div class="container-fluid">
+    <div class="row m-b-20">
+        <div class="col-lg-9 col-md-12 col-sm-12">
+            <uib-tabset active="tabActive" class="resourcesTab">
+                <uib-tab index="0" select="selectedTab(0)">
+                    <uib-tab-heading style="font-size: 17px;">
+                        <i class="fa fa-desktop"></i> VMs
+                    </uib-tab-heading>
+                    <ng-include src="'components/costestimation/partials/vms-partial.html'"></ng-include>
+                </uib-tab>
+                <uib-tab index="1" select="selectedTab(1)">
+                    <uib-tab-heading style="font-size: 17px;">
+                        <i class="fa fa-database"></i> AWS Databases
+                    </uib-tab-heading>
+                    <ng-include src="'components/costestimation/partials/db-partial.html'"></ng-include>
+                </uib-tab>
+                <uib-tab index="2" select="selectedTab(2)">
+                    <uib-tab-heading style="font-size: 17px;">
+                        <i class="fa fa-archive"></i> Storage
+                    </uib-tab-heading>
+                    <ng-include src="'components/costestimation/partials/storage-partial.html'"></ng-include>
+                </uib-tab>
+                <uib-tab index="3" select="selectedTab(3)" deselect="deselectedTab(tabActive)" ng-if="awsSelectedKey">
+                    <uib-tab-heading style="font-size: 14px;">
+                        <img class="provider-icon" src="img/s3-square.png" alt="" style="height: 24px;"> AWS Cost/Resource
+                    </uib-tab-heading>
+                    <ng-include ng-if="tabActive == 3" src="'components/costestimation/partials/aws-costbyresource.html'"></ng-include>
+                </uib-tab>
+                <uib-tab index="4" select="selectedTab(4)" ng-if="awsSelectedKey">
+                    <uib-tab-heading style="font-size: 14px;">
+                        <img class="provider-icon" src="img/s3-square.png" alt="" style="height: 24px;"> AWS Cost/Tag
+                    </uib-tab-heading>
+                    <ng-include ng-if="tabActive == 4" src="'components/costestimation/partials/aws-costbytag.html'"></ng-include>
+                </uib-tab>
+                <uib-tab index="5" select="selectedTab(5)" ng-if="awsSelectedKey">
+                    <uib-tab-heading style="font-size: 14px;">
+                        <img class="provider-icon" src="img/s3-square.png" alt="" style="height: 24px;"> ELB
+                    </uib-tab-heading>
+                    <ng-include src="'components/costestimation/partials/elb-partial.html'"></ng-include>
+                </uib-tab>
+                <uib-tab index="6" select="selectedTab(6)" ng-if="awsSelectedKey">
+                    <uib-tab-heading style="font-size: 14px;">
+                        <img class="provider-icon" src="img/s3-square.png" alt="" style="height: 24px;"> Bandwidth
+                    </uib-tab-heading>
+                    <ng-include ng-if="tabActive == 6" src="'components/costestimation/partials/aws-bandwidth.html'"></ng-include>
+                </uib-tab>
+                <uib-tab index="7" select="selectedTab(7)" ng-if="awsSelectedKey">
+                    <uib-tab-heading style="font-size: 14px;">
+                        <img class="provider-icon" src="img/s3-square.png" alt="" style="height: 24px;"> Lambda
+                    </uib-tab-heading>
+                    <ng-include ng-if="tabActive == 7" src="'components/costestimation/partials/aws-lambda.html'"></ng-include>
+                </uib-tab>
+                <uib-tab index="8" select="tabActive = 8" ng-if="gcSelectedKey">
+                    <uib-tab-heading style="font-size: 14px;">
+                        <img class="provider-icon" src="img/gc-square.png" alt="" style="height: 24px;"> GCP Cost/Resource
+                    </uib-tab-heading>
+                    <ng-include ng-if="tabActive == 8" src="'components/costestimation/partials/gc-costbyresource.html'"></ng-include>
+                </uib-tab>
+                <uib-tab index="9" select="selectedTab(9)">
+                    <uib-tab-heading style="font-size: 17px;">
+                        <i class="fa fa-download"></i> CSV Export
+                    </uib-tab-heading>
+                    <ng-include src="'components/costestimation/partials/csv-export.html'"></ng-include>
+                </uib-tab>
+            </uib-tabset>
+
+
+        </div>
+
+        <div class="col-lg-3 col-md-12 col-sm-12 pull-right">
+
+            <!-- SELECTION -->
+            <div class="col-lg-12 col-md-12 col-sm-12 pull-right">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <i class="fa fa-shopping-basket"></i> Selection
+                        <button class="btn btn-xs" ng-if="selection.length" ng-click="clearSelection()">Clear</button>
+                    </div>
+                    <div class="panel-body">
+                        <h3 ng-if="!selection.length" style="text-align: center; color: #C3C3C3;" class="monts"><i class="fa fa-shopping-basket"></i> Selection is empty</h3>
+
+                        <!-- VMS List -->
+                        <div ng-if="isTypeInSelection('vm')">
+                            <div style="max-height: 400px; overflow-y : scroll;">
+                                <div class="row">
+                                    <h3 style="text-align: center;"><i class="fa fa-desktop blue"></i> VMs</h3>
+                                </div>
+                                <div class="row selection-item ngfade" ng-repeat="selec in selection" ng-if="selec.selectype == 'vm'">
+                                    <div class="col-lg-12 col-md-7">
+                                        <h5 style="margin-top: 5px; margin-bottom: 2px;">
+                              <span class="badge" style="background-color: #08C; font-size: 13px;">{{selec.size}}</span>
+                               {{selec.name}}
+                               <i class="fa fa-times clickable" ng-click="removeFromSelection(selec)"></i>
+                              </h5>
+                                    </div>
+                                    <div class="col-lg-12 col-md-5">
+                                        <h5 style="margin-top: 2px; margin-bottom: 5px;" class="pull-right">{{getCostForProvider(selec.provider, selec.prices) | currency:'$':3}}</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" ng-if="selection.length">
+                                <div class="col-md-6">
+                                    <h4>
+                              <img class="provider-icon xs" src="img/s3-square.png" alt=""> AWS</h4>
+                                </div>
+                                <div class="col-md-6">
+                                    <span class="total-value pull-right">{{getMonthEstimation(getEstimationFullProvider('aws', trimSelection(selection, 'vm'))) | currency:'$':2}}/month</span>
+                                </div>
+                            </div>
+                            <div class="row" ng-if="selection.length">
+                                <div class="col-md-6">
+                                    <h4>
+                              <img class="provider-icon xs" src="img/gc-square.png" alt=""> Google Cloud</h4>
+                                </div>
+                                <div class="col-md-6">
+                                    <span class="total-value pull-right">{{getMonthEstimation(getEstimationFullProvider('gcloud', trimSelection(selection, 'vm'))) | currency:'$':2}}/month</span>
+                                </div>
+                            </div>
+                            <div class="row" ng-if="selection.length">
+                                <div class="col-md-6">
+                                    <h4>
+                              <img class="provider-icon xs" src="img/ms-square.png" alt=""> Microsoft Azure</h4>
+                                </div>
+                                <div class="col-md-6">
+                                    <span class="total-value pull-right">{{getMonthEstimation(getEstimationFullProvider('azure', trimSelection(selection, 'vm'))) | currency:'$':2}}/month</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Storage List -->
+                        <div ng-if="isTypeInSelection('storage')">
+                            <div style="max-height: 400px; overflow-y : scroll;">
+                                <div class="row">
+                                    <h3 style="text-align: center;"><i class="fa fa-archive blue"></i> Storage</h3>
+                                </div>
+                                <div class="row selection-item ngfade" ng-repeat="selec in selection" ng-if="selec.selectype == 'storage'">
+                                    <div class="col-lg-12 col-md-7">
+                                        <h5 style="margin-top: 5px; margin-bottom: 2px;">
+                              <span class="badge" style="background-color: #08C; font-size: 13px;">{{selec.type}} / {{selec.used_space | bytes }}</span>
+                               {{selec.name}}
+                               <i class="fa fa-times clickable" ng-click="removeFromSelection(selec)"></i>
+                              </h5>
+                                    </div>
+                                    <div class="col-lg-12 col-md-5">
+                                        <h5 style="margin-top: 2px; margin-bottom: 5px;" class="pull-right">{{getCostForProvider(selec.provider, selec.prices) | currency:'$':3}}</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" ng-if="selection.length">
+                                <div class="col-md-6">
+                                    <h4>
+                              <img class="provider-icon xs" src="img/s3-square.png" alt=""> AWS</h4>
+                                </div>
+                                <div class="col-md-6">
+                                    <span class="total-value pull-right">{{getEstimationFullProvider('aws', trimSelection(selection, 'storage')) | currency:'$':2}}/month</span>
+                                </div>
+                            </div>
+                            <div class="row" ng-if="selection.length">
+                                <div class="col-md-6">
+                                    <h4>
+                              <img class="provider-icon xs" src="img/gc-square.png" alt=""> Google Cloud</h4>
+                                </div>
+                                <div class="col-md-6">
+                                    <span class="total-value pull-right">{{getEstimationFullProvider('gcloud', trimSelection(selection, 'storage')) | currency:'$':2}}/month</span>
+                                </div>
+                            </div>
+                            <div class="row" ng-if="selection.length">
+                                <div class="col-md-6">
+                                    <h4>
+                              <img class="provider-icon xs" src="img/ms-square.png" alt=""> Microsoft Azure</h4>
+                                </div>
+                                <div class="col-md-6">
+                                    <span class="total-value pull-right">{{getEstimationFullProvider('azure', trimSelection(selection, 'storage')) | currency:'$':2}}/month</span>
+                                </div>
+                            </div>
+                            <div class="row" ng-if="selection.length" ng-if="optionalProvider">
+                                <div class="col-md-6">
+                                    <h4>
+                                  <span ng-if="optionalProvider == 'qumulo' "><img src="img/qumulo-logo.png" style="width: 100px;"  alt=""></span>
+                                  <span ng-if="optionalProvider == 'ddn' " style="font-size: 15px;"><img src="img/ddn-logo.jpg" style="width: 30px" alt=""> DDN Storage</span>
+                                  <span ng-if="optionalProvider == 'scality' "><img src="img/scality-logo.png" style="width: 100px;" alt=""> </span>
+                                  <span ng-if="optionalProvider == 'dell' "><img src="img/dell-logo.png" style="width: 100px" alt=""></span>
+                                  <span ng-if="optionalProvider == 'backblaze' "><img src="img/backblaze-logo.png" style="width: 110px" alt=""></span>
+                                  <span ng-if="optionalProvider == 'netapp' " style="font-size: 15px;"><img src="img/netapp-logo.png" style="width: 30px; " alt=""> Netapp </span>
+                                  <span ng-if="optionalProvider == 'quantum' "><img src="img/quantum-logo.png" style="width: 100px" alt=""></span>
+                            </h4>
+                                </div>
+                                <div class="col-md-6">
+                                    <span class="total-value pull-right">{{selectionOptionalPrice() | currency:'$':2}}/month</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- SELECTION TOTAL -->
+                        <hr ng-if="selection.length">
+                        <div class="row" ng-if="selection.length">
+                            <div class="col-md-6">
+                                <h4>Selection Total</h4>
+                            </div>
+                            <div class="col-md-6">
+                                <span class="total-value pull-right">{{getSelectionTotal() | currency:'$':3}}/mth</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-12 col-md-12 col-sm-12 pull-right" ng-if="dataLoaded && (tabActive == 0 || tabActive == 2)">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <i class="fa fa-credit-card"></i> Providers estimations
+                    </div>
+
+                    <!-- ESTIMATIONS FOR VMS -->
+                    <div class="panel-body" ng-if="tabActive == 0">
+
+                        <h4 style="text-align: center; color: #C3C3C3;" class="monts">By switching all your instances to :</h4>
+                        <div class="row">
+                            <div class="col-lg-12 col-md-4 col-sm-4">
+                                <img style="max-height: 63px; max-width: 100%;" src="img/aws-logo.png" alt="">
+                            </div>
+                            <div class="col-lg-12 col-md-4 col-sm-4">
+                                <h3 style="text-align: right;"><span ng-if="(estimationFullAWS < estimationFullGCloud) && (estimationFullAWS < estimationFullAzure)" class="badge" style="background-color: #f1f1f1;"><i class="fa fa-check"></i> Best value</span> {{getMonthEstimation(estimationFullAWS) | currency}}/month</h3>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-lg-12 col-md-4 col-sm-4">
+                                <img style="max-height: 50px; max-width: 100%;" src="img/google-cloud-logo-trimmed.png" alt="">
+                            </div>
+                            <div class="col-lg-12 col-md-4 col-sm-4">
+                                <h3 style="text-align: right;"><span ng-if="(estimationFullGCloud < estimationFullAWS) && (estimationFullGCloud < estimationFullAzure)" class="badge" style="background-color: #f1f1f1;"><i class="fa fa-check"></i> Best value</span> {{getMonthEstimation(estimationFullGCloud) | currency}}/month</h3>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-lg-12 col-md-4 col-sm-4">
+                                <img style="max-height: 50px; max-width: 100%;" src="img/ms-full-logo.png" alt="">
+                            </div>
+                            <div class="col-lg-12 col-md-4 col-sm-4">
+                                <h3 style="text-align: right;"><span ng-if="(estimationFullAzure < estimationFullAWS) &&  (estimationFullAzure < estimationFullGCloud)" class="badge" style="background-color: #f1f1f1;"><i class="fa fa-check"></i> Best value</span> {{getMonthEstimation(estimationFullAzure) | currency}}/month</h3>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- ESTIMATIONS FOR STORAGE -->
+                    <div class="panel-body" ng-if="tabActive == 2">
+
+                        <h4 style="text-align: center; color: #C3C3C3;" class="monts">By switching all your storage to :</h4>
+                        <div class="row">
+                            <div class="col-lg-12 col-md-4 col-sm-4">
+                                <img style="max-height: 63px; max-width: 100%;" src="img/aws-logo.png" alt="">
+                            </div>
+                            <div class="col-lg-12 col-md-4 col-sm-4">
+                                <h3 style="text-align: right;"><span ng-if="storageFullBestValue() == storageFullAws" class="badge" style="background-color: #08C;"><i class="fa fa-check"></i> Best value</span> {{storageFullAws | currency}}/month</h3>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-lg-12 col-md-4 col-sm-4">
+                                <img style="max-height: 50px; max-width: 100%;" src="img/google-cloud-logo-trimmed.png" alt="">
+                            </div>
+                            <div class="col-lg-12 col-md-4 col-sm-4">
+                                <h3 style="text-align: right;"><span ng-if="storageFullBestValue() == storageFullGCloud" class="badge" style="background-color: #08C;"><i class="fa fa-check"></i> Best value</span> {{storageFullGCloud | currency}}/month</h3>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-lg-12 col-md-4 col-sm-4">
+                                <img style="max-height: 50px; max-width: 100%;" src="img/ms-full-logo.png" alt="">
+                            </div>
+                            <div class="col-lg-12 col-md-4 col-sm-4">
+                                <h3 style="text-align: right;"><span ng-if="storageFullBestValue() == storageFullAzure" class="badge" style="background-color: #08C;"><i class="fa fa-check"></i> Best value</span> {{storageFullAzure | currency}}/month</h3>
+                            </div>
+                        </div>
+                        <hr ng-if="optionalProvider">
+                        <div ng-if="optionalProvider" class="row">
+                            <div class="col-lg-12 col-md-4 col-sm-4">
+                                <span ng-if="optionalProvider == 'qumulo' "><img src="img/qumulo-logo.png" style="width: 200px" alt=""></span>
+                                <span ng-if="optionalProvider == 'ddn' " style="font-size: 25px;"><img src="img/ddn-logo.jpg" style="width: 100px" alt=""> DDN Storage</span>
+                                <span ng-if="optionalProvider == 'scality' "><img src="img/scality-logo.png" style="width: 190px;" alt=""> </span>
+                                <span ng-if="optionalProvider == 'dell' "><img src="img/dell-logo.png" style="width: 190px" alt=""></span>
+                                <span ng-if="optionalProvider == 'backblaze' "><img src="img/backblaze-logo.png" style="width: 190px" alt=""></span>
+                                <span ng-if="optionalProvider == 'netapp' "><img src="img/netapp-logo.png" style="width: 100px; margin-left: 20px; " alt=""> </span>
+                                <span ng-if="optionalProvider == 'quantum' "><img src="img/quantum-logo.png" style="width: 220px" alt=""></span>
+
+                            </div>
+                            <div class="col-lg-12 col-md-4 col-sm-4">
+                                <h3 style="text-align: right;"><span ng-if="storageFullBestValue() == storageFullOptional()" class="badge" style="background-color: #08C;"><i class="fa fa-check"></i> Best value</span> {{storageFullOptional() | currency}}/month</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-lg-12 col-md-12 col-sm-12 pull-right" ng-if="dataLoaded && (downgradable.length || upgradable.length)">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <i class="fa fa-comment"></i> Suggestions
+                    </div>
+                    <div class="panel-body">
+
+                        <div ng-if="downgradable.length">
+                            <h4 style="text-align: center; " class="monts"><i class="fa fa-caret-square-o-down"></i> {{downgradable.length}} of your instances could be downgraded </h4>
+                            <button class="btn" style="display: block; margin: auto;" ng-click="openSuggestions('downgradable')"><i class="fa fa-eye"></i>Show</button>
+                        </div>
+
+                        <hr>
+
+                        <div ng-if="upgradable.length">
+                            <h4 style="text-align: center; " class="monts"><i class="fa fa-caret-square-o-up"></i> {{upgradable.length}} of your instances may need an upgrade </h4>
+                            <button class="btn" style="display: block; margin: auto;" ng-click="openSuggestions('upgradable')"><i class="fa fa-eye"></i>Show</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>

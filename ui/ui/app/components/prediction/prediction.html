@@ -1,0 +1,120 @@
+<!-- If key is not existing -->
+<div ng-hide="keyExist" class="container">
+    <div class="row m-b-20">
+        <div class="col-md-12">
+            <div class="panel panel-default large-font">
+                <div class="panel-body monts add-key" style="position: relative; text-align: center">
+                    <div><strong>You have not linked an AWS key to your TrackIt account.</strong></div>
+                    <button ui-sref="app.keyselect" class="btn">
+                        <i class="fa fa-plus"></i> Enter your AWS Key
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- If key exists but have not been selected -->
+<div ng-hide="keySelected" class="container">
+    <div class="row m-b-20">
+        <div class="col-md-12">
+            <div class="panel panel-default large-font">
+                <div class="panel-body monts add-key" style="position: relative; text-align: center">
+                    <div><strong>You have not selected an AWS key to your TrackIt account.</strong></div>
+                    <button ui-sref="app.keyselect" class="btn">
+                        Select your AWS Key
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div ng-show="keySelected" class="container">
+    <div class="row m-b-20">
+        <div class="col-md-8 col-sm-12">
+            <div class="row">
+                <div class="col-md-12">
+                    <uib-tabset active="billPredictionActive">
+                        <!-- BILL PREDICTION -->
+                        <uib-tab index="1" select="billPredictionActive = 1">
+                            <uib-tab-heading>
+                                BILL PREDICTION BY SWITCHING TO RESERVED INSTANCES
+                            </uib-tab-heading>
+                            <div class="panel panel-default" ng-controller="ResPredCtrl" ng-if="billPredictionActive == 1">
+                                <div class="panel-body">
+                                    <button class="btn pull-right" ng-click="openPricingOptions()"><i class="fa fa-usd"></i> Show pricing options</button>
+                                    <div id="graphdiv" style="width: 100% !important; height: 400px !important; margin-top: 70px; font-family: Arial; font-size: 12px !important;" class="monts"></div>
+                                    <div ng-hide="dataPred || awsPredictionNoDataMessage" style="font-size: 18px; font-weight: bold; text-align: center;">No data available.</div>
+                                    <div ng-hide="dataPred || !awsPredictionNoDataMessage" style="font-size: 18px; font-weight: bold; text-align: center;">{{awsPredictionNoDataMessage}}</div>
+                                </div>
+                            </div>
+                        </uib-tab>
+                    </uib-tabset>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-12">
+            <uib-tabset active="billPredictionActive">
+                <!-- BILL PREDICTION -->
+                <uib-tab index="1" select="suggestionActive = 1">
+                    <uib-tab-heading>
+                        SUGGESTIONS
+                    </uib-tab-heading>
+                    <div class="panel panel-default" ng-controller="PredictionCtrl" ng-if="suggestionActive == 1">
+                        <div class="panel-body">
+                            <ul class="list-group">
+                                <li class="list-group-item" ng-show="underutilized.length">
+                                    <span class="badge warning orange no-float"><i class="fa fa-exclamation-triangle"></i></span>
+                                    <strong>Warning :</strong> <strong>{{underutilized.length}}</strong> of your instances are being under utilized consider switching them to a smaller instance size
+                                    <br>
+                                    <button class="btn btn-xs" ng-click="showUnderutilized = !showUnderutilized"><i class="fa fa-eye"></i> Show</button>
+                                    <button class="btn btn-xs" ui-sref="app.costestimation"><i class="fa fa-info"></i> More details</button>
+
+                                    <ul class="list-group" style="max-height: 250px; overflow-y: scroll;" ng-show="showUnderutilized">
+                                        <li class="list-group-item" ng-repeat="resource in underutilized">
+                                            <span class="badge" style="font-size: 12px;">{{resource.region}}</span>
+                                            <strong>{{resource.id}}</strong>
+                                            <br>
+                                            <i ng-repeat="reason in resource.underutilized">{{reason}}</i>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="list-group-item" ng-show="ondemandSwitch.length">
+                                    <span class="badge no-float"><i class="fa fa-info-circle"></i></span>
+                                    <strong>Info :</strong> <strong>{{ondemandSwitch.length}}</strong> instances have being used as On-demand over 15 hours a day, consider switching these instances to reserved for 30% savings on your total cost
+                                    <br>
+                                    <button class="btn btn-xs" ng-click="showOndemandswitch = !showOndemandswitch"><i class="fa fa-eye"></i> Show</button>
+                                    <button class="btn btn-xs" ng-click="openPricingOptions()"><i class="fa fa-info"></i> More details</button>
+
+                                    <ul class="list-group" style="max-height: 250px; overflow-y: scroll;" ng-show="showOndemandswitch">
+                                        <li class="list-group-item" ng-repeat="resource in ondemandSwitch">
+                                            <strong>{{resource.name}}</strong>
+                                            <br>
+                                            <i><i class="fa fa-clock-o"></i> Used {{resource.hours | number:0}} hours/day</i>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="list-group-item" ng-show="availableVolumes.length">
+                                    <span class="badge warning no-float"><i class="fa fa-exclamation-triangle"></i></span>
+                                    <strong>Warning :</strong> <strong>{{availableVolumes.length}}</strong> of your EBS volumes are not attached to any EC2 instances, consider attaching these volumes to EC2 instances or ending these EBS volumes
+
+                                    <br>
+                                    <button class="btn btn-xs" ng-click="showAvailableVolumes = !showAvailableVolumes"><i class="fa fa-eye"></i> Show</button>
+
+                                    <ul class="list-group" style="max-height: 250px; overflow-y: scroll;" ng-show="showAvailableVolumes">
+                                        <li class="list-group-item" ng-repeat="resource in availableVolumes">
+                                            <strong>{{resource}}</strong>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="list-group-item" ng-show="stoppedInstances">
+                                    <span class="badge no-float"><i class="fa fa-info-circle"></i></span>
+                                    <strong>Info :</strong> <strong>{{stoppedInstances}}</strong> instances have been stopped for over 5 days, consider ending these instances
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </uib-tab>
+            </uib-tabset>
+        </div>
+    </div>

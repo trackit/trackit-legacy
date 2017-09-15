@@ -1,0 +1,54 @@
+<div class="modal-header">
+    <h3 class="modal-title" style="color: #08C;">IAM User Policy</h3>
+</div>
+<div class="modal-body">
+    <div class="spinner" ng-show="!dataLoaded">
+        <div class="rect1"></div>
+        <div class="rect2"></div>
+        <div class="rect3"></div>
+        <div class="rect4"></div>
+        <div class="rect5"></div>
+    </div>
+    <div class="modal-body" ng-show="dataLoaded">
+        <textarea style="width:100%;height: 300px;" disabled>
+       {
+            "Statement": [
+                {
+                    "Action": [
+                        "aws-portal:ViewBilling",
+                        "aws-portal:ViewUsage",
+                        "cloudfront:List*",
+                        "cloudwatch:Describe*",
+                        "cloudwatch:Get*",
+                        "cloudwatch:List*",
+                        "ec2:Describe*",
+                        "rds:Describe*",
+                        "rds:ListTagsForResource",
+                        "s3:List*",
+                        "elasticache:Describe*",
+                        "elasticache:List*",
+                        "elasticloadbalancing:Describe*"
+                    ],
+                    "Effect": "Allow",
+                    "Resource": "*"
+                },
+                {
+                    "Action": [
+                        "s3:Get*",
+                        "s3:List*"
+                    ],
+                    "Effect": "Allow",
+                    "Resource": [
+                        "arn:aws:s3:::{{name}}",
+                        "arn:aws:s3:::{{name}}/*"
+                    ]
+                }
+            ],
+            "Version": "2012-10-17"
+       }</textarea>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" ng-click="close()" class="btn btn-primary" data-dismiss="modal">OK</button>
+    </div>
+</div>

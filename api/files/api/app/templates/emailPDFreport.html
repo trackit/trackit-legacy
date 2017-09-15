@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>Monthly TrackIt Email Report</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+
+<body style ="margin:0; padding:0;" bgcolor="#ebebeb">
+  <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
+    <tr>
+      <td bgcolor="#404040" style="padding: 5px 0 5px 0;">
+        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+          <tr>
+           <td>
+              <img src="https://www.trackit.io/img/logo-white-stroke.png" height="50px" style="margin: 10px;">
+            </td>
+            <td style="float: right; margin: 20px 10px;">
+              <div style="color:#ffffff; font-family: Montserrat, Helvetica Neue, Helvetica, Arial, sans-serif; font-size: 12px; text-align: right;">Monthly Report</div>
+              <div style="color:#ffffff; font-family: Montserrat, Helvetica Neue, Helvetica, Arial, sans-serif; text-align: right;">{{ date }}</div>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <table align="center" border="0" cellspacing="0" cellpadding="10" width="100%">
+          <tr>
+            <td >
+              <table border="0" cellpadding="0" cellspacing="0" width="50%">
+                <tr>
+                  <td style="color:#ffffff; font-family: Montserrat, Helvetica Neue, Helvetica, Arial, sans-serif;">
+                    <span style="background-color: #0088CC; padding: 5px 10px;">
+                    <strong>ACCOUNT : </strong>{{ email }}
+                    </span><br><br>
+                    <span style="background-color: #0088CC; padding: 5px 10px;">
+                    <strong>AWS KEY : </strong>{{ key }}
+                    </span>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <table border="0" cellspacing="0" cellpadding="0" width="100%">
+                <tr>
+                  <td width="260" valign="top">
+                    <table border="0" cellspacing="0" cellpadding="0" width="25%">
+                      <tr>
+                        <td bgcolor="#0088CC" style="color:#ffffff; padding: 5px 5px 5px 5px; font-family: Montserrat, Helvetica Neue, Helvetica, Arial, sans-serif;">
+                          THIS MONTH
+                        </td>
+                    </table>
+                    <table border="0" cellspacing="0" cellpadding="0" width="100%">
+                      <tr>
+                        <td bgcolor="#ffffff" style="padding: 5px 5px 5px 5px; font-family: Montserrat, Helvetica Neue, Helvetica, Arial, sans-serif;">
+                          <br>
+                          {% for dict_item in products %}
+                              <strong>{{ dict_item.product }}</strong>
+                              {{ dict_item.cost|round(2, 'common') }} $
+                              <br>
+                          {% endfor %}
+                          <strong>TOTAL: </strong>{{ total|round(2, 'common') }} $<br>
+                          <a href="http://trackit.io/#/app/home" style="text-decoration: none;">view report</a>
+                          </td>
+                      </tr>
+                    </table>
+                  </td>
+                  <td style="font-size: 0; line-height: 0;" width="20">
+                    2nd column-spacer
+                  </td>
+                  <td width="260" valign="top">
+                    <table border="0" cellspacing="0" cellpadding="0" width="50%">
+                      <tr>
+                        <td bgcolor="#0088CC" style="color:#ffffff; padding: 5px 5px 5px 5px; font-family: Montserrat, Helvetica Neue, Helvetica, Arial, sans-serif;">
+                          ESTIMATION NEXT MONTH
+                        </td>
+                      </tr>
+                    </table>
+                    <table border="0" cellspacing="0" cellpadding="0" width="100%">
+                      <tr>
+                        <td bgcolor="#ffffff" style="padding: 5px 5px 5px 5px; font-family: Montserrat, Helvetica Neue, Helvetica, Arial, sans-serif;">
+                          Hourly cost : {{ hourly_cost }} $
+                          <br>
+                          Monthly cost : {{ monthly_cost }} $
+                          <br>
+                          <a href="http://trackit.io/#/app/prediction" style="text-decoration: none;">view estimation</a>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <table border="0" cellspacing="0" cellpadding="0" width="25%">
+                <tr>
+                  <td bgcolor="#0088CC" style="color:#ffffff; padding: 5px 5px 5px 5px; font-family: Montserrat, Helvetica Neue, Helvetica, Arial, sans-serif;">
+                    SAVE MORE NEXT MONTH
+                  </td>
+                </tr>
+              </table>
+              <table border="0" cellspacing="0" cellpadding="0" width="100%">
+                <tr>
+                  <td bgcolor="#ffffff" style="padding: 5px 5px 5px 5px; font-family: Montserrat, Helvetica Neue, Helvetica, Arial, sans-serif;">
+                    Check up on your instances to be downgraded or upgraded for cost savings.
+                    <table border="0" cellspacing="0" cellpadding="0" width="15%" align="center">
+                      <tr>
+                        <td bgcolor="#EB7035" class="button" style="padding: 6px 9px 6px 9px; -webkit-border-radius:3px; border-radius:3px" align="center">
+                          <a href="http://trackit.io/#/app/estimation" style="color: #ffffff; text-decoration: none;">My Resources</a>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+
+                </tr>
+              </table>
+              <footer style ="color: #FFF; margin: 20px 0 0; padding: 10px; background-color: #404040; font-family: Montserrat, Helvetica Neue, Helvetica, Arial, sans-serif;">
+                <table width="100%">
+                  <tr>
+                    <td style="font-weight: 200; font-size: 12px;">MSolution.IO Inc. 2016</td>
+                  </tr>
+                </table>
+              </footer>
+            </td>
+          </tr>
+        </table>
+       </td>
+      </tr>
+   </table>
+</body>

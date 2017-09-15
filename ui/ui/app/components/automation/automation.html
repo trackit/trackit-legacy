@@ -1,0 +1,215 @@
+
+<div id="workflow"></div>
+
+<script src='../../bower_components/mxgraph/javascript/mxClient.min.js'></script>
+
+<script>
+  function addToolbarItem(graph, toolbar, prototype, image)
+  {
+    // Function that is executed when the image is dropped on
+    // the graph. The cell argument points to the cell under
+    // the mousepointer if there is one.
+    var funct = function(graph, evt, cell, x, y)
+    {
+      graph.stopEditing(false);
+
+      var vertex = graph.getModel().cloneCell(prototype);
+      vertex.geometry.x = x;
+      vertex.geometry.y = y;
+
+      graph.addCell(vertex);
+      graph.setSelectionCell(vertex);
+    }
+
+    // Creates the image which is used as the drag icon (preview)
+    var img = toolbar.addMode(null, image, function(evt, cell)
+      {
+        var pt = this.graph.getPointForEvent(evt);
+        funct(graph, evt, cell, pt.x, pt.y);
+      });
+
+    // Disables dragging if element is disabled. This is a workaround
+    // for wrong event order in IE. Following is a dummy listener that
+    // is invoked as the last listener in IE.
+    mxEvent.addListener(img, 'mousedown', function(evt)
+      {
+        // do nothing
+      });
+
+    // This listener is always called first before any other listener
+    // in all browsers.
+    mxEvent.addListener(img, 'mousedown', function(evt)
+      {
+        if (img.enabled == false)
+        {
+          mxEvent.consume(evt);
+        }
+      });
+
+    mxUtils.makeDraggable(img, graph, funct);
+
+    return img;
+  }
+
+  function addBoxStyle(mxConstants, graph, img, name) {
+    var style = {};
+    style[mxConstants.STYLE_SHAPE] = mxConstants.SHAPE_IMAGE;
+    style[mxConstants.STYLE_PERIMETER] = mxPerimeter.HexagonPerimeter;
+    style[mxConstants.STYLE_IMAGE] = img;
+    style[mxConstants.STYLE_FONTCOLOR] = '#FFFFFF';
+    graph.getStylesheet().putCellStyle(name, style);
+  }
+
+  function bindKeys(graph) {
+    // Bind del key
+    var keyHandler = new mxKeyHandler(graph);
+    keyHandler.bindKey(46, function(evt)
+      {
+        if (graph.isEnabled())
+        {
+          graph.removeCells();
+        }
+      });
+  }
+
+  // Defines an icon for creating new connections in the connection handler.
+  // This will automatically disable the highlighting of the source vertex.
+  mxConnectionHandler.prototype.connectImage = new mxImage('../../img/link.png', 32, 32);
+
+  // Creates the div for the toolbar
+  var tbContainer = document.createElement('div');
+  tbContainer.style.position = 'relative';
+  tbContainer.style.overflow = 'hidden';
+  tbContainer.style.float = 'left';
+  tbContainer.style.padding = '2px';
+  tbContainer.style.top = '-20px';
+  tbContainer.style.height = '100%';
+  tbContainer.style.width = '20%';
+  tbContainer.style.backgroundColor = '#aaaaaa';
+  tbContainer.className = 'toolbar';
+
+  tbImg = document.createElement('img');
+  tbImg.src = '../../img/toolbar-title.png';
+  tbImg.style.width = '100%';
+  tbContainer.appendChild(tbImg);
+
+  document.body.appendChild(tbContainer);
+
+  // Creates new toolbar without event processing
+  var toolbar = new mxToolbar(tbContainer);
+  toolbar.enabled = false
+
+  // Creates the div for the graph
+  var container = document.createElement('div');
+  container.style.position = 'relative';
+  container.style.overflow = 'hidden';
+  //container.style.left = '20%';
+  container.style.top = '-20px';
+  container.style.height = '100%';
+  //container.style.right = '0px';
+  //container.style.bottom = '0px';
+  container.style.background = 'url("../../img/grid.gif")';
+
+  document.body.appendChild(container);
+
+  // Workaround for Internet Explorer ignoring certain styles
+  if (mxClient.IS_QUIRKS)
+  {
+    document.body.style.overflow = 'hidden';
+    new mxDivResizer(tbContainer);
+    new mxDivResizer(container);
+  }
+
+  // Creates the model and the graph inside the container
+  // using the fastest rendering available on the browser
+  var model = new mxGraphModel();
+  var graph = new mxGraph(container, model);
+
+  // Enables new connections in the graph
+  graph.setConnectable(true);
+  graph.setMultigraph(false);
+
+  // Stops editing on enter or escape keypress
+  var keyHandler = new mxKeyHandler(graph);
+  var rubberband = new mxRubberband(graph);
+
+  var addVertex = (icon, w, h, style) => {
+    var vertex = new mxCell(null, new mxGeometry(0, 0, w, h), style);
+    vertex.setVertex(true);
+
+    var img = this.addToolbarItem(graph, toolbar, vertex, icon);
+    img.enabled = true;
+
+    //graph.getSelectionModel().addListener(mxEvent.CHANGE, function()
+    //  {
+    //    var tmp = graph.isSelectionEmpty();
+    //    mxUtils.setOpacity(img, (tmp) ? 100 : 20);
+    //    img.enabled = tmp;
+    //  });
+  };
+
+  bindKeys(graph);
+
+  var style = {};
+  var mxConstants = mxConstants;
+  style[mxConstants.STYLE_ROUNDED] = true;
+  style[mxConstants.STYLE_STROKECOLOR] = '#000000';
+  style[mxConstants.STYLE_ALIGN] = mxConstants.ALIGN_CENTER;
+  style[mxConstants.STYLE_VERTICAL_ALIGN] = mxConstants.ALIGN_MIDDLE;
+  style[mxConstants.STYLE_EDGE] = mxEdgeStyle.EntityRelation;
+  style[mxConstants.STYLE_ENDARROW] = mxConstants.ARROW_BLOCK;
+  style[mxConstants.STYLE_STROKEWIDTH] = 5;
+  graph.getStylesheet().putDefaultEdgeStyle(style);
+
+  addBoxStyle(mxConstants, graph, '../../img/cloudaws.png', 'provAWS');
+  addBoxStyle(mxConstants, graph, '../../img/cloudgcp.png', 'provGCP');
+  addBoxStyle(mxConstants, graph, '../../img/cloudazure.png', 'provAzure');
+  addBoxStyle(mxConstants, graph, '../../img/actionrep.png', 'actReplicate');
+  addBoxStyle(mxConstants, graph, '../../img/actionmove.png', 'actMove');
+  addBoxStyle(mxConstants, graph, '../../img/actionsync.png', 'actSync');
+  addBoxStyle(mxConstants, graph, '../../img/ifbigger.png', 'ifbigger');
+  addBoxStyle(mxConstants, graph, '../../img/ifolder.png', 'ifolder');
+  addBoxStyle(mxConstants, graph, '../../img/ifname.png', 'ifname');
+
+  tbCloudBar = document.createElement('img');
+  tbCloudBar.src = '../../img/providersection.png';
+  tbCloudBar.style.width = '100%';
+  tbCloudBar.className = 'section cloud';
+  tbContainer.appendChild(tbCloudBar);
+
+  addVertex('../../img/cloudaws.png', 120, 80, 'provAWS');
+  addVertex('../../img/cloudgcp.png', 120, 80, 'provGCP');
+  addVertex('../../img/cloudazure.png', 120, 80, 'provAzure');
+
+  tbActionBar = document.createElement('img');
+  tbActionBar.src = '../../img/actionsection.png';
+  tbActionBar.style.width = '100%';
+  tbActionBar.className = 'section action';
+  tbContainer.appendChild(tbActionBar);
+
+  addVertex('../../img/actionrep.png', 120, 80, 'actReplicate');
+  addVertex('../../img/actionmove.png', 120, 80, 'actMove');
+  addVertex('../../img/actionsync.png', 120, 80, 'actSync');
+
+  tbFilterBar = document.createElement('img');
+  tbFilterBar.src = '../../img/filtersection.png';
+  tbFilterBar.style.width = '100%';
+  tbFilterBar.className = 'section if';
+  tbContainer.appendChild(tbFilterBar);
+
+  addVertex('../../img/ifbigger.png', 100, 80, 'ifbigger');
+  addVertex('../../img/ifolder.png', 100, 80, 'ifolder');
+  addVertex('../../img/ifname.png', 100, 80, 'ifname');
+
+  $(document).ready(function() {
+    $('.mxToolbarMode').each(function(i, obj) {
+      if ($(obj).attr('src').match(/.*cloud.*png/))
+        $(obj).addClass('cloud');
+      else if ($(obj).attr('src').match(/.*action.*png/))
+        $(obj).addClass('action');
+      else if ($(obj).attr('src').match(/.*if.*png/))
+        $(obj).addClass('if');
+    });
+  });
+
+</script>

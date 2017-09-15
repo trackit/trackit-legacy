@@ -1,0 +1,26 @@
+New prospect
+
+A new prospect just registered!
+
+Name:
+    {{ name|wordwrap(70)|indent(4) }}
+E-mail:
+    {{ email|wordwrap(70)|indent(4) }}
+Phone number:
+    {{ phone_number|default('nil')|wordwrap(70)|indent(4) }}
+Company name:
+    {{ company_name|default('nil')|wordwrap(70)|indent(4) }}
+Address:
+    {{ address|default('nil')|wordwrap(70)|indent(4) }}
+Preferred cloud provider:
+{%- for cloud in which_cloud %}
+    {{ "- %s"|format(cloud)|wordwrap(70)|indent(4) }}
+{%- endfor %}
+Employees:
+    {{ employees|default('nil')|wordwrap(70)|indent(4) }}
+Annual revenue:
+    {{ annual_revenue|default('nil')|string|wordwrap(70)|indent(4) }}
+Concerns:
+{%- for concern in cloud_concerns %}
+    {{ "- %s"|format(concern)|wordwrap(70)|indent(4) }}
+{%- endfor %}

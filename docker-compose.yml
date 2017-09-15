@@ -1,0 +1,23 @@
+mysql:
+    image: mariadb:latest
+    environment:
+        - MYSQL_ALLOW_EMPTY_PASSWORD=True
+api:
+    build: api/
+    links:
+        - es1
+        - mysql:mysql
+        - redis
+es1:
+    image: elasticsearch:2.3.5
+webui:
+    build: ui/
+redis:
+    image: redis
+loadbalancer:
+    build: loadbalancer
+    ports:
+        - 80:80
+    links:
+        - api:api
+        - webui:webui

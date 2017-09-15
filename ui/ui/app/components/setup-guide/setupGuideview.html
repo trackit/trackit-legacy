@@ -1,0 +1,268 @@
+<div class="container">
+    <div class="row m-b-20">
+        <div class="timeline-title">
+            <a class="btn btn-back" href="{{backurl}}"><i class="fa fa-chevron-left"></i> Return</a>
+            <h1>Account Setup Guide</h1>
+        </div>
+        <div class="timeline">
+
+            <!-- Line component -->
+            <div class="line text-muted"></div>
+
+            <!-- Panel 1 -->
+            <article class="panel panel-primary">
+                <div class="panel-heading icon">
+                    <div class="timeline-step">1</div>
+                </div>
+                <div class="panel-heading">
+                    <h2 class="panel-title">CREATING READ ONLY POLICY</h2>
+                </div>
+                <div class="panel-body">
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <div class="step-number"></div>
+                            <div class="step-desc">
+                                Log in to your Amazon Web Services Management Console
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="step-number"></div>
+                            <div class="step-desc">
+                                Select <span class="label-orange">Identity and Access Management (IAM)</span> under the Security & Identity section
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="step-number"></div>
+                            <div class="step-desc">
+                                Select <span class="label-orange">Users</span> from the Dashboard menu on the left panel
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="step-number"></div>
+                            <div class="step-desc">
+                                Select <span class="fake-btn">Create New Users</span>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="step-number"></div>
+                            <div class="step-desc">
+                                Enter a unique username for your new user<br/>
+                            Make sure to check the box next to <b>Generate an access key for each user</b>
+                            and then click <span class="fake-btn">Create</span> at the bottom right of the page
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="step-number"></div>
+                            <div class="step-desc">
+                                You should receive a confirmation message, verifying that your user has been created<br/>
+                            You can choose to copy the credentials directly from this page under <span class="label-blue">Show Users Security Credentials</span> or <span class="fake-btn">Download Credentials</span> and keep them in a safe place.
+                            Select close after you have saved your credentials
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="step-number"></div>
+                            <div class="step-desc">
+                                Click on your newly created user from the user selection menu
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="step-number"></div>
+                            <div class="step-desc">
+                                Select the <b>Permissions</b> tab.
+                            Then click <span class="fake-btn">Attach Policy</span> under the Managed Policies section.
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="step-number"></div>
+                            <div class="step-desc">
+                                Search for the <b>ReadOnlyAccess</b> policy option and select that as your policy.
+                            Click <span class="fake-btn">Attach Policy</span> when you are finished.
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </article>
+
+            <!-- Panel 2 -->
+            <article class="panel panel-primary">
+                <div class="panel-heading icon">
+                    <div class="timeline-step">2</div>
+                </div>
+                <div class="panel-heading">
+                    <h2 class="panel-title">OBTAINING YOUR DETAILED BILLING REPORTS</h2>
+                </div>
+                <div class="panel-body">
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <div class="step-number"></div>
+                            <div class="step-desc">
+                                Return to your home page on the Amazon Console
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="step-number"></div>
+                            <div class="step-desc">
+                                Select <span class="label-orange">S3: Scalable Storage in the Cloud</span> under the Storage & Content Delivery section
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="step-number"></div>
+                            <div class="step-desc">
+                                Select <span class="fake-btn">Create Bucket</span>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="step-number"></div>
+                            <div class="step-desc">
+                                Name your S3 bucket such that you will know to designate your billing reports to be sent to it
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="step-number"></div>
+                            <div class="step-desc">
+                                Open the Billing and Cost Management console at <a href="https://console.aws.amazon.com/billing/home#">https://console.aws.amazon.com/billing/home#</a>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="step-number"></div>
+                            <div class="step-desc">
+                                Select <span class="label-orange">Preferences</span> from the Dashboard menu on the left panel
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="step-number"></div>
+                            <div class="step-desc">
+                                Select the Receive Billing Reports check box and enter the name of the Amazon S3 bucket you created in <i>Phase 2: Steps 1-4</i>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="step-number"></div>
+                            <div class="step-desc">
+                                Click on the highlighted <span class="label-blue">sample policy</span> link in the note directly under the verify button and copy the sample policy that is generated for your S3 bucket
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="step-number"></div>
+                            <div class="step-desc">
+                                Return to the S3 bucket that you previously created in <i>Phase 2</i>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="step-number"></div>
+                            <div class="step-desc">
+                                Select the <b>Properties</b> button on the top right corner of your S3 bucket's page
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="step-number"></div>
+                            <div class="step-desc">
+                                Expand the <b>Permissions</b> section</div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="step-number"></div>
+                            <div class="step-desc">
+                                Select the <b>Add bucket policy</b> button and paste the sample policy that was generated for your S3 bucket in <i>Phase 2: Step 8</i>
+                                Click <span class="fake-btn">Save</span> to finalize your permission edits for your S3 bucket.
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="step-number"></div>
+                            <div class="step-desc">
+                                Return to the billing reports page from <i>Step 7</i> and verify the S3 bucket that you wish to send your billing reports to.
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="step-number"></div>
+                            <div class="step-desc">
+                                After your S3 bucket has been verified, under Report, select the check boxes for the reports that you want to receive.
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="step-number"></div>
+                            <div class="step-desc">
+                                Select <span class="fake-btn">Save preferences</span> and begin receiving your detailed billing reports :)<br/>
+                                **Note: It can take up to 24 hours for AWS to start delivering reports to your S3 bucket. After delivery starts, AWS updates the detailed report files multiple times per day.
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </article>
+
+            <!-- Panel 3 -->
+            <article class="panel panel-primary">
+                <div class="panel-heading icon">
+                    <div class="timeline-step">3</div>
+                </div>
+                <div class="panel-heading">
+                    <h2 class="panel-title">SETTING UP YOUR TRACKIT ACCOUNT</h2>
+                </div>
+                <div class="panel-body">
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <div class="step-number"></div>
+                            <div class="step-desc">
+                                Sign up for a TrackIt.IO account by visiting <a href="http://trackit.io/#/signup">http://trackit.io/#/signup</a>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="step-number"></div>
+                            <div class="step-desc">
+                                Once you create your TrackIt.IO account, you will have to allow TrackIt.IO to retrieve your billing reports from AWS
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="step-number"></div>
+                            <div class="step-desc">
+                                Select <span class="fake-trackit-btn"><i class="fa fa-plus"></i> Add new key</span>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="step-number"></div>
+                            <div class="step-desc">
+                                Enter the key credentials you generated in <i>Phase 1</i>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="step-number"></div>
+                            <div class="step-desc">
+                                Click <span class="fake-trackit-btn">Submit</span> to save your key credentials<br/>
+                                You can get your IAM User Policy by clicking on <span class="fake-trackit-btn">Generate Policy</span><br/>
+                                Congratulations! You have successfully created and configured your TrackIt.IO account.
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </article>
+
+            <!-- Panel 4 -->
+            <article class="panel panel-primary">
+                <div class="panel-heading icon">
+                    <div class="timeline-step">4</div>
+                </div>
+                <div class="panel-heading">
+                    <h2 class="panel-title">DISCOVER TRACKIT.IO</h2>
+                </div>
+                <div class="panel-body">
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            Once AWS starts generating detailed reports and sending them to your designated Amazon S3 bucket, TrackIt.IO will access those reports and give you insights to your AWS account usage and cost.
+                        </li>
+                        <li class="list-group-item">
+                            <img class="img-responsive img-rounded" src="img/demo-home.png" />
+                        </li>
+                        <li class="list-group-item">
+                            <img class="img-responsive img-rounded" src="img/demo-resources.png" />
+                        </li>
+                        <li class="list-group-item">
+                            <img class="img-responsive img-rounded" src="img/demo-map.png" />
+                        </li>
+                        <li class="list-group-item">
+                            <img class="img-responsive img-rounded" src="img/demo-prediction.png" />
+                        </li>
+                    </ul>
+                </div>
+            </article>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,33 @@
+FROM ubuntu:16.04
+
+
+RUN apt-get update &&\
+    apt-get install -y curl\
+                       gfortran\
+                       libblas-dev\
+                       libffi-dev\
+                       liblapack-dev\
+                       libssl-dev\
+                       libmysqlclient-dev\
+                       libdbus-glib-1-dev\
+                       mysql-client\
+                       python\
+                       python-dev\
+                       python-setuptools\
+                       wget\
+                       &&\
+    rm -rf /var/lib/apt/lists/*
+
+
+COPY ./files/api/requirements.txt /tmp/piprequirements.txt
+RUN easy_install pip && pip install -r /tmp/piprequirements.txt
+
+COPY ./files/api /root/api
+COPY ./files/api/app/templates /usr/trackit/templates
+COPY ./files/newrelic_prod.ini /root/newrelic.ini
+COPY ./files/initall.sh /root/initall.sh
+
+RUN mkdir /root/log
+
+ENV NEW_RELIC_CONFIG_FILE=/root/newrelic.ini
+WORKDIR /root/api/

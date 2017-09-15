@@ -1,0 +1,440 @@
+{
+	"version": "v1.3",
+	"updated": "2014-10-29",
+	"gcp_price_list": {
+		"sustained_use_base": 0.25,
+		"sustained_use_tiers": {
+			"0.25": 1.0,
+			"0.50": 0.8,
+			"0.75": 0.6,
+			"1.0": 0.4
+		},
+		"CP-COMPUTEENGINE-VMIMAGE-F1-MICRO": {
+			"us": 0.012,
+			"eu": 0.013,
+			"apac": 0.013,
+			"cores": "shared",
+			"memory": "0.6",
+			"ssd": [
+				0
+			]
+		},
+		"CP-COMPUTEENGINE-VMIMAGE-G1-SMALL": {
+			"us": 0.032,
+			"eu": 0.0347,
+			"apac": 0.0347,
+			"cores": "shared",
+			"memory": "1.7",
+			"ssd": [
+				0
+			]
+		},
+		"CP-COMPUTEENGINE-VMIMAGE-N1-STANDARD-1": {
+			"us": 0.063,
+			"eu": 0.069,
+			"apac": 0.069,
+			"cores": "1",
+			"memory": "3.75",
+			"ssd": [
+				0
+			]
+		},
+		"CP-COMPUTEENGINE-VMIMAGE-N1-STANDARD-2": {
+			"us": 0.126,
+			"eu": 0.138,
+			"apac": 0.138,
+			"cores": "2",
+			"memory": "7.5",
+			"ssd": [
+				0,
+				1
+			]
+		},
+		"CP-COMPUTEENGINE-VMIMAGE-N1-STANDARD-4": {
+			"us": 0.252,
+			"eu": 0.276,
+			"apac": 0.276,
+			"cores": "4",
+			"memory": "15",
+			"ssd": [
+				0,
+				1,
+				4
+			]
+		},
+		"CP-COMPUTEENGINE-VMIMAGE-N1-STANDARD-8": {
+			"us": 0.504,
+			"eu": 0.552,
+			"apac": 0.552,
+			"cores": "8",
+			"memory": "30",
+			"ssd": [
+				0,
+				2
+			]
+		},
+		"CP-COMPUTEENGINE-VMIMAGE-N1-STANDARD-16": {
+			"us": 1.008,
+			"eu": 1.104,
+			"apac": 1.104,
+			"cores": "16",
+			"memory": "60",
+			"ssd": [
+				0,
+				4
+			]
+		},
+		"CP-COMPUTEENGINE-VMIMAGE-N1-HIGHMEM-2": {
+			"us": 0.148,
+			"eu": 0.162,
+			"apac": 0.162,
+			"cores": "2",
+			"memory": "13",
+			"ssd": [
+				0,
+				1
+			]
+		},
+		"CP-COMPUTEENGINE-VMIMAGE-N1-HIGHMEM-4": {
+			"us": 0.296,
+			"eu": 0.324,
+			"apac": 0.324,
+			"cores": "4",
+			"memory": "26",
+			"ssd": [
+				0,
+				1,
+				4
+			]
+		},
+		"CP-COMPUTEENGINE-VMIMAGE-N1-HIGHMEM-8": {
+			"us": 0.592,
+			"eu": 0.648,
+			"apac": 0.648,
+			"cores": "8",
+			"memory": "52",
+			"ssd": [
+				0,
+				2
+			]
+		},
+		"CP-COMPUTEENGINE-VMIMAGE-N1-HIGHMEM-16": {
+			"us": 1.184,
+			"eu": 1.296,
+			"apac": 1.296,
+			"cores": "16",
+			"memory": "104",
+			"ssd": [
+				0,
+				4
+			]
+		},
+		"CP-COMPUTEENGINE-VMIMAGE-N1-HIGHCPU-2": {
+			"us": 0.080,
+			"eu": 0.086,
+			"apac": 0.086,
+			"cores": "2",
+			"memory": "1.8",
+			"ssd": [
+				0,
+				1
+			]
+		},
+		"CP-COMPUTEENGINE-VMIMAGE-N1-HIGHCPU-4": {
+			"us": 0.160,
+			"eu": 0.172,
+			"apac": 0.172,
+			"cores": "4",
+			"memory": "3.6",
+			"ssd": [
+				0,
+				1,
+				4
+			]
+		},
+		"CP-COMPUTEENGINE-VMIMAGE-N1-HIGHCPU-8": {
+			"us": 0.320,
+			"eu": 0.344,
+			"apac": 0.344,
+			"cores": "8",
+			"memory": "7.2",
+			"ssd": [
+				0,
+				2
+			]
+		},
+		"CP-COMPUTEENGINE-VMIMAGE-N1-HIGHCPU-16": {
+			"us": 0.640,
+			"eu": 0.688,
+			"apac": 0.688,
+			"cores": "16",
+			"memory": "14.40",
+			"ssd": [
+				0,
+				4
+			]
+		},
+		"CP-COMPUTEENGINE-LOCAL-SSD": {
+			"us": 0.0003
+		},
+		"CP-COMPUTEENGINE-OS": {
+			"win": {
+				"low": 0.02,
+				"high": 0.04,
+				"cores": "shared",
+				"percore": true
+			},
+			"rhel": {
+				"low": 0.06,
+				"high": 0.13,
+				"cores": "8",
+				"percore": false
+			},
+			"suse": {
+				"low": 0.02,
+				"high": 0.11,
+				"cores": "shared",
+				"percore": false
+			}
+		},
+		"CP-COMPUTEENGINE-STORAGE-PD-CAPACITY": {
+			"us": 0.04
+		},
+		"CP-COMPUTEENGINE-STORAGE-PD-SSD": {
+			"us": 0.325
+		},
+		"CP-COMPUTEENGINE-PD-IO-REQUEST": {
+			"us": 0.0
+		},
+		"CP-COMPUTEENGINE-STORAGE-PD-SNAPSHOT": {
+			"us": 0.125
+		},
+		"CP-BIGSTORE-CLASS-A-REQUEST": {
+			"us": 0.01
+		},
+		"CP-BIGSTORE-CLASS-B-REQUEST": {
+			"us": 0.01
+		},
+		"CP-CLOUDSQL-PERUSE-D0": {
+			"us": 0.025
+		},
+		"CP-CLOUDSQL-PERUSE-D1": {
+			"us": 0.10
+		},
+		"CP-CLOUDSQL-PERUSE-D2": {
+			"us": 0.19
+		},
+		"CP-CLOUDSQL-PERUSE-D4": {
+			"us": 0.38
+		},
+		"CP-CLOUDSQL-PERUSE-D8": {
+			"us": 0.77
+		},
+		"CP-CLOUDSQL-PERUSE-D16": {
+			"us": 1.54
+		},
+		"CP-CLOUDSQL-PERUSE-D32": {
+			"us": 3.08
+		},
+		"CP-CLOUDSQL-PACKAGE-D0": {
+			"us": 0.360
+		},
+		"CP-CLOUDSQL-PACKAGE-D1": {
+			"us": 1.46
+		},
+		"CP-CLOUDSQL-PACKAGE-D2": {
+			"us": 2.93
+		},
+		"CP-CLOUDSQL-PACKAGE-D4": {
+			"us": 5.86
+		},
+		"CP-CLOUDSQL-PACKAGE-D8": {
+			"us": 11.71
+		},
+		"CP-CLOUDSQL-PACKAGE-D16": {
+			"us": 23.42
+		},
+		"CP-CLOUDSQL-PACKAGE-D32": {
+			"us": 46.84
+		},
+		"CP-CLOUDSQL-STORAGE": {
+			"us": 0.24
+		},
+		"CP-CLOUDSQL-TRAFFIC": {
+			"us": 0.12
+		},
+		"CP-CLOUDSQL-IO": {
+			"us": 0.10
+		},
+		"CP-BIGSTORE-STORAGE": {
+			"us": 0.026
+		},
+		"CP-BIGSTORE-STORAGE-DRA": {
+			"us": 0.02
+		},
+		"FORWARDING_RULE_CHARGE_BASE": {
+			"us": 0.025,
+			"fixed": true
+		},
+		"FORWARDING_RULE_CHARGE_EXTRA": {
+			"us": 0.010
+		},
+		"NETWORK_LOAD_BALANCED_INGRESS": {
+			"us": 0.008
+		},
+		"CP-COMPUTEENGINE-INTERNET-EGRESS-NA-NA": {
+			"tiers": {
+				"1024": 0.12,
+				"10240": 0.11,
+				"92160": 0.08
+			}
+		},
+		"CP-COMPUTEENGINE-INTERNET-EGRESS-APAC-APAC": {
+			"tiers": {
+				"1024": 0.21,
+				"10240": 0.18,
+				"92160": 0.15
+			}
+		},
+		"CP-COMPUTEENGINE-INTERNET-EGRESS-ZONE": {
+			"us": 0.01
+		},
+		"CP-COMPUTEENGINE-INTERNET-EGRESS-REGION": {
+			"us": 0.01
+		},
+		"CP-APP-ENGINE-INSTANCES": {
+			"us": 0.05,
+			"freequota": {
+				"quantity": 28
+			}
+		},
+		"CP-APP-ENGINE-OUTGOING-TRAFFIC": {
+			"us": 0.12,
+			"freequota": {
+				"quantity": 1
+			}
+		},
+		"CP-APP-ENGINE-CLOUD-STORAGE": {
+			"us": 0.026,
+			"freequota": {
+				"quantity": 5
+			}
+		},
+		"CP-APP-ENGINE-MEMCACHE": {
+			"us": 0.06,
+			"freequota": {
+				"quantity": 0
+			}
+		},
+		"CP-APP-ENGINE-SEARCH": {
+			"us": 0.00005,
+			"freequota": {
+				"quantity": 100
+			}
+		},
+		"CP-APP-ENGINE-INDEXING-DOCUMENTS": {
+			"us": 2.0,
+			"freequota": {
+				"quantity": 0.01
+			}
+		},
+		"CP-APP-ENGINE-DOCUMENT-STORAGE": {
+			"us": 0.18,
+			"freequota": {
+				"quantity": 0.25
+			}
+		},
+		"CP-APP-ENGINE-LOGS-API": {
+			"us": 0.12,
+			"freequota": {
+				"quantity": 0.1
+			}
+		},
+		"CP-APP-ENGINE-TASK-QUEUE": {
+			"us": 0.026,
+			"freequota": {
+				"quantity": 5
+			}
+		},
+		"CP-APP-ENGINE-LOGS-STORAGE": {
+			"us": 0.026,
+			"freequota": {
+				"quantity": 1
+			}
+		},
+		"CP-APP-ENGINE-SSL-VIRTUAL-IP": {
+			"us": 39
+		},
+		"CP-CLOUD-DATASTORE-INSTANCES": {
+			"us": 0.18,
+			"freequota": {
+				"quantity": 1
+			}
+		},
+		"CP-CLOUD-DATASTORE-WRITE-OP": {
+			"us": 0.0000006,
+			"freequota": {
+				"quantity": 0.5
+			}
+		},
+		"CP-CLOUD-DATASTORE-READ-OP": {
+			"us": 0.0000006,
+			"freequota": {
+				"quantity": 0.5
+			}
+		},
+		"CP-BIGQUERY-GENERAL": {
+			"storage": {
+				"us": 0.026
+			},
+			"interactiveQueries": {
+				"us": 5,
+				"freequota": {
+					"quantity": 0.1
+				}
+			},
+			"batchQueries": {
+				"us": 5,
+				"freequota": {
+					"quantity": 0.1
+				}
+			},
+			"streamingInserts": {
+				"us": 0.0000001
+			}
+		},
+		"CP-CLOUD-DNS-ZONES": {
+			"tiers": {
+				"25": 0.2,
+				"100": 0.1
+			}
+		},
+		"CP-CLOUD-DNS-QUERIES": {
+			"tiers": {
+				"1000000000": 0.0000004,
+				"10000000000": 0.0000002
+			}
+		},
+		"CP-TRANSLATE-API-TRANSLATION": {
+			"us": 0.00002
+		},
+		"CP-TRANSLATE-API-DETECTION": {
+			"us": 0.00002
+		},
+		"CP-PREDICTION-PREDICTION": {
+			"tiers": {
+				"10000": 0,
+				"100000": 0.0005
+			}
+		},
+		"CP-PREDICTION-BULK-TRAINING": {
+			"us": 0.002
+		},
+		"CP-PREDICTION-STREAMING-TRAINING": {
+			"tiers": {
+				"10000": 0,
+				"100000": 0.00005
+			}
+		}
+	}
+}

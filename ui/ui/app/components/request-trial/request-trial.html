@@ -1,0 +1,248 @@
+<style media="screen">
+    .logo-wrapper {
+        background-color: rgba(65, 65, 65, 0.95);
+        height: 100px;;
+    }
+    .wrapper {
+        height: 100%;
+        font-family: 'Open Sans', sans-serif;
+        color: #808080;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 26px;
+        word-spacing: 2px;
+        -webkit-font-smoothing: antialiased;
+        background-color: #fefefe;
+    }
+
+    section {
+        width: 100%;
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+    div.row {
+        background-color: #fefefe;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        font-family: 'Oswald', sans-serif;
+        color: #4c4c4c;
+        letter-spacing: 1px;
+        font-weight: 400;
+        margin-top: 20px;
+    }
+
+    .logo-wrapper>img {
+        display: block;
+        margin: auto;
+        width: 40%;
+        max-width: 80px;
+        min-width: 300px;
+    }
+
+    .form-wrapper {
+        background-color: white;
+        padding: 30px;
+        color: #585858;
+        border-radius: 0px;
+        -webkit-box-shadow: 2px 6px 10px 0px rgba(0, 0, 0, 0.6);
+        -moz-box-shadow: 2px 6px 10px 0px rgba(0, 0, 0, 0.6);
+        box-shadow: 2px 6px 10px 0px rgba(0, 0, 0, 0.6);
+        margin-bottom: 60px;
+    }
+
+    .bottom-line:after {
+        content: "";
+        display: block;
+        width: 50px;
+        height: 2px;
+        background-color: #EE3E3D;
+        margin-top: 5px;
+    }
+    /*
+    ** Slightly tweaking the basic material UI CSS
+    */
+
+    md-input-container.md-default-theme .md-placeholder,
+    md-input-container .md-placeholder,
+    md-input-container.md-default-theme label,
+    md-input-container label {
+        color: rgba(0, 0, 0, 0.75);
+    }
+
+    md-checkbox.md-default-theme.md-checked .md-ink-ripple,
+    md-checkbox.md-checked .md-ink-ripple {
+        color: #4CAF50;
+    }
+
+    md-checkbox.md-default-theme.md-checked .md-icon,
+    md-checkbox.md-checked .md-icon {
+        background-color: #4CAF50;
+    }
+
+    md-input-container.md-default-theme:not(.md-input-focused):not(.md-input-invalid) label.md-required:after,
+    md-input-container:not(.md-input-focused):not(.md-input-invalid) label.md-required:after {
+        color: rgba(255, 0, 0, 1);
+    }
+
+    legend {
+        font-size: inherit;
+        font-family: inherit;
+        font-weight: bold;
+    }
+</style>
+
+
+
+<div class="wrapper">
+    <div class="logo-wrapper">
+        <img ng-src="img/Logo-trackit.png" alt="TrackIt">
+    </div>
+
+    <section>
+    <div class="row monts" style="margin-top: 40px;">
+        <div class="col-lg-6 col-md-6 col-xs-12">
+            <img src="img/demo-TrackIt.png" alt="" class="img-responsive">
+
+
+        </div>
+        <div class="col-lg-6 col-md-6 col-xs-12 form-wrapper">
+            <div uib-collapse="showForm">
+                <h3 ng-if="demoMode">Request a TrackIt demo</h3>
+                <h3 ng-if="!demoMode">Try TrackIt for free !</h3>
+                <h4 class="bottom-line">Break Down Your AWS Bill</h4>
+                <p>Understand what makes up your cloud storage costs with quick, easy to read graphs. Monitor your daily costs and CPU usage by following your spending and usage trends.</p>
+                <h4 class="bottom-line">Cost Optimization</h4>
+                <p>Generate the best storage option through detailed comparisons and analysis of your data on different storage solutions. Inspect specific resources including size and type, CPU usage, current provider and also a comparison between AWS and
+                    Google Cloud.
+                </p>
+                <h4 class="bottom-line">Business Insight</h4>
+                <p>Receive warnings of under utilized instances and suggestions on how to better manage these instances for cost savings. Predictions of your cloud cost by following our solution! By understanding your spending and costs, you can better manage
+                    your business!
+                </p>
+                <hr>
+                <button class="btn btn-block" ng-show="!demoMode" ng-click="showForm = true" style="background-color: #4CAF50;">Request a free trial</button>
+                <button class="btn btn-block" ng-show="demoMode" ng-click="showForm = true" style="background-color: #4CAF50;">Request a demo</button>
+            </div>
+
+            <form ng-show="showForm" name="trialForm" novalidate>
+                <p ng-if="!demoMode">
+                    Thank you for your interest in TrackIt.
+                    <br>Please submit the form below to request a free trial.
+                    <br><strong>The trial is a 30 day free license.</strong>
+                    <br>We are available to help you make the most of this trial by conducting live demos and answering your questions.
+                </p>
+                <p ng-if="demoMode">
+                    Thank you for your interest in TrackIt.
+                    <br>Please submit the form below to request a demo.
+                </p>
+
+                <hr>
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>First name</label>
+                        <input ng-model="user.firstName" required>
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Last Name</label>
+                        <input ng-model="user.lastName" required>
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Phone</label>
+                        <input type="tel" ng-model="user.phone_number">
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Business Email Address </label>
+                        <input type="email" ng-model="user.email" required>
+                    </md-input-container>
+                </div>
+
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Company name</label>
+                        <input ng-model="user.company_name">
+                    </md-input-container>
+
+                    <md-input-container class="md-block">
+                        <label>Company size</label>
+                        <md-select ng-model="user.employees">
+                            <md-option ng-repeat="size in companySizes" value="{{size}}">{{size}}</md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+
+
+                <fieldset>
+                    <legend>Which cloud platform do you use ?</legend>
+                    <md-checkbox ng-repeat="provider in cloudProviders" ng-model="provider.checked" aria-label="Checkbox">
+                        <img ng-if="provider.iconUrl" ng-src="{{provider.iconUrl}}" style="width: 30px;" /> {{provider.label}}
+                    </md-checkbox>
+
+                </fieldset>
+
+                <fieldset>
+                    <legend>What are your concerns about cloud ?</legend>
+                    <md-checkbox ng-repeat="concern in cloudConcerns" ng-model="concern.checked" aria-label="Checkbox">
+                        {{concern.label}}
+                    </md-checkbox>
+
+                </fieldset>
+
+
+                <hr>
+                <div vc-recaptcha key="'6LfA8xgUAAAAACRhB8FSTMftPvCOTyV5Xl1LGTem'" ng-model="user.captcha"></div>
+                <div class="alert alert-success" role="alert" style="margin: 10px 0px;" ng-if="done">
+                  <strong>Success</strong>
+                  <br>
+                  <strong>Thank you for your interest in TrackIt.</strong>
+                  We will get back to you as soon as possible.
+                </div>
+                <div class="alert alert-danger" role="alert" style="margin: 10px 0px;"  ng-if="error">
+                  <strong>Error</strong>
+                  <br>
+                  We encountered an error while submitting your form. Please try again or contact an administrator.
+                </div>
+                <button
+                  ng-show="!demoMode"
+                  style="margin-top: 10px;"
+                  ng-click="submitForm()"
+                  type="submit"
+                  ng-if="!done"
+                  ng-disabled="trialForm.$invalid"
+                  class="btn btn-block"
+                  style="background-color: #4CAF50;"
+                >
+                    Request a free trial
+                </button>
+                <button
+                  ng-show="demoMode"
+                  style="margin-top: 10px;"
+                  ng-click="submitForm()"
+                  type="submit"
+                  ng-if="!done"
+                  ng-disabled="trialForm.$invalid"
+                  class="btn btn-block"
+                  style="background-color: #4CAF50;"
+                >
+                    Request a demo
+                </button>
+
+            </form>
+        </div>
+
+    </div>
+    </section>
+
+
+</div>

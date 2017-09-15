@@ -1,0 +1,110 @@
+#!/usr/bin/env python
+
+import time
+from app import app, cache, tasks
+from flask_script import Manager
+
+manager = Manager(app)
+
+from app.models import db, User, AWSKey
+from flask_migrate import Migrate, MigrateCommand
+
+migrate = Migrate(app, db)
+manager.add_command('db', MigrateCommand)
+
+import app.es
+import elasticsearch_dsl
+import elasticsearch
+from inspect import isclass
+import subprocess
+import config
+
+
+def create_default_account():
+    print 'Creating default account...'
+    try:
+        if User.query.filter_by(email=config.ACCOUNT_DEFAULT_CREDENTIALS['email']).count():
+            print 'User already exist'
+            return
+        user = User()
+        for key, value in config.ACCOUNT_DEFAULT_CREDENTIALS.iteritems():
+            if key in ('firstname', 'lastname', 'email', 'admin'):
+                setattr(user, key, value)
+        user.set_password(config.ACCOUNT_DEFAULT_CREDENTIALS['password'])
+        db.session.add(user)
+        db.session.flush()
+        db.session.refresh(user)
+
+        key = AWSKey()
+        key.id_user = user.id
+        for data_key, data_value in config.ACCOUNT_CREATION_DEFAULT_AWS_KEY.iteritems():
+            setattr(key, data_key, data_value)
+        key.import_s3 = True
+        key.is_valid_key = True
+        db.session.add(key)
+        db.session.commit()
+        print 'Account successfuly created!'
+    except Exception, e:
+        print 'Error in the creating:'
+        print e
+
+
+@manager.command
+def flushcache():
+    print 'Flushing...'
+    for item in cache.cached_function:
+        try:
+            item.flush()
+            print '|--{} flushed'.format(item.f.__name__)
+        except Exception, e:
+            print '|--error on flushing {}'.format(item.f.__name__)
+            print '|  {}'.format(e)
+    print 'Everything has been flushed!'
+
+
+@manager.command
+def inites():
+    print 'Initializing ElasticSearch'
+    classes = elasticsearch_dsl.DocType.__subclasses__()
+    indices = [c for c in classes if c.init]
+    a_indices = set()
+    # Attempt to connect to ElasticSearch a few times
+    for i in range(0, 5):
+        for index in (i for i in indices if i not in a_indices):
+            try:
+                index.init()
+                a_indices.add(index)
+                print 'index', index
+            except (elasticsearch_dsl.exceptions.IllegalOperation, elasticsearch.exceptions.AuthenticationException):
+                a_indices.add(index)
+                print 'index (io)', index
+            except Exception as e:
+                print 'failed index init', index
+                last_exception = e
+                time.sleep(3)
+    if len(a_indices) != len(indices):
+        raise last_exception
+
+import sys
+from sqlalchemy_utils import database_exists, create_database
+
+@manager.command
+def initall():
+    if not database_exists(db.engine.url):
+        create_database(db.engine.url)
+    manager.handle(sys.argv[0], ['db', 'upgrade'])
+    if config.ACCOUNT_DEFAULT_CREDENTIALS:
+        create_default_account()
+    inites()
+    tasks.get_aws_keys_to_fetch()
+
+@manager.command
+def mysql():
+    subprocess.call(['mysql', '-h', db.engine.url.host,
+                     '-P', str(db.engine.url.port or 3306),
+                     '-p' + db.engine.url.password,
+                     '-u', db.engine.url.username,
+                     '-D', db.engine.url.database])
+
+if __name__ == '__main__':
+    manager.run()

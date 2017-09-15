@@ -1,0 +1,72 @@
+<div class="modal-header">
+  <h3 class="modal-title" id="modal-title">
+    {{currentModal.title}}
+  </h3>
+</div>
+<div class="modal-body" id="modal-body">
+
+  <md-input-container class="md-block" style="margin-bottom:0px;">
+    <label><i class="fa fa-search"></i> Search through your resources</label>
+    <input ng-model="currentModal.filter">
+  </md-input-container>
+
+  <table class="table table-striped estimation-table" ng-if="dataLoaded">
+    <thead>
+      <tr>
+        <th></th>
+        <th class="clickable" ng-click="currentModal.order.update('name')">
+          <span uib-tooltip="Resource">
+            <i class="fa fa-server"></i>
+          </span>
+          <i class="fa fa-arrow-up" ng-if="currentModal.order.predicate === 'name' && currentModal.order.reverse"></i>
+          <i class="fa fa-arrow-down" ng-if="currentModal.order.predicate === 'name' && !currentModal.order.reverse"></i>
+        </th>
+        <th>
+          <span ng-click="currentModal.order.update('cpu_usage')" class="clickable" uib-tooltip="%CPU Usage over the last month">
+            <img src="img/cpu.png" style="width: 20px" alt="">
+          </span>
+          <i class="fa fa-arrow-up" ng-if="currentModal.order.predicate === 'cpu_usage' && currentModal.order.reverse"></i>
+          <i class="fa fa-arrow-down" ng-if="currentModal.order.predicate === 'cpu_usage' && !currentModal.order.reverse"></i> |
+          <span ng-click="currentModal.order.update('bandwidth_usage')" class="clickable" uib-tooltip="%Bandwidth Usage over the last month">
+            <img src="img/bandwidth.png" style="width: 20px" alt="">
+          </span>
+          <i class="fa fa-arrow-up" ng-if="currentModal.order.predicate === 'bandwidth_usage' && currentModal.order.reverse"></i>
+          <i class="fa fa-arrow-down" ng-if="currentModal.order.predicate === 'bandwidth_usage' && !currentModal.order.reverse"></i> |
+          <span ng-click="currentModal.order.update('io_usage')" class="clickable" uib-tooltip="%I/O Usage over the last month">
+            <img src="img/storage.png" style="width: 20px" alt="">
+          </span>
+          <i class="fa fa-arrow-up" ng-if="currentModal.order.predicate === 'io_usage' && currentModal.order.reverse"></i>
+          <i class="fa fa-arrow-down" ng-if="currentModal.order.predicate === 'io_usage' && !currentModal.order.reverse"></i>
+        </th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="item in currentModal.paginatedData()">
+        <td>
+          <span class="badge" style="background-color: #08C; font-size: 13px;">{{item.size}}</span>
+        </td>
+        <td style="text-align: left">
+          <div class="name">{{item.name}}</div>
+        </td>
+        <td>
+          <uib-progressbar uib-tooltip="CPU {{item.cpu_usage.toFixed(1)}}%" value="item.cpu_usage" type="{{getProgressType(item.cpu_usage)}}"></uib-progressbar>
+          <uib-progressbar uib-tooltip="Bandwidth {{item.bandwidth_usage.toFixed(1)}}%" value="item.bandwidth_usage" type="{{getProgressType(item.bandwidth_usage)}}"></uib-progressbar>
+          <uib-progressbar uib-tooltip="I/O {{item.io_usage.toFixed(1)}}%" value="item.io_usage" type="{{getProgressType(item.io_usage)}}"></uib-progressbar>
+        </td>
+        <td>
+          <i class="fa fa-question-circle fa-2x pull-right" uib-popover-template="'suggestionReasons.html'" popover-trigger="mouseenter" popover-placement="left"></i>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="pages-indicator" style="width: 100%; text-align: center;">
+    <ul uib-pagination total-items="currentModal.filteredData().length" ng-model="currentModal.pagination.current" max-size="currentModal.pagination.indicators" class="pagination-sm" boundary-link-numbers="true" style="margin: 0;"></ul>
+  </div>
+</div>
+
+<script type="text/ng-template" id="suggestionReasons.html">
+  <div ng-repeat="reason in (currentModal.showDowngradable ? item.reasons : item.upReasons)">
+    <h5 class="pull-right">{{reason}}</h5>
+  </div>
+</script>

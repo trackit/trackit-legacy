@@ -1,0 +1,81 @@
+<div class="panel panel-default">
+    <div class="panel-body" ng-controller="CostTagCtrl">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="spinner" ng-show="!awsCostTagNoDataMessage && !dataLoaded">
+                    <div class="rect1"></div>
+                    <div class="rect2"></div>
+                    <div class="rect3"></div>
+                    <div class="rect4"></div>
+                    <div class="rect5"></div>
+                </div>
+
+                <md-tabs md-dynamic-height="true">
+                    <md-tab label="{{tag}} tag" md-on-select="selectTag(tag)" ng-repeat="tag in tags">
+                        <div class="col-md-12">
+                            <md-input-container>
+                                <md-select ng-model="scopeSelectedMonth" ng-change="setSelectedMonth(scopeSelectedMonth)" style="font-size: 17px;" aria-label="select month to display">
+                                    <md-option ng-value="month" ng-repeat="month in tagMonths">{{ month.month }}</md-option>
+                                </md-select>
+                            </md-input-container>
+                           <h3 ng-if="selectedMonth.total_cost" class="blue monts" style="display: inline-block; margin-left: 30px;" >Total : {{selectedMonth.total_cost | currency:'$':2 }}</h3>
+
+                        </div>
+
+                        <div class="col-md-7" ng-if="dataLoaded">
+
+                            <md-input-container class="md-block" style="margin-bottom:0px;">
+                                <label><i class="fa fa-search"></i> Search</label>
+                                <input ng-model="resourceSearch" ng-change="currentPage = 1">
+                            </md-input-container>
+                            <table class="table table-striped" style="max-height:500px; overflow-y: scroll;">
+                                <thead>
+                                  <tr>
+
+                                    <th class="clickable" style="text-align: left;" ng-click="order('tag_value')">
+                                      <i class="fa fa-tag"></i> Tag value
+                                      <i class="fa fa-arrow-up" ng-if="predicate === 'tag_value' && reverse"></i>
+                                      <i class="fa fa-arrow-down" ng-if="predicate === 'tag_value' && !reverse"></i>
+                                    </th>
+
+                                    <th class="clickable" style="text-align: right;" ng-click="order('cost')">
+                                      <i class="fa fa-money"></i> Cost
+                                      <i class="fa fa-arrow-up" ng-if="predicate === 'cost' && reverse"></i>
+                                      <i class="fa fa-arrow-down" ng-if="predicate === 'cost' && !reverse"></i>
+                                    </th>
+
+                                  </tr>
+
+                                </thead>
+
+                                <tbody>
+                                  <tr ng-repeat="tag_value in selectedMonth.tags | filter:resourceSearch | startFrom:(currentPage - 1)*pageSize | limitTo:pageSize">
+                                    <td style="text-align: left;">{{tag_value.tag_value}}</td>
+                                    <td style="text-align: right;"><strong>{{tag_value.cost | currency}}</strong></td>
+                                  </tr>
+                                </tbody>
+
+                                <tfoot>
+                                </tfoot>
+                            </table>
+                            <ul uib-pagination total-items="selectedMonth.tags.length" items-per-page="pageSize" ng-model="currentPage"></ul>
+
+                        </div>
+
+                        <div class="col-md-5" ng-if="dataLoaded">
+                            <nvd3 options="chartOptions" data="chartData" api="api"></nvd3>
+                        </div>
+                        <div style="clear:both;"></div>
+                    </md-tab>
+                </md-tabs>
+                <h3 ng-if="!awsCostTagNoDataMessage && !tags.length" style="text-align: center; color: #C3C3C3;"><i class="fa fa-frown-o"></i> It seems you have no tags on your AWS resources.</h3>
+                <h4 style="text-align: center" ng-show="awsCostTagNoDataMessage && !dataLoaded">{{awsCostTagNoDataMessage}}</h4>
+
+
+                <div style="clear:both;"></div>
+
+            </div>
+            <div style="clear:both;"></div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,167 @@
+<div class="container">
+
+
+
+    <div class="row m-b-20">
+        <div class="col-md-3">
+            <ul class="list-group clickable">
+                <li class="list-group-item" ng-click="selectedChart = 0" ng-class="{'active': selectedChart == 0}">
+                    <h4><i class="fa fa-th-list"></i> All</h4>
+                    <p></p>
+                </li>
+                <li class="list-group-item" ng-click="selectedChart = 1" ng-class="{'active': selectedChart == 1}">
+                    <h4><i class="fa fa-pie-chart"></i> Cost by resource</h4>
+                    <p>Monthly</p>
+                </li>
+                <li class="list-group-item" ng-click="selectedChart = 2" ng-class="{'active': selectedChart == 2}">
+                    <h4><i class="fa fa-bar-chart"></i> Cost by service</h4>
+                    <p>Daily</p>
+                </li>
+                <li class="list-group-item" ng-click="selectedChart = 3" ng-class="{'active': selectedChart == 3}">
+                    <h4><i class="fa fa-line-chart"></i> Cost and usage</h4>
+                    <p>Daily</p>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-9">
+            <div class="panel panel-default" ng-if="selectedChart == 1 || selectedChart == 0">
+                <div class="panel-heading">Monthly cost by resource</div>
+                <div class="panel-body" ng-controller="CostResourceCtrl">
+                    <div class="col-md-3">
+                        <h5 style="text-align: right;">Display data for :</h5>
+                    </div>
+                    <div class="col-md-2">
+                        <select class="form-control" name="monthSelect" id="monthSelect" ng-options="month.displayMonth for month in months track by month.month" ng-model="selectedMonth"></select>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="spinner" ng-show="!dataLoaded">
+                            <div class="rect1"></div>
+                            <div class="rect2"></div>
+                            <div class="rect3"></div>
+                            <div class="rect4"></div>
+                            <div class="rect5"></div>
+                        </div>
+
+                        <div class="col-md-7" ng-show="dataLoaded">
+
+
+                            <input type="text" placeholder="Search through all resources" ng-model="searchResource" class="form-control" style="margin-top: 20px;">
+                            <hr>
+                            <ul class="list-group" ng-if="searchResource" style="max-height: 300px; overflow-y: scroll;">
+                                <li class="list-group-item ngfade" ng-repeat="res in selectedMonth.resources | filter:searchResource | orderBy:'-cost'">
+                                    <p><strong>{{res.resource}}</strong></p>
+                                    <p style="text-align: right">{{res.cost | currency}}</p>
+                                </li>
+                            </ul>
+                            <hr ng-if="searchResource">
+
+                            <uib-accordion close-others="false">
+
+
+                                <uib-accordion-group is-open="status.open1" panel-class="custom-panel">
+                                    <uib-accordion-heading>
+                                        <span ng-class="{'blue' : status.open1}">Resources
+                                        < $1 ({{displayData[0].children.length}} items) <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open1, 'glyphicon-chevron-right': !status.open1}"></i>
+                                        </span>
+                                    </uib-accordion-heading>
+                                    <div style="max-height:300px; overflow-y: scroll;">
+                                        <div class="row" ng-repeat="item in displayData[0].children | orderBy:'-cost'">
+                                            <div class="col-md-8">
+                                                <p style="word-wrap: break-word;">{{item.resource}}</p>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <strong>{{item.cost | currency:'$':4}}</strong>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <h5 style="text-align: right; color: #0088CC;" ng-if="status.open1">CATEGORY TOTAL : {{displayData[0].total | currency: "$"}}</h5>
+                                </uib-accordion-group>
+
+                                <uib-accordion-group is-open="status.open2" panel-class="custom-panel">
+                                    <uib-accordion-heading>
+                                        <span ng-class="{'blue' : status.open2}">Resources
+                                        < $10 ({{displayData[1].children.length}} items) <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open2, 'glyphicon-chevron-right': !status.open2}"></i>
+                                        </span>
+                                    </uib-accordion-heading>
+                                    <div style="max-height:300px; overflow-y: scroll;">
+                                        <div class="row" ng-repeat="item in displayData[1].children | orderBy:'-cost'">
+                                            <div class="col-md-8">
+                                                <p style="word-wrap: break-word;">{{item.resource}}</p>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <strong>{{item.cost | currency:'$':3}}</strong>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <h5 style="text-align: right; color: #0088CC;" ng-if="status.open2">CATEGORY TOTAL : {{displayData[1].total | currency: "$"}}</h5>
+
+                                </uib-accordion-group>
+
+                                <uib-accordion-group is-open="status.open3" panel-class="custom-panel">
+                                    <uib-accordion-heading>
+                                        <span ng-class="{'blue' : status.open3}">Resources
+                                        < $100 ({{displayData[2].children.length}} items) <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open3, 'glyphicon-chevron-right': !status.open3}"></i>
+                                        </span>
+                                    </uib-accordion-heading>
+                                    <div style="max-height:300px; overflow-y: scroll;">
+                                        <div class="row" ng-repeat="item in displayData[2].children | orderBy:'-cost'">
+                                            <div class="col-md-8">
+                                                <p style="word-wrap: break-word;">{{item.resource}}</p>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <strong>{{item.cost | currency:'$':2}}</strong>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <h5 style="text-align: right; color: #0088CC;" ng-if="status.open3">CATEGORY TOTAL : {{displayData[2].total | currency: "$"}}</h5>
+                                </uib-accordion-group>
+
+                                <uib-accordion-group is-open="status.open4" panel-class="custom-panel">
+                                    <uib-accordion-heading>
+                                        <span ng-class="{'blue' : status.open4}">Resources > $100 ({{displayData[3].children.length}} items) <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open4, 'glyphicon-chevron-right': !status.open4}"></i>
+                                        </span>
+
+                                    </uib-accordion-heading>
+                                        <div style="max-height:300px; overflow-y: scroll;">
+                                            <div class="row" ng-repeat="item in displayData[3].children | orderBy:'-cost'">
+                                                <div class="col-md-8">
+                                                    <p style="word-wrap: break-word;">{{item.resource}}</p>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <strong>{{item.cost | currency:'$':2}}</strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <h5 style="text-align: right; color: #0088CC;" ng-if="status.open4">CATEGORY TOTAL : {{displayData[3].total | currency: "$"}}</h5>
+                                </uib-accordion-group>
+
+                            </uib-accordion>
+
+                            <h4 style="text-align: right; color : #08C;">TOTAL : {{selectedMonth.total | currency: "$"}}</h4>
+                        </div>
+                        <div class="col-md-5" ng-if="dataLoaded">
+                            <h4 style="text-align: center;"><i class="fa fa-pie-chart"></i> {{selectedMonth.displayMonth}}</h4>
+                            <nvd3 options="chartOptions" data="chartData" api="api"></nvd3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default large-font" ng-if="selectedChart == 2 || selectedChart == 0">
+                <div class="panel-heading">
+                    Cost breakdown by services used
+                </div>
+                <div class="panel-body monts" ng-controller="BreakdownCtrl">
+                    <div ngif="data">
+                        <nvd3 options="options" data="data" api="api"></nvd3>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default" ng-if="selectedChart == 3 || selectedChart == 0">
+                <div class="panel-heading">DAILY COST AND USAGE</div>
+                <div class="panel-body" ng-controller="CostUsageCtrl">
+                    <nvd3 options="options" data="data" api="api"></nvd3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

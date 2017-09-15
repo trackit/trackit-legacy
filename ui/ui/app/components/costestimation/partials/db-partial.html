@@ -1,0 +1,145 @@
+<div class="panel panel-default ">
+    <div class="panel-body">
+        <i class="fa fa-question-circle fa-2x pull-right" uib-popover-html="searchHelp" popover-trigger="mouseenter" popover-placement="bottom"></i>
+        <span class="pull-right" ng-if="dbsNextUpdate" style="font-size:12px;">Last update: <span class="blue">{{dbsLastUpdated ? getFormattedDate(dbsLastUpdated) : 'never'}}</span> Next planned update : <span class="blue">in {{dbsNextUpdate ? dbsNextUpdate : '6'}} hours</span></span>
+        <md-input-container class="md-block" style="margin-bottom:0px;">
+            <label><i class="fa fa-search"></i> Search through your DBs</label>
+            <input ng-model="dbresourceSearch">
+        </md-input-container>
+        <div class="table-responsive" style="overflow-x: scroll; overflow-y: hidden;">
+            <h4 style="text-align: center" ng-show="!awsDBsNoDataMessage && !dataLoaded">No data available. Please try again later.</h4>
+            <h4 style="text-align: center" ng-show="awsDBsNoDataMessage && !dataLoaded">{{awsDBsNoDataMessage}}</h4>
+            <table class="table table-striped estimation-table" ng-if="dataLoaded">
+                <thead>
+                    <tr>
+                        <!--<th>
+                            <button class="btn btn-xs" ng-click="selectAll()"><i class="fa fa-arrow-down"></i> Select </button>
+                        </th-->
+                        <th class="clickable" ng-click="orderDB('name')">
+                            <span uib-tooltip="Resource name">
+                                <i class="fa fa-server"></i>
+                            </span>
+                            <i class="fa fa-arrow-up" ng-if="predicateDB === 'name' && reverseDB"></i>
+                            <i class="fa fa-arrow-down" ng-if="predicateDB === 'name' && !reverseDB"></i>
+                        </th>
+
+                        <th class="clickable" ng-click="orderDB('size')">
+                            <span uib-tooltip="Size/Type">
+                                <i class="fa fa-database"></i>
+                            </span>
+                            <i class="fa fa-arrow-up" ng-if="predicateDB === 'size' && reverseDB"></i>
+                            <i class="fa fa-arrow-down" ng-if="predicateDB === 'size' && !reverseDB"></i>
+                        </th>
+
+                        <th>
+                            <span uib-tooltip="Multi Availability Zone">
+                                <i class="fa fa-globe"></i>
+                            </span>
+                        </th>
+
+                        <th class="clickable" ng-click="orderDB('engine')">
+                            <span uib-tooltip="Engine">
+                                <i class="fa fa-cogs"></i>
+                            </span>
+                            <i class="fa fa-arrow-up" ng-if="predicateDB === 'engine' && reverseDB"></i>
+                            <i class="fa fa-arrow-down" ng-if="predicateDB === 'engine' && !reverseDB"></i>
+                        </th>
+
+                        <th class="clickable" ng-click="orderDB('mysql')">
+                            <span uib-tooltip="MariaDB/MySQL">
+                                <img src="img/mariadb-logo.png" style="width: 32px" alt=""> /  <img src="img/mysql-logo.png" style="width: 32px" alt="">
+                            </span>
+                            <i class="fa fa-arrow-up" ng-if="predicateDB === 'mysql' && reverseDB"></i>
+                            <i class="fa fa-arrow-down" ng-if="predicateDB === 'mysql' && !reverseDB"></i>
+                        </th>
+
+                        <th class="clickable" ng-click="orderDB('aurora')">
+                            <span uib-tooltip="Aurora">
+                                <img src="img/aurora-logo.png" style="width: 50px" alt="">
+                            </span>
+                            <i class="fa fa-arrow-up" ng-if="predicateDB === 'aurora' && reverseDB"></i>
+                            <i class="fa fa-arrow-down" ng-if="predicateDB === 'aurora' && !reverseDB"></i>
+                        </th>
+                        <th class="clickable" ng-click="orderDB('postgres')">
+                            <span uib-tooltip="PostGreSQL">
+                                <img src="img/postgre-logo.png" style="width: 50px" alt="">
+                            </span>
+                            <i class="fa fa-arrow-up" ng-if="predicateDB === 'postgres' && reverseDB"></i>
+                            <i class="fa fa-arrow-down" ng-if="predicateDB === 'postgres' && !reverseDB"></i>
+                        </th>
+                        <th class="clickable" ng-click="orderDB('oracle')">
+                            <span uib-tooltip="Oracle">
+                                <img src="img/oracle-logo.png" style="width: 50px" alt="">
+                            </span>
+                            <i class="fa fa-arrow-up" ng-if="predicateDB === 'oracle' && reverseDB"></i>
+                            <i class="fa fa-arrow-down" ng-if="predicateDB === 'oracle' && !reverseDB"></i>
+                        </th>
+                        <th class="clickable" ng-click="orderDB('sqlserver')">
+                            <span uib-tooltip="SQLServer">
+                                <img src="img/sqlserver-logo.png" style="width: 50px" alt="">
+                            </span>
+                            <i class="fa fa-arrow-up" ng-if="predicateDB === 'sqlserver' && reverseDB"></i>
+                            <i class="fa fa-arrow-down" ng-if="predicateDB === 'sqlserver' && !reverseDB"></i>
+                        </th>
+
+
+
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="resource-item ngfade" ng-repeat="db in ($parent.dbsearchResults = filteredDbs = (dbs |  regex:dbresourceSearch )) ">
+                        <!--<td>
+                            <button uib-tooltip="Add to selection" ng-if="!isInSelection(estimation)" ng-click="addToSelection(estimation)" class="btn btn-xs" style="background-color: #C3C3C3;"><i class="fa fa-plus"></i></button>
+                            <button uib-tooltip="Remove from selection" ng-if="isInSelection(estimation)" ng-click="removeFromSelection(estimation)" class="btn btn-xs"><i class="fa fa-check"></i></button>
+                        </td>-->
+                        <td><strong>{{db.name}}</strong></td>
+                        <td>{{db.size}}</td>
+                        <td>
+                            <i ng-if="db['multi-az']" class="fa fa-check-circle green" style="font-size: 20px;"></i>
+                            <i ng-if="!db['multi-az']" class="fa fa-times" style="font-size: 20px;"></i>
+                        </td>
+                        <td>
+                            <img ng-if="db.engine == 'mariadb'" class="db-logo" src="img/mariadb-logo.png" alt="">
+                            <img ng-if="db.engine == 'mysql'" class="db-logo" src="img/mysql-logo.png" alt="">
+                            <img ng-if="db.engine == 'aurora'" class="db-logo" src="img/aurora-logo.png" alt="">
+                            <img ng-if="db.engine == 'postgres'" class="db-logo" src="img/postgre-logo.png" alt="">
+                            <img ng-if="db.engine == 'oracle'" class="db-logo" src="img/oracle-logo.png" alt="">
+                            <img ng-if="db.engine == 'sqlserver'" class="db-logo" src="img/sqlserver-logo.png" alt="">
+                        </td>
+
+                        <td ng-class="{'selectedPrice' : (db.engine == 'mysql' || db.engine == 'mariadb'), 'unselectedPrice' : (db.engine != 'mysql' && db.engine != 'mariadb')}">{{getCostForProvider('mysql', db.prices) | currency:'$':3}}/hr</td>
+                        <td ng-class="{'selectedPrice' : db.engine == 'aurora', 'unselectedPrice' : db.engine != 'aurora'}">{{getCostForProvider('aurora', db.prices) | currency:'$':3}}/hr</td>
+                        <td ng-class="{'selectedPrice' : db.engine == 'postgres', 'unselectedPrice' : db.engine != 'postgres'}">{{getCostForProvider('postgres', db.prices) | currency:'$':3}}/hr</td>
+                        <td ng-class="{'selectedPrice' : db.engine == 'oracle', 'unselectedPrice' : db.engine != 'oracle'}">{{getCostForProvider('oracle', db.prices) | currency:'$':3}}/hr</td>
+                        <td ng-class="{'selectedPrice' : db.engine == 'sqlserver', 'unselectedPrice' : db.engine != 'sqlserver'}">{{getCostForProvider('sqlserver', db.prices) | currency:'$':3}}/hr</td>
+
+                    </tr>
+
+                </tbody>
+
+                <tfoot>
+
+                    <tr>
+                        <td colspan="4"><strong>TOTAL / ENGINE</strong></td>
+                        <td class="total-value">{{mysqlTotal | currency:'$':3}}/hr</td>
+                        <td class="total-value">{{auroraTotal | currency:'$':3}}/hr</td>
+                        <td class="total-value">{{postgreTotal | currency:'$':3}}/hr</td>
+                        <td class="total-value">{{oracleTotal | currency:'$':3}}/hr</td>
+                        <td class="total-value">{{sqlserverTotal | currency:'$':3}}/hr</td>
+
+
+                    </tr>
+                    <tr>
+                        <td colspan="4"><strong>GRAND TOTAL</strong></td>
+                        <td colspan="5" class="total-value">{{dbGrandTotal | currency:'$':3}}/hr</td>
+                    </tr>
+                    <tr>
+                        <td colspan="4"><strong>COST ESTIMATION</strong></td>
+                        <td colspan="5" class="total-value">{{getMonthEstimation(dbGrandTotal) | currency}}/month</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>

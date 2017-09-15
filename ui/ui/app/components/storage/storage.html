@@ -1,0 +1,221 @@
+<style media="screen">
+	input[type="number"] {
+		text-align: right;
+    padding: 3px;
+    max-width: 100px;
+    color: #08C;
+    font-weight: bold;
+		}
+
+		td {
+			font-size: 18px;
+		}
+		td > label {
+			font-size: 16px;
+		}
+</style>
+
+<div class="m-b-20"><form>
+	<div class="col-md-12">
+		<div id="btn-change-model">
+			<a class="btn" href="/#/app/s3map"><i class="fa fa-globe"></i> Pricing map</a>
+		</div>
+	</div>
+	<div class="col-md-12" style="padding: 0 50px;">
+		<div class="panel panel-default large-font">
+			<div class="panel-heading">Storage pricings</div>
+			<div class="panel-body">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th><span class="fa fa-server" aria-hidden="true"></span> Your volumes</th>
+							<th style="text-align:center;"><img style="max-width: 40px;width:100%; padding-right: 5px;" ng-src="img/gc-square.png" alt="">Google Cloud</th>
+							<th style="text-align:center;"><img style="max-width: 40px;width:100%; padding-right: 5px;" ng-src="img/s3-square.png" alt="">Amazon Web Services</th>
+							<th style="text-align:center;"><img style="max-width: 40px;width:100%; padding-right: 5px;" ng-src="img/ms-square.png" alt="">Microsoft Azure</th>
+						</tr>
+					</thead>
+					<form>
+						<tbody>
+							<tr>
+								<td>
+									<label>Standard storage</label>
+									<div class="fields">
+										<input type="number" ng-required min="0" ng-model="volumes.storage_standard">
+										<select class="form-control form-unit" ng-required ng-options="unit.name for unit in units" ng-model="volumeUnits.storage_standard"></select>
+									</div>
+								</td>
+								<td style="text-align:center;">{{estimate.detail.storage_standard | millidollars}}</td>
+								<td style="text-align:center;">{{awsEstimate.detail.storage_standard | millidollars}}</td>
+								<td style="text-align:center;">{{azureEstimate.detail.storage_standard | millidollars}}</td>
+							</tr>
+							<tr>
+								<td>
+									<label>Cold storage</label>
+									<div class="fields">
+										<input type="number" ng-required min="0" ng-model="volumes.storage_dra">
+										<select class="form-control form-unit" ng-required ng-options="unit.name for unit in units" ng-model="volumeUnits.storage_dra"></select>
+									</div>
+								</td>
+								<td style="text-align:center;">{{estimate.detail.storage_dra | millidollars}}</td>
+								<td style="text-align:center;">{{awsEstimate.detail.storage_dra | millidollars}}</td>
+								<td style="text-align:center;">{{azureEstimate.detail.storage_dra | millidollars}}</td>
+							</tr>
+							<tr>
+								<td>
+									<label>Archival storage</label>
+									<div class="fields">
+										<input type="number" ng-required min="0" ng-model="volumes.storage_nearline">
+										<select class="form-control form-unit" ng-required ng-options="unit.name for unit in units" ng-model="volumeUnits.storage_nearline"></select>
+									</div>
+								</td>
+								<td style="text-align:center;">{{estimate.detail.storage_nearline | millidollars}}</td>
+								<td style="text-align:center;">{{awsEstimate.detail.storage_nearline | millidollars}}</td>
+								<td style="text-align:center;">{{azureEstimate.detail.storage_nearline | millidollars}}</td>
+							</tr>
+							<tr>
+								<td>
+									<label>Class A operations</label>
+									<div class="fields">
+										<input type="number" ng-required min="0" ng-model="volumes.class_a_operations">
+										<select class="form-control form-unit" ng-required ng-options="unit.name for unit in units" ng-model="volumeUnits.class_a_operations"></select>
+									</div>
+								</td>
+								<td style="text-align:center;">{{estimate.detail.class_a_operations | millidollars}}</td>
+								<td style="text-align:center;">{{awsEstimate.detail.class_a_operations | millidollars}}</td>
+								<td style="text-align:center;">{{azureEstimate.detail.class_a_operations | millidollars}}</td>
+							</tr>
+							<tr>
+								<td>
+									<label>Class B operations</label>
+									<div class="fields">
+										<input type="number" ng-required min="0" ng-model="volumes.class_b_operations">
+										<select class="form-control form-unit" ng-required ng-options="unit.name for unit in units" ng-model="volumeUnits.class_b_operations"></select>
+									</div>
+								</td>
+								<td style="text-align:center;">{{estimate.detail.class_b_operations | millidollars}}</td>
+								<td style="text-align:center;">{{awsEstimate.detail.class_b_operations | millidollars}}</td>
+								<td style="text-align:center;">{{azureEstimate.detail.class_b_operations | millidollars}}</td>
+							</tr>
+							<tr>
+								<td>
+									<label>Archival restoration</label>
+									<div class="fields">
+										<input type="number" ng-required min="0" ng-model="volumes.restore_nearline">
+										<select class="form-control form-unit" ng-required ng-options="unit.name for unit in units" ng-model="volumeUnits.restore_nearline"></select>
+									</div>
+								</td>
+								<td style="text-align:center;">{{estimate.detail.restore_nearline | millidollars}}</td>
+								<td style="text-align:center;">{{awsEstimate.detail.restore_nearline | millidollars}}</td>
+								<td style="text-align:center;">{{azureEstimate.detail.restore_nearline | millidollars}}</td>
+							</tr>
+							<tr>
+								<td>
+									<label>Data egress to Americas and EMEA</label>
+									<div class="fields">
+										<input type="number" ng-required min="0" ng-model="volumes.egress_americas_emea">
+										<select class="form-control form-unit" ng-required ng-options="unit.name for unit in units" ng-model="volumeUnits.egress_americas_emea"></select>
+									</div>
+								</td>
+								<td style="text-align:center;">{{estimate.detail.egress_americas_emea | millidollars}}</td>
+								<td style="text-align:center;">{{awsEstimate.detail.egress_americas_emea | millidollars}}</td>
+								<td style="text-align:center;">{{azureEstimate.detail.egress_americas_emea | millidollars}}</td>
+							</tr>
+							<tr>
+								<td>
+									<label>Data egress to Asia and Pacific</label>
+									<div class="fields">
+										<input type="number" ng-required min="0" ng-model="volumes.egress_asia_pacific">
+										<select class="form-control form-unit" ng-required ng-options="unit.name for unit in units" ng-model="volumeUnits.egress_asia_pacific"></select>
+									</div>
+								</td>
+								<td style="text-align:center;">{{estimate.detail.egress_asia_pacific | millidollars}}</td>
+								<td style="text-align:center;">{{awsEstimate.detail.egress_asia_pacific | millidollars}}</td>
+								<td style="text-align:center;">{{azureEstimate.detail.egress_asia_pacific | millidollars}}</td>
+							</tr>
+							<tr>
+								<td>
+									<label>Data egress to China</label>
+									<div class="fields">
+										<input type="number" ng-required min="0" ng-model="volumes.egress_china">
+										<select class="form-control form-unit" ng-required ng-options="unit.name for unit in units" ng-model="volumeUnits.egress_china"></select>
+									</div>
+								</td>
+								<td style="text-align:center;">{{estimate.detail.egress_china | millidollars}}</td>
+								<td style="text-align:center;">{{awsEstimate.detail.egress_china | millidollars}}</td>
+								<td style="text-align:center;">{{azureEstimate.detail.egress_china | millidollars}}</td>
+							</tr>
+							<tr>
+								<td>
+									<label>Data egress to Australia</label>
+									<div class="fields">
+										<input type="number" ng-required min="0" ng-model="volumes.egress_australia">
+										<select class="form-control form-unit" ng-required ng-options="unit.name for unit in units" ng-model="volumeUnits.egress_australia"></select>
+									</div>
+								</td>
+								<td style="text-align:center;">{{estimate.detail.egress_australia | millidollars}}</td>
+								<td style="text-align:center;">{{awsEstimate.detail.egress_australia | millidollars}}</td>
+								<td style="text-align:center;">{{azureEstimate.detail.egress_australia | millidollars}}</td>
+							</tr>
+							<tr>
+								<td>
+									<label>Data transfer within a region</label>
+									<div class="fields">
+										<input type="number" ng-required min="0" ng-model="volumes.transfer_same_region">
+										<select class="form-control form-unit" ng-required ng-options="unit.name for unit in units" ng-model="volumeUnits.transfer_same_region"></select>
+									</div>
+								</td>
+								<td style="text-align:center;">{{estimate.detail.transfer_same_region | millidollars}}</td>
+								<td style="text-align:center;">{{awsEstimate.detail.transfer_same_region | millidollars}}</td>
+								<td style="text-align:center;">{{azureEstimate.detail.transfer_same_region | millidollars}}</td>
+							</tr>
+							<tr>
+								<td>
+									<label>Data transfer within a multiregion</label>
+									<div class="fields">
+										<input type="number" ng-required min="0" ng-model="volumes.transfer_same_multiregion">
+										<select class="form-control form-unit" ng-required ng-options="unit.name for unit in units" ng-model="volumeUnits.transfer_same_multiregion"></select>
+									</div>
+								</td>
+								<td style="text-align:center;">{{estimate.detail.transfer_same_multiregion | millidollars}}</td>
+								<td style="text-align:center;">{{awsEstimate.detail.transfer_same_multiregion | millidollars}}</td>
+								<td style="text-align:center;">{{azureEstimate.detail.transfer_same_multiregion | millidollars}}</td>
+							</tr>
+							<tr>
+								<td>
+									<label>Data transfer between region and multiregion</label>
+									<div class="fields">
+										<input type="number" ng-required min="0" ng-model="volumes.transfer_region_multiregion">
+										<select class="form-control form-unit" ng-required ng-options="unit.name for unit in units" ng-model="volumeUnits.transfer_region_multiregion"></select>
+									</div>
+								</td>
+								<td style="text-align:center;">{{estimate.detail.transfer_region_multiregion | millidollars}}</td>
+								<td style="text-align:center;">{{awsEstimate.detail.transfer_region_multiregion | millidollars}}</td>
+								<td style="text-align:center;">{{azureEstimate.detail.transfer_region_multiregion | millidollars}}</td>
+							</tr>
+							<tr>
+								<td>
+									<label>Data transfer between multiregions</label>
+									<div class="fields">
+										<input type="number" ng-required min="0" ng-model="volumes.transfer_multiregion_multiregion">
+										<select class="form-control form-unit" ng-required ng-options="unit.name for unit in units" ng-model="volumeUnits.transfer_multiregion_multiregion"></select>
+									</div>
+								</td>
+								<td style="text-align:center;">{{estimate.detail.transfer_multiregion_multiregion | millidollars}}</td>
+								<td style="text-align:center;">{{awsEstimate.detail.transfer_multiregion_multiregion | millidollars}}</td>
+								<td style="text-align:center;">{{azureEstimate.detail.transfer_multiregion_multiregion | millidollars}}</td>
+							</tr>
+							<tr>
+								<td>
+									<label>TOTAL</label>
+								</td>
+								<td style="text-align:center; font-size: 16px;"><strong>{{estimate.total | millidollars}}</strong></td>
+								<td style="text-align:center; font-size: 16px;"><strong>{{awsEstimate.total | millidollars}}</strong></td>
+								<td style="text-align:center; font-size: 16px;"><strong>{{azureEstimate.total | millidollars}}</strong></td>
+							</tr>
+						</tbody>
+					</table>
+				</form>
+			</div>
+		</div>
+	</div>
+</form>

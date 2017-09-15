@@ -1,0 +1,51 @@
+{
+  "name": "angular-seed",
+  "description": "A starter project for AngularJS",
+  "version": "0.0.0",
+  "homepage": "https://github.com/angular/angular-seed",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "angular": "~1.4.0",
+    "angular-route": "~1.4.0",
+    "angular-loader": "~1.4.0",
+    "angular-mocks": "~1.4.0",
+    "angular-sanitize": "~1.4.0",
+    "angular-animate": "~1.4.0",
+    "angular-cookies": "~1.4.0",
+    "angular-resource": "~1.4.0",
+    "html5-boilerplate": "~5.2.0",
+    "angular-bootstrap": "~1.1.2",
+    "SpinKit": "~1.2.5",
+    "bootstrap": "3.1.1",
+    "fontawesome": "latest",
+    "angular-ui-router": "~0.2.15",
+    "angular-ui-switch": "~0.1.1",
+    "angular-nvd3": "1.0.5",
+    "nvd3": "1.8.4",
+    "d3": "3.5.10",
+    "angularjs-slider": "~2.11.0",
+    "angular-material": "^1.1.0",
+    "countUp.js": "1.8.5",
+    "inspire-tree": "1.10.3",
+    "ngReact": "^0.3.0",
+    "angular-recaptcha": "^4.0.4",
+    "react-treeview": "^0.4.6",
+    "mxgraph": "^3.7.2"
+  },
+  "overrides": {
+    "fontawesome": {
+      "main": "**/*"
+    },
+    "inspire-tree": {
+      "main": [
+        "./dist/inspire-tree-bundled.min.js",
+        "./dist/inspire-tree.css"
+      ]
+    }
+  },
+  "resolutions": {
+    "angular": "^1.4.8",
+    "react": ">=0.15.0"
+  }
+}

@@ -1,0 +1,32 @@
+FROM ubuntu:16.04
+
+
+RUN apt-get update &&\
+    apt-get install -y curl\
+                       gfortran\
+                       libblas-dev\
+                       libffi-dev\
+                       liblapack-dev\
+                       libssl-dev\
+                       libmysqlclient-dev\
+                       libdbus-glib-1-dev\
+                       mysql-client\
+                       python\
+                       python-dev\
+                       python-setuptools\
+                       supervisor\
+                       wget\
+                       &&\
+    rm -rf /var/lib/apt/lists/*
+
+
+COPY ./files/api/requirements.txt /tmp/piprequirements.txt
+RUN easy_install pip && pip install -r /tmp/piprequirements.txt
+
+COPY ./files/api /root/api
+COPY ./files/api/app/templates /usr/trackit/templates
+COPY ./files/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY ./files/newrelic_dev.ini /root/newrelic.ini
+
+RUN mkdir /root/log
+CMD ["/usr/bin/supervisord"]

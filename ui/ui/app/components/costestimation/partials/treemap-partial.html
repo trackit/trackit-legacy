@@ -1,0 +1,105 @@
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div ng-controller="TreeMapController" style="margin-bottom: 80px;">
+            <style type="text/css">
+                .chart {
+                    display: block;
+                    margin: auto;
+                    margin-top: 40px;
+                }
+
+                text {
+                    font-size: 14px;
+                    font-weight: bold;
+                }
+
+                rect.treemap {
+                    fill: none;
+                }
+
+                .treemap-tooltip {
+                    -moz-box-shadow: 2px 2px 12px 0 rgba(0, 0, 0, 0.75);
+                    -webkit-box-shadow: 2px 2px 12px 0 rgba(0, 0, 0, 0.75);
+                    background-color: white;
+                    border-radius: 5px;
+                    box-shadow: 2px 2px 12px 0 rgba(0, 0, 0, 0.75);
+                    display: block;
+                    height: 230px;
+                    left: 20px;
+                    padding: 13px;
+                    position: absolute;
+                    top: 20px;
+                    width: 330px;
+                    z-index: 1000000000000;
+                }
+            </style>
+            <div class="col-md-12">
+                <div id="btn-change-model">
+                    <a class="btn" ui-sref="app.s3map"><i class="fa fa-globe"></i> Back to the map</a>
+                </div>
+            </div>
+
+            <!--<rzslider rz-slider-model="maxDisplaySize" rz-slider-options="slider.options"></rzslider>
+            <h4>{{maxDisplaySize| bytes}}</h4>-->
+            <div class="row" ng-if="mostUsed.length">
+                <div class="col-md-5 col-md-offset-1">
+                    <h4>
+                      <i class="fa fa-trophy blue"></i>
+                      Most requested items
+                    </h4>
+                    <md-list>
+                        <md-list-item class="md-2-line" ng-repeat="item in mostUsed">
+                            <div class="md-list-item-text">
+                                <h3>
+                                    <span class="badge">{{$index+1}}</span>
+                                   {{item.object}}</h3>
+                                <p>in bucket {{item.bucket}} / <strong>{{item.access_count}} requests</strong></p>
+                            </div>
+                        </md-list-item>
+                    </md-list>
+                </div>
+                <div class="col-md-5">
+                    <nvd3 options="mostUsedOptions" data="mostUsedData"></nvd3>
+
+                </div>
+            </div>
+            <hr ng-if="mostUsed.length">
+            <div style="height: 60px;">
+                <h3 ng-if="!hoveredBucket.name" style="display: block; color: #808080; text-align:center;"><i class="fa fa-info-circle blue"></i> Hover a bucket to get more details</h3>
+                <div ng-if="hoveredBucket.name">
+                    <div style="margin: auto; width: 80%;">
+                        <img class="pull-left" ng-if="hoveredBucket.provider == 'gcloud'" style="max-height: 65px;" class="logo" src="img/google-cloud-logo.png" />
+                        <img class="pull-left" ng-if="hoveredBucket.provider == 'aws'" style="max-height: 60px;" class="logo" src="img/s3-logo.png" />
+                        <img class="pull-left" ng-if="hoveredBucket.provider == 'azure'" style="max-height: 65px;" class="logo" src="img/ms-full-logo.png" />
+
+                        <h3 style="text-align: center;">
+                          <span class="badge">{{hoveredBucket.location}}</span>
+                          <span class="badge">{{hoveredBucket.type}}</span>
+                          {{hoveredBucket.name}}
+                        </h3>
+                        <h3 class="monts pull-right clickable" ng-click="showStorageTreeModal(hoveredBucket.name)" style="margin-left: 30px; font-size:20px;" ng-if="hoveredBucket.metadata"><i class="fa fa-folder-open blue"></i> Metadata <i class="fa fa-check green"></i> Click to open browser </h3>
+                        <h3 class="monts pull-right" style="margin-left: 30px; font-size:20px;" ng-if="hoveredBucket.last_access"><i class="fa fa-arrow-circle-right blue"></i> Last access : {{hoveredBucket.last_access | date}} </h3>
+                        <h3 class="monts pull-right" style="margin-left: 30px; font-size:20px;" ng-if="hoveredBucket.price"><i class="fa fa-money blue"></i> {{hoveredBucket.price | currency}}/mth </h3>
+                        <h3 class="monts pull-right" style="margin-left: 30px; font-size:20px;"><i class="fa fa-pie-chart blue"></i> {{hoveredBucket.used_space | bytes}} used</h3>
+
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 col-md-offset-2">
+                <i class="fa fa-info-circle" style="font-size:19px; color : #0088CC"></i>
+                Legend:
+                <i class="fa fa-circle" uib-tooltip="Never accessed / No access data for this bucket" style="font-size:19px; color: {{mapColorScheme.default}}"></i>
+                <i class="fa fa-circle" uib-tooltip="Accessed during the last 7 days" style="font-size:19px; color: {{mapColorScheme.light}}"></i>
+                <i class="fa fa-circle" uib-tooltip="Accessed during the last 30 days" style="font-size:19px; color: {{mapColorScheme.medium}}"></i>
+                <i class="fa fa-circle" uib-tooltip="Not accessed during the last 30 days, should be in long term storage" style="font-size:19px; color: {{mapColorScheme.hard}}"></i>
+
+
+              </div>
+            </div>
+            <div id="treemapWrapper">
+                <div id="treeMap"></div>
+            </div>
+        </div>
+    </div>
+</div>

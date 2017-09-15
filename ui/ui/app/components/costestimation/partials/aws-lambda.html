@@ -1,0 +1,99 @@
+<div class="panel panel-default ">
+  <div class="panel-body" ng-controller="AWSLambdaCtrl">
+    <div class="table-responsive">
+      <h4 style="text-align: center" ng-show="!awsLambdaNoDataMessage && !dataLoaded">No data available. Please try again later.</h4>
+      <h4 style="text-align: center" ng-show="awsLambdaNoDataMessage && !dataLoaded">{{awsLambdaNoDataMessage}}</h4>
+      <div ng-if="dataLoaded">
+        <md-input-container class="md-block" style="margin-bottom:0px;">
+          <label><i class="fa fa-search"></i> Search</label>
+          <input ng-model="lambdaSearch" ng-change="lambdaSearchChanged(lambdaSearch)">
+        </md-input-container>
+        <table class="table table-striped estimation-table" ng-if="dataLoaded">
+          <thead>
+            <tr>
+              <th class="clickable" ng-click="order('name')">
+                <span>Lambda function</span>
+                <i class="fa fa-arrow-up" ng-if="predicate === 'name' && reverse"></i>
+                <i class="fa fa-arrow-down" ng-if="predicate === 'name' && !reverse"></i>
+              </th>
+              <th class="clickable" ng-click="order('gb_seconds')">
+                <span uib-tooltip="Average GB seconds by day">GB seconds</span>
+                <i class="fa fa-arrow-up" ng-if="predicate === 'gb_seconds' && reverse"></i>
+                <i class="fa fa-arrow-down" ng-if="predicate === 'gb_seconds' && !reverse"></i>
+              </th>
+              <th class="clickable" ng-click="order('requests')">
+                <span uib-tooltip="Average requests by day">Requests</span>
+                <i class="fa fa-arrow-up" ng-if="predicate === 'requests' && reverse"></i>
+                <i class="fa fa-arrow-down" ng-if="predicate === 'requests' && !reverse"></i>
+              </th>
+              <th class="clickable" ng-click="order('cost')">
+                <span>Cost</span>
+                <i class="fa fa-arrow-up" ng-if="predicate === 'cost' && reverse"></i>
+                <i class="fa fa-arrow-down" ng-if="predicate === 'cost' && !reverse"></i>
+              </th>
+              <th ng-if="has_free_tier"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-if="lambdaSearch && !itemsLength">
+              <td colspan="4">
+                <strong>No results</strong>
+              </td>
+            </tr>
+            <tr class="resource-item ngfade" ng-repeat="lambda in aws_lambda_resources | filter:lambdaSearch | limitTo:show">
+              <td style="text-align: left;">
+                <strong class="pull-left">{{lambda.name}}</strong>
+              </td>
+              <td>
+                {{lambda.gb_seconds | number:2}}
+              </td>
+              <td>
+                {{lambda.requests | number:2}}
+              </td>
+              <td>
+                {{lambda.cost | currency:'$':3}}
+              </td>
+              <td ng-if="has_free_tier">
+                <span class="badge pull-right" style="background-color: #08C; font-size: 13px; color: #FFF;" ng-if="lambda.free_tier" uib-tooltip="Forecast: {{lambda.raw_cost | currency:'$':3}}">Free-Tier</span>
+              </td>
+            </tr>
+            <tr ng-if="show < aws_lamba_resources.length && itemsLength > 0">
+              <td><strong>...</strong></td>
+
+              <td colspan="2"><strong><button class="btn" ng-click="showMore()">Show more</button></strong></td>
+
+              <td><strong>...</strong></td>
+
+              <td ng-if="has_free_tier"></td>
+
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr ng-if="!has_free_tier">
+              <td colspan="1"><strong>COST ESTIMATION</strong></td>
+              <td colspan="3" class="total-value">{{getDailyEstimation() | currency:'$':3}}/day</td>
+            </tr>
+            <tr ng-if="!has_free_tier">
+              <td colspan="1" style="border-top: none;"></td>
+              <td colspan="3" class="total-value" style="border-top: none;">{{getMonthlyEstimation() | currency}}/month</td>
+            </tr>
+            <tr ng-if="has_free_tier">
+              <td colspan="1"><strong>COST ESTIMATION</strong></td>
+              <td colspan="3" class="total-value">{{getDailyEstimation() | currency:'$':3}}/day</td>
+              <td colspan="1" style="border-top: none;">
+                <span class="badge pull-right" style="background-color: #08C; font-size: 13px; color: #FFF;" uib-tooltip="Forecast: {{getDailyEstimation(true) | currency:'$':3}}">Free-Tier</span>
+              </td>
+            </tr>
+            <tr ng-if="has_free_tier">
+              <td colspan="1" style="border-top: none;"></td>
+              <td colspan="3" class="total-value" style="border-top: none;">{{getMonthlyEstimation() | currency}}/month</td>
+              <td colspan="1" style="border-top: none;">
+                <span class="badge pull-right" style="background-color: #08C; font-size: 13px; color: #FFF;" uib-tooltip="Forecast: {{getMonthlyEstimation(true) | currency:'$':3}}">Free-Tier</span>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

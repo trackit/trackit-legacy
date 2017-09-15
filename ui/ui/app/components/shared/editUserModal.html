@@ -1,0 +1,44 @@
+<div class="modal-header">
+    <h3 class="modal-title" style="color: #08C;"><i class="fa fa-user"></i> Edit User infos</h3>
+</div>
+<div class="modal-body">
+    <div class="spinner" ng-show="!dataLoaded">
+        <div class="rect1"></div>
+        <div class="rect2"></div>
+        <div class="rect3"></div>
+        <div class="rect4"></div>
+        <div class="rect5"></div>
+    </div>
+    <form name="editUserForm" ng-show="dataLoaded">
+        <div class="form-group">
+            <label for=""><i class="fa fa-envelope hidden-xs"></i>&nbsp;Email</label>
+            <input type="email" class="form-control" id="inputEmail3" placeholder="Email" ng-model="user.email">
+            <span class="help-block">{{ errorFields.email.join(' ') }}</span>
+        </div>
+
+        <div class="form-group">
+            <label for="">First name</label>
+            <input type="text" class="form-control" id="inputFName3" placeholder="First Name" ng-model="user.firstname">
+            <span class="help-block">{{ errorFields.firstname.join(' ') }}</span>
+        </div>
+
+        <div class="form-group">
+            <label for="">Last name</label>
+            <input type="text" class="form-control" id="inputLName3" placeholder="Last Name" ng-model="user.lastname">
+            <span class="help-block">{{ errorFields.lastname.join(' ') }}</span>
+        </div>
+
+        <div class="form-group">
+            <label for=""><i class="fa fa-lock"></i> Password</label>
+            <input type="password" class="form-control" id="inputPassword3" placeholder="Password" ng-model="user.password">
+            <span class="help-block">{{ errorFields.password.join(' ') }}</span>
+        </div>
+
+        <div class="form-group">
+            <label for=""><i class="fa fa-lock"></i> Confirm</label>
+            <input type="password" class="form-control" id="inputPassword3" placeholder="Confirm Password" ng-model="user.password2">
+            <span class="help-block">{{ errorFields.password2.join(' ') }}</span>
+        </div>
+        <button class="btn btn-fullwidth" ng-disabled="user.password.length && (user.password != user.password2)" ng-click="submit()">Submit</button>
+    </form>
+</div>

@@ -1,0 +1,58 @@
+<div class="container-fluid">
+    <div class="row m-b-20">
+        <div class="col-md-3" >
+            <img style="max-width: 250px;width:100%;padding-left: 80px;" ng-src="img/s3-logo.png" alt="">
+            <img style="max-width: 350px;width:100%;" ng-src="img/google-cloud-logo.png" alt="">
+            <img style="max-width: 300px;width:100%;padding-left: 50px;" ng-src="img/ms-full-logo.png" alt="">
+
+        </div>
+        <div class="col-md-6">
+            <h4 class="monts" style="text-align: center; margin: 0;"><i class="fa fa-database"></i> Storage size ? (GB)</h4>
+            <rzslider rz-slider-model="slider.value" rz-slider-options="slider.options"></rzslider>
+        </div>
+        <div class="col-md-3">
+          <div id="btn-change-model">
+              <a class="btn" href="/#/app/storage"><i class="fa fa-bars"></i> Pricing table</a>
+              <a class="btn" ui-sref="app.treemap" ng-if="awsSelectedKey"><i class="fa fa-map-o"></i> Storage treemap</a>
+          </div>
+        </div>
+    </div>
+    <div class="row" ng-show="dataLoaded">
+        <div class="col-md-10 col-md-offset-1" style="text-align: center;">
+            <h4 class="monts" style="text-align: center; margin: 0;"><i class="fa fa-money"></i> Best value for {{slider.value}} GB:</h4>
+            <div class="col-md-3">
+                <h3 class="monts"><i uib-popover-html="archiveHelpTemplate" popover-trigger="mouseenter" popover-placement="bottom" style="color: #f7a80d;" class="fa fa-question-circle"></i> Archive : <span>$</span>{{bestValueArchive.data[0].cost.toFixed(2)}}<span style="font-size: 10px;">/month</span>
+              <i class="fa fa-globe" style="color: #f7a80d; cursor: pointer;" uib-popover-html="bestValueArchive.template" popover-trigger="mouseenter" popover-placement="bottom"></i>
+            </h3>
+            </div>
+            <div class="col-md-3">
+                <h3 class="monts"><i uib-popover-html="generalHelpTemplate" popover-trigger="mouseenter" popover-placement="bottom" style="color: #f7a80d;" class="fa fa-question-circle"></i> General Purpose : <span>$</span>{{bestValueGeneral.data[0].cost.toFixed(2)}}<span style="font-size: 10px;">/month</span>
+              <i class="fa fa-globe" style="color: #f7a80d; cursor: pointer;" uib-popover-html="bestValueGeneral.template" popover-trigger="mouseenter" popover-placement="bottom"></i>
+            </h3>
+            </div>
+            <div class="col-md-3">
+                <h3 class="monts"><i uib-popover-html="infrequentHelpTemplate" popover-trigger="mouseenter" popover-placement="bottom" style="color: #f7a80d;" class="fa fa-question-circle"></i> Infrequent Access : <span>$</span>{{bestValueInfrequent.data[0].cost.toFixed(2)}}<span style="font-size: 10px;">/month</span>
+              <i class="fa fa-globe" style="color: #f7a80d; cursor: pointer;" uib-popover-html="bestValueInfrequent.template" popover-trigger="mouseenter" popover-placement="bottom"></i>
+            </h3>
+            </div>
+            <div class="col-md-3">
+                <h3 class="monts"><i uib-popover-html="noncriticalHelpTemplate" popover-trigger="mouseenter" popover-placement="bottom" style="color: #f7a80d;" class="fa fa-question-circle"></i> Non-Critical Data : <span>$</span>{{bestValueNonCritical.data[0].cost.toFixed(2)}}<span style="font-size: 10px;">/month</span>
+              <i class="fa fa-globe" style="color: #f7a80d; cursor: pointer;" uib-popover-html="bestValueNonCritical.template" popover-trigger="mouseenter" popover-placement="bottom"></i>
+            </h3>
+            </div>
+        </div>
+    </div>
+
+    <div class=" m-b-20 " ng-show="dataLoaded">
+        <div class="col-md-12 world-map hidden-xs"></div>
+    </div>
+
+
+    <div class="spinner" ng-show="!dataLoaded">
+        <div class="rect1"></div>
+        <div class="rect2"></div>
+        <div class="rect3"></div>
+        <div class="rect4"></div>
+        <div class="rect5"></div>
+    </div>
+</div>
