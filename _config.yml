@@ -1,0 +1,4 @@
+theme: jekyll-theme-slate
+title: TrackIt
+description: TrackIt helps you to optimize your public cloud (AWS, GCP, Azure)
+show_downloads: true
