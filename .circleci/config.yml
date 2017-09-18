@@ -1,0 +1,74 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/build
+    machine: true
+    branches:
+      only:
+        - dev
+        - master
+    steps:
+      - checkout
+      - run:
+          name: Build Trackit API Docker image
+          command: |
+            set -x
+            ln -fs Dockerfile.nomad.base api/Dockerfile
+            docker build --cache-from=trackit/base -t trackit/base api/
+            rm api/Dockerfile.nomad.base
+            echo trackit/base >> ~/images.txt
+      - run:
+          name: Build Trackit UI Docker images
+          command: |
+            set -x
+            ln -fs Dockerfile.nomad ui/Dockerfile
+            docker build --cache-from=trackit/ui -t trackit/ui ui/
+            echo trackit/ui >> ~/images.txt
+      - run:
+          name: Build Trackit Deployer Docker image
+          command: |
+            set -x
+            docker build --cache-from=trackit/deployer -t trackit/deployer deployer/
+            echo trackit/deployer >> ~/images.txt
+      - deploy:
+          name: Push Docker to ECR
+          command: |
+            set -x
+            case "${CIRCLE_BRANCH}" in
+              dev)
+                export DEPLOYMENT_ENVIRONMENT=staging
+                export DEPLOYMENT_DOMAIN=staging.trackit.io
+                export DEPLOYMENT_JOB=tracstg
+                ;;
+              master)
+                export DEPLOYMENT_ENVIRONMENT=production
+                export DEPLOYMENT_DOMAIN=trackit.io
+                export DEPLOYMENT_JOB=trackit
+                ;;
+              *)
+                export DEPLOYMENT_ENVIRONMENT=
+                export DEPLOYMENT_DOMAIN=
+                export DEPLOYMENT_JOB=
+                ;;
+            esac
+            if [[ -n "${DEPLOYMENT_ENVIRONMENT}" ]]
+            then
+              export DEPLOYMENT_INFRASTRUCTURE=msol-prod
+              export DEPLOYMENT_PREFIX="job-${DEPLOYMENT_JOB}-${DEPLOYMENT_INFRASTRUCTURE}"
+              export DEPLOYMENT_COMMIT="${CIRCLE_SHA1}"
+              export AWS_DEFAULT_REGION=us-west-2
+              export ECR_IMAGE_TAG="$(date '+%Y-%m-%d')-ci-${CIRCLE_BRANCH}-${CIRCLE_SHA1}"
+              touch ~/images.txt
+              $(aws ecr get-login)
+              fgrep -v trackit/deployer ~/images.txt | while read image
+              do
+                image_address="${ECR_ENDPOINT}/${image}:${ECR_IMAGE_TAG}"
+                docker tag "${image}" "${image_address}"
+                docker push "${image_address}"
+              done
+              cd deployer/
+              ./deploy-landing.sh
+              ./deploy.sh
+            fi
+
+# vim: set ts=2 sts=2 et:
