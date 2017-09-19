@@ -26,7 +26,6 @@ RUN easy_install pip && pip install -r /tmp/piprequirements.txt
 COPY ./files/api /root/api
 COPY ./files/api/app/templates /usr/trackit/templates
 COPY ./files/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-COPY ./files/newrelic_dev.ini /root/newrelic.ini
 
 RUN mkdir /root/log
 CMD ["/usr/bin/supervisord"]
