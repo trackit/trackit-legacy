@@ -50,6 +50,11 @@ trackit.factory('BillModel', ['$resource', 'Config',
         method: "GET",
         url: Config.apiUrl("/aws/accounts/:id/stats/costbyresource/:month/chart")
       },
+      // Get monthly cost
+      getMonthlyCost: {
+        method: "GET",
+          url: Config.apiUrl("/aws/accounts/:id/stats/monthlycost/:months")
+      },
       getS3MostUsed: {
         method: "GET",
         url: Config.apiUrl("/aws/accounts/:id/s3/most_accessed_objects")
