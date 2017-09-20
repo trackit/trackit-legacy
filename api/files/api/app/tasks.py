@@ -16,7 +16,7 @@ from monthly_report import monthly_html_template
 runner = Celery()
 runner.config_from_object(app.config)
 
-logging.basicConfig(filename='/root/log/worker.err.log', level=logging.INFO, format='[%(asctime)s: %(levelname)s]%(message)s')
+logging.basicConfig(level=logging.INFO, format='[%(asctime)s: %(levelname)s]%(message)s')
 
 @task_postrun.connect
 def close_sqlalchemy_session(*args, **kwargs):
