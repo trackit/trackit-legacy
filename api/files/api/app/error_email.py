@@ -30,6 +30,8 @@ aws_bill_parsing_error_email = partial(aws_error, "Error during AWS bill parsing
 
 aws_bucket_does_not_exist_error_email = partial(aws_error, "Error the specified bucket does not exist")
 
+aws_access_denied_error_email = partial(aws_error, "Insufficient access rights to perform the processing")
+
 aws_key_processing_generic_error_email = partial(aws_error, "Error during AWS key processing")
 
 aws_my_resources_error_email = partial(aws_error, "Error during AWS my resources processing")
