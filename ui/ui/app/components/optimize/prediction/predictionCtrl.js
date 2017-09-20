@@ -12,7 +12,7 @@ angular.module('trackit.prediction')
 
                 var modalInstance = $uibModal.open({
                     animation: $scope.animationsEnabled,
-                    templateUrl: 'components/prediction/pricingOptionsModal.html',
+                    templateUrl: 'components/optimize/prediction/pricingOptionsModal.html',
                     controller: 'PricingOptionsCtrl',
                     size: 'lg'
                 });
