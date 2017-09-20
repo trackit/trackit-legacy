@@ -1,0 +1,105 @@
+<div class="container-fluid">
+	<div ng-hide="keyExist" class="container">
+		<div class="row m-b-20">
+			<div class="col-md-12">
+				<div class="panel panel-default large-font">
+					<div class="panel-body monts add-key" style="position: relative; text-align: center">
+						<div><strong>You have not linked an AWS key to your TrackIt account.</strong></div>
+						<button ui-sref="app.keyselect" class="btn">
+							<i class="fa fa-plus"></i> Enter your AWS Key
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div ng-show="showData" class="container">
+		<uib-tabset active="usageAWSActive">
+			<uib-tab index="1" select="usageAWSActive = 1" ng-if="awsSelectedKey">
+				<uib-tab-heading>
+					<img class="provider-icon" src="img/s3-square.png" alt=""> AWS COST/USAGE
+				</uib-tab-heading>
+				<div class="panel panel-default" ng-controller="CostUsageCtrl" ng-if="usageAWSActive == 1">
+					<div class="panel-body">
+						<!-- NVD3 Chart -->
+						<nvd3 options="options" data="data" api="api" ng-show="!awsCostUsageNoDataMessage"></nvd3>
+						<p style="text-align: center" ng-show="awsCostUsageNoDataMessage">{{awsCostUsageNoDataMessage}}</p>
+					</div>
+				</div>
+			</uib-tab>
+			<uib-tab index="2" select="usageAWSActive = 2" ng-if="awsSelectedKey">
+				<uib-tab-heading>
+					<img class="provider-icon" src="img/s3-square.png" alt=""> AWS CPU Usage
+				</uib-tab-heading>
+				<div class="panel panel-default" ng-controller="cpuUsageCtrl" ng-if="usageAWSActive == 2">
+					<div class="panel-body">
+						<!-- NVD3 Chart -->
+						<nvd3 options="options" data="data" api="api" ng-show="!awsCPUUsageNoDataMessage"></nvd3>
+						<p style="text-align: center" ng-show="awsCPUUsageNoDataMessage">{{awsCPUUsageNoDataMessage}}</p>
+						<div ng-show="dataReady" style="text-align: center; margin-top: 10px;">
+							<div>
+								<label class="switch">
+									<input type="checkbox" ng-click="onChange()">
+									<div class="slider round"></div>
+								</label>
+							</div>
+							<span style="font-weight: bold; font-size: 12px;">Per day / per hour</span>
+						</div>
+					</div>
+				</div>
+			</uib-tab>
+			<uib-tab index="3" select="usageAWSActive = 3" ng-if="awsSelectedKey">
+				<uib-tab-heading>
+					<img class="provider-icon" src="img/s3-square.png" alt=""> AWS CPU Usage/Tag
+				</uib-tab-heading>
+				<div class="panel panel-default" ng-controller="cpuTagCtrl" ng-if="usageAWSActive == 3">
+					<div class="panel-body">
+						<div ng-if="tags.length > 0">
+							<div class="alert alert-warning alert-dismissible" role="alert" ng-if="moreThanTen">
+								<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+								<i class="fa fa-info-circle"></i> You have more than ten different tag values for this chart. The values displayed are limited to the ten values having the most instances.
+							</div>
+							<div class="alert alert-warning alert-dismissible" role="alert" ng-if="tagWithNoData">
+								<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+								<i class="fa fa-info-circle"></i> Your tags are still processing. The values displayed are limited to the processed tags.
+							</div>
+
+							<md-tabs md-dynamic-height="true">
+								<md-tab label="{{tag}} tag" md-on-select="selectTag(tag)" ng-repeat="tag in tags">
+
+								</md-tab>
+							</md-tabs>
+							<nvd3 options="options" data="data" api="api"></nvd3>
+							<div  style="text-align: center; margin-top: 10px;">
+								<div>
+									<label class="switch">
+										<input type="checkbox" ng-click="onChange()">
+										<div class="slider round"></div>
+									</label>
+								</div>
+								<span style="font-weight: bold; font-size: 12px;">Per day / per hour</span>
+							</div>
+						</div>
+						<div ng-show="!awsCPUTagNoDataMessage" ng-if="tags.length == 0">
+							<p>You have not defined any cost allocation tags. You can learn more from <a href="https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/configurecostallocreport.html">The AWS documentation about Cost Allocation Reports</a>.</p>
+						</div>
+						<p style="text-align: center" ng-show="awsCPUTagNoDataMessage">{{awsCPUTagNoDataMessage}}</p>
+					</div>
+				</div>
+			</uib-tab>
+		</uib-tabset>
+		<uib-tabset active="usageGCPActive">
+			<uib-tab index="1" select="usageGCPActive = 1" ng-if="gcSelectedKey">
+				<uib-tab-heading>
+					<img class="provider-icon" src="img/gc-square.png" alt=""> GCP COST/USAGE
+				</uib-tab-heading>
+				<div class="panel panel-default" ng-controller="GCCostUsageCtrl" ng-if="usageGCPActive == 4">
+					<div class="panel-body">
+						<!-- NVD3 Chart -->
+						<nvd3 options="options" data="data" api="api"></nvd3>
+					</div>
+				</div>
+			</uib-tab>
+		</uib-tabset>
+	</div>
+</div>
