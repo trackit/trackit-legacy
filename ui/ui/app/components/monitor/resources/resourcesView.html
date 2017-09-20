@@ -1,0 +1,125 @@
+<style>
+	label.btn.btn-primary.ng-valid {
+		background: #fff;
+		color: #ee3e3d;
+		border: 1px solid #ddd;
+		border-left: 1px solid #eee;
+		border-right: none;
+		margin: 10px 0;
+		border-radius: 10px;
+		padding: 10px;
+		font-size: 1.5em;
+	}
+
+	label.btn.btn-primary.ng-valid:first-child {
+		border-left: 1px solid #ddd;
+	}
+
+	label.btn.btn-primary.ng-valid:last-child {
+		border-right: 1px solid #ddd;
+	}
+
+	label.btn.btn-primary.ng-valid.active {
+		background: #ee3e3d;
+		color: #fff;
+		box-shadow: none;
+		border: 1px solid #ee3e3d;
+		border-right: none;
+	}
+
+	label.btn.btn-primary.ng-valid.active:last-child {
+		border-right: 1px solid #ee3e3d;
+	}
+
+	table .provider-icon {
+		width: 28px;
+	}
+
+	.provider-icon.xs {
+		width: 15px;
+	}
+
+	table.estimation-table>thead>tr>th {
+		text-align: center;
+		font-size: 17px;
+		padding-bottom: 20px;
+	}
+
+	.db-logo {
+		width: 66px;
+	}
+
+	.estimation-table td {
+		text-align: center;
+		font-size: 15px;
+	}
+
+	.estimation-table tfoot {
+		border-top: 3px solid #DDD;
+	}
+
+	.row.selection-item.ng-scope {
+		border-bottom: 1px solid #ECECEC;
+	}
+
+	.ngfade.ng-enter {
+		transition: 0.5s linear all;
+		opacity: 0;
+	}
+
+	.ngfade.ng-enter.ng-enter-active {
+		opacity: 1;
+	}
+
+	.progress.ng-isolate-scope {
+		width: 31%;
+		float: left;
+		margin: 1%;
+	}
+
+	div.resourcesTab>ul.nav {
+		padding-left: 0px;
+	}
+
+	div.panel.panel-default>div.panel-body {
+		border: none !important;
+		-webkit-box-shadow: 1px 1px 12px 0px rgba(0, 0, 0, 0.20);
+		-moz-box-shadow: 1px 1px 12px 0px rgba(0, 0, 0, 0.20);
+		box-shadow: 1px 1px 12px 0px rgba(0, 0, 0, 0.20);
+	}
+
+	.providers {
+		display: flex;
+	}
+
+	.providers .btn {
+		flex: 1;
+	}
+</style>
+
+<div class="container-fluid">
+	<div class="row m-b-20">
+		<div class="col-md-12">
+			<uib-tabset active="resourceActive">
+				<uib-tab index="1" select="resourceActive = 1">
+					<uib-tab-heading>
+						<i class="fa fa-desktop"></i> VMs
+					</uib-tab-heading>
+					<ng-include src="'components/monitor/resources/vmsView.html'" ng-if="resourceActive == 1"></ng-include>
+				</uib-tab>
+				<uib-tab index="2" select="resourceActive = 2">
+					<uib-tab-heading>
+						<i class="fa fa-database"></i> Databases
+					</uib-tab-heading>
+					<ng-include src="'components/monitor/resources/databasesView.html'" ng-if="resourceActive == 2"></ng-include>
+				</uib-tab>
+				<uib-tab index="3" select="resourceActive = 3">
+					<uib-tab-heading>
+						<i class="fa fa-archive"></i> Storage
+					</uib-tab-heading>
+					<ng-include src="'components/monitor/resources/storagesView.html'" ng-if="resourceActive == 3"></ng-include>
+				</uib-tab>
+			</uib-tabset>
+		</div>
+	</div>
+</div>
