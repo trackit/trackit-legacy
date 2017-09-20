@@ -1,15 +1,11 @@
 function getFileIconCode(filename) {
-    const ext = filename.substr(filename.lastIndexOf('.') + 1);
-
-    switch (ext) {
+    switch (filename.substr(filename.lastIndexOf('.') + 1)) {
         case "jpg":
         case "png":
             return "fa-picture-o";
-            break;
         case "mov":
         case "avi":
             return "fa-video-camera";
-            break;
         default:
             return "fa-file"
     }
