@@ -1,6 +1,6 @@
 'use strict';
 
-var module = angular.module('trackit.home')
+var module = angular.module('trackit.home');
 
 module.controller('HomeCtrl', ['$scope', '$http', 'Config', 'AWSKey', '$cookies',
     function($scope, $http, Config, AWSKey, $cookies) {
@@ -26,8 +26,9 @@ module.controller('HomeCtrl', ['$scope', '$http', 'Config', 'AWSKey', '$cookies'
                     if (awsSelectedKey) {
                         $scope.keySelected = true;
                         $scope.showData = true;
-                    } else
+                    } else {
                         $scope.keySelected = false;
+                    }
                 }
             });
         }
@@ -40,32 +41,6 @@ module.controller('HomeCtrl', ['$scope', '$http', 'Config', 'AWSKey', '$cookies'
 
         }
 
-        if (awsSelectedKey) {
-            $http.get(Config.apiUrl("/aws/accounts/" + awsSelectedKey + "/stats/instancestats")).then(function(res) {
-                var stat = res.data.stats[0];
-                if (stat) {
-                    $scope.stats = {
-                        total: stat.reserved + stat.stopped + stat.unreserved,
-                        reservations: stat.unused + stat.reserved,
-                        onDemand: stat.unreserved,
-                        reserved: stat.reserved,
-                        stopped: stat.stopped
-                    };
-                    $scope.reserved_report = stat.reserved_report;
-                    $scope.dataReady = true;
-                } else {
-                    $scope.stats = {
-                        total: 'N/A',
-                        reservations: 'N/A',
-                        onDemand: 'N/A',
-                        reserved: 'N/A',
-                        stopped: 'N/A'
-                    };
-                    $scope.dataReady = false;
-                }
-            });
-        }
-
       $scope.toggleReservedDetails = function() {
         $scope.show_reserved_report = !$scope.show_reserved_report;
       };
@@ -74,7 +49,7 @@ module.controller('HomeCtrl', ['$scope', '$http', 'Config', 'AWSKey', '$cookies'
       $scope.getFormattedDateFromUnixTimestamp = function(timestamp) {
           var tmp = new Date(timestamp*1000);
           return tmp.toLocaleString();
-      }
+      };
 
     }
 ]);
