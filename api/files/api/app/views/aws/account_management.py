@@ -1,6 +1,7 @@
 from datetime import datetime
 from app import app
 from app.authentication import with_login
+from app.tasks import get_aws_keys_to_fetch
 from flask import Blueprint, jsonify
 from app.request_schema import with_request_schema
 from app.models import db, AWSKey, AWSKeyS3Bucket
@@ -94,6 +95,7 @@ def put_aws_account(data, user, account_id):
         key.is_valid_key = check_if_valid_key(key.key, key.secret)
         db.session.commit()
         db.session.refresh(key)
+        get_aws_keys_to_fetch()
         return jsonify(aws_key_schema.dump(key)[0]), 200
     elif key:
         return jsonify(error='Forbidden.'), 403

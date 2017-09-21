@@ -425,14 +425,6 @@ def signup(data):
     db.session.flush()
     db.session.refresh(user)
 
-    key = AWSKey()
-    key.id_user = user.id
-    for data_key, data_value in config.ACCOUNT_CREATION_DEFAULT_AWS_KEY.iteritems():
-        setattr(key, data_key, data_value)
-    key.import_s3 = True
-    key.is_valid_key = True
-    db.session.add(key)
-
     db.session.commit()
     add_intercom_user(user)
     onboarding_email(user.email, user.firstname)
