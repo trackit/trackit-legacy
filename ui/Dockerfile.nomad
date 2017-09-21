@@ -36,4 +36,5 @@ RUN cp -rv ./app/* /usr/share/nginx/html
 
 ENV TRACKIT_DOMAIN=localhost
 ENV API_TRACKIT_DOMAIN=http://localhost/api
+ENV NOT_FOUND_URL=/#/login
 CMD ./server.sh

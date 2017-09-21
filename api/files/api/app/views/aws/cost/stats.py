@@ -78,6 +78,52 @@ def aws_accounts_m_stats_monthlycost(accounts, nb_months):
     return jsonify(data)
 
 
+@app.route('/aws/accounts/<aws_key_ids:account_ids>/stats/totalcost/<string:time_arg>')
+@with_login()
+@with_multiple_aws_accounts()
+def aws_accounts_m_stats_totalcost(accounts, time_arg):
+    """---
+    get:
+        tags:
+            - aws
+        produces:
+            - application/json
+        description: &desc Get total cost
+        summary: *desc
+        responses:
+            200:
+                description: List of AWS accounts
+                schema:
+                    properties:
+                        months:
+                            type: array
+                            items:
+                                properties:
+                                    total_cost:
+                                        type: number
+            403:
+                description: Not logged in
+            404:
+                description: AWS account not registered
+    """
+    assert len(accounts) > 0
+
+    now = datetime.utcnow()
+    this_day = now.replace(hour=0, minute=0, second=0, microsecond=0)
+    this_month = this_day.replace(day=1)
+    time_val = {
+        'ever': AWSDetailedLineitem.get_first_date([account.get_aws_user_id() for account in accounts]),
+        'currentyear': this_month - relativedelta(months=this_month.month),
+        'currentmonth': this_month,
+    }
+    date_from = time_val.get(time_arg, now)
+    date_to = now.replace(hour=23, minute=59, second=59, microsecond=999999)
+    raw_data = AWSDetailedLineitem.get_cost(keys=[account.get_aws_user_id() for account in accounts],
+                                            date_from=date_from,
+                                            date_to=date_to)
+    return jsonify(raw_data)
+
+
 @app.route('/aws/accounts/<aws_key_ids:account_ids>/stats/monthlycostbyregion', defaults={'nb_months': 3})
 @app.route('/aws/accounts/<aws_key_ids:account_ids>/stats/monthlycostbyregion/<int:nb_months>')
 @with_login()
