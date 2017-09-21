@@ -34,6 +34,7 @@ def create_default_account():
         db.session.add(user)
         db.session.flush()
         db.session.refresh(user)
+        db.session.commit()
 
         print 'Account successfuly created!'
     except Exception, e:

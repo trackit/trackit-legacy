@@ -36,4 +36,6 @@ RUN cp -rv ./app/* /usr/share/nginx/html
 
 ENV TRACKIT_DOMAIN=localhost
 ENV API_TRACKIT_DOMAIN=http://localhost/api
+ENV ENABLE_FORGOTTEN_PASSWORD=False
+ENV LOGIN_ONLY_EMAIL=False
 CMD ./server.sh
