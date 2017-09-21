@@ -94,7 +94,7 @@ var trackit = angular.module('trackit', [
     }).config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
         // If URL is not in a defined state we redirect to /home
         $urlRouterProvider.otherwise(function() {
-          window.location.href = '/landing';
+          window.location.href = TRACKIT_CONFIG.notFoundUrl;
         });
 
         // Defining all app states
