@@ -178,7 +178,7 @@ class AWSKey(db.Model):
         )
 
     def get_aws_user_id(self):
-        if not self.account_id:
+        if not self.account_id and self.is_valid_key:
             sts = self.get_boto_session().client('sts')
             self.account_id = sts.get_caller_identity()['Account']
             db.session.commit()
