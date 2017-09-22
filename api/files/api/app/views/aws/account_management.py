@@ -133,8 +133,9 @@ def get_aws_accounts(user):
             res = []
             keys = AWSKey.query.all()
             for key in keys:
+                user_id = key.get_aws_user_id()
                 key_infos = aws_key_schema.dump(key)[0]
-                full = AWSDetailedLineitem.keys_has_data(key.get_aws_user_id())
+                full = False if not user_id else AWSDetailedLineitem.keys_has_data(key.get_aws_user_id())
                 month = False if not full else AWSDetailedLineitem.keys_has_data(key.get_aws_user_id(), date_from=date_from, date_to=date_to)
                 key_infos['has_data_full'] = full
                 key_infos['has_data_month'] = month
@@ -147,8 +148,9 @@ def get_aws_accounts(user):
             return jsonify(accounts=res), 200
         keys = []
         for key in user.aws_keys:
+            user_id = key.get_aws_user_id()
             key_infos = aws_key_schema.dump(key)[0]
-            full = AWSDetailedLineitem.keys_has_data(key.get_aws_user_id())
+            full = False if not user_id else AWSDetailedLineitem.keys_has_data(key.get_aws_user_id())
             month = False if not full else AWSDetailedLineitem.keys_has_data(key.get_aws_user_id(), date_from=date_from, date_to=date_to)
             key_infos['has_data_full'] = full
             key_infos['has_data_month'] = month
