@@ -87,7 +87,7 @@ angular.module('trackit.home')
                 }
             };
 
-            $scope.monthsBars = [];
+            $scope.monthsBarsData = [];
 
             // Retrieve the data from the model for AWS
             if ($scope.AWSkey) {
@@ -112,10 +112,10 @@ angular.module('trackit.home')
                     // Number of months asked
                     months: months
                 }, (data) => {
-                    let values = data.months.map((item) => ({ x: item.month, y: month.total_cost }));
-                    $scope.monthsBars.push({
+                    let values = data.months.map((item) => ({ x: item.month, y: item.total_cost }));
+                    $scope.monthsBarsData.push({
                         key: "AWS",
-                        values
+                        values: values
                     });
                 })
             }
