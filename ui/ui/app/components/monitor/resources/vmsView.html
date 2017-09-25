@@ -1,23 +1,46 @@
 <div class="panel panel-default" ng-controller="ResourcesVMsCtrl">
 	<div class="panel-body">
-		<div class="filters">
-			<md-input-container class="md-block col-md-8" style="margin-bottom:0px;">
-				<label><i class="fa fa-search"></i> Search through your resources</label>
-				<input ng-model="searchPattern">
-			</md-input-container>
-			<div class="providers btn-group col-md-4">
-				<label class="btn btn-primary" ng-model="providers.aws" uib-btn-checkbox>
-					<img class="provider-icon" src="img/s3-square.png" alt="" style="height: 24px;"> AWS
-				</label>
-				<label class="btn btn-primary" ng-model="providers.gcp" uib-btn-checkbox>
-					<img class="provider-icon" src="img/gc-square.png" alt="" style="height: 24px;"> GCP
-				</label>
-				<label class="btn btn-primary" ng-model="providers.azure" uib-btn-checkbox>
-					<i class="fa fa-cloud" style="height: 23px;"></i> Azure
-				</label>
+		<div class="panel panel-default large-font" ng-if="providers.aws && AWSStatsLoaded">
+			<div class="panel-heading">
+				<img class="provider-icon" src="img/s3-square.png" alt=""> EC2 Instances ({{AWSstats.total}})
+			</div>
+			<div class="panel-body monts">
+				<div class="col-lg-3 m-b-10 clickable" uib-tooltip="Click for more details" tooltip-placement="left" ng-click="toggleReservedDetails()">
+					RESERVED :
+					<span class="badge pull-right" style="margin-right: 25px;">{{AWSstats.reserved}}</span>
+				</div>
+				<div class="col-lg-3 m-b-10">
+					ON-DEMAND :
+					<span class="badge pull-right" style="margin-right: 25px;">{{AWSstats.onDemand}}</span>
+				</div>
+				<div class="col-lg-3 m-b-10">
+					RESERVATIONS :
+					<span class="badge pull-right" style="margin-right: 25px;">{{AWSstats.reservations}}</span>
+				</div>
+				<div class="col-lg-3 m-b-10">
+					STOPPED :
+					<span class="badge pull-right" style="margin-right: 25px;">{{AWSstats.stopped}}</span>
+				</div>
 			</div>
 		</div>
 		<div class="table-responsive">
+			<div class="filters">
+				<md-input-container class="md-block col-md-8" style="margin-bottom:0px;">
+					<label><i class="fa fa-search"></i> Search through your resources</label>
+					<input ng-model="searchPattern">
+				</md-input-container>
+				<div class="providers btn-group col-md-3" style="float: right;">
+					<label class="btn btn-primary" ng-model="providers.aws" uib-btn-checkbox>
+						<img class="provider-icon" src="img/s3-square.png" alt="" style="height: 15px;"> AWS
+					</label>
+					<label class="btn btn-primary" ng-model="providers.gcp" uib-btn-checkbox>
+						<img class="provider-icon" src="img/gc-square.png" alt="" style="height: 15px;"> GCP
+					</label>
+					<label class="btn btn-primary" ng-model="providers.azure" uib-btn-checkbox>
+						<i class="fa fa-cloud" style="height: 15px;"></i> Azure
+					</label>
+				</div>
+			</div>
 			<table class="table table-striped estimation-table" ng-if="dataLoaded">
 				<thead>
 				<tr>
@@ -91,29 +114,6 @@
 		</div>
 		<div ng-if="getInstances().length" class="pages-indicator" style="width: 100%; text-align: center;">
 			<ul uib-pagination total-items="getFilteredInstances().length" ng-model="pagination.current" max-size="pagination.indicators" class="pagination-sm" boundary-link-numbers="true" style="margin: 0;"></ul>
-		</div>
-		<div class="panel panel-default large-font" ng-if="providers.aws && AWSStatsLoaded">
-			<div class="panel-heading">
-				<img class="provider-icon" src="img/s3-square.png" alt=""> EC2 Instances ({{AWSstats.total}})
-			</div>
-			<div class="panel-body monts">
-				<div class="col-lg-3 m-b-10 clickable" uib-tooltip="Click for more details" tooltip-placement="left" ng-click="toggleReservedDetails()">
-					RESERVED :
-					<span class="badge pull-right" style="margin-right: 25px;">{{AWSstats.reserved}}</span>
-				</div>
-				<div class="col-lg-3 m-b-10">
-					ON-DEMAND :
-					<span class="badge pull-right" style="margin-right: 25px;">{{AWSstats.onDemand}}</span>
-				</div>
-				<div class="col-lg-3 m-b-10">
-					RESERVATIONS :
-					<span class="badge pull-right" style="margin-right: 25px;">{{AWSstats.reservations}}</span>
-				</div>
-				<div class="col-lg-3 m-b-10">
-					STOPPED :
-					<span class="badge pull-right" style="margin-right: 25px;">{{AWSstats.stopped}}</span>
-				</div>
-			</div>
 		</div>
 	</div>
 </div>
