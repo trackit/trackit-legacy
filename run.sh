@@ -24,5 +24,7 @@ case "$OSTYPE" in
 esac
 
 export TRACKIT_HOST=$HOST
+$DOCKER pull "msolution/trackit_ui:latest"
+$DOCKER pull "msolution/trackit_api:latest"
 $DOCKER_COMPOSE up -d
 echo "TrackIt has been launched on http://$HOST/ !"
