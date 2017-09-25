@@ -16,7 +16,7 @@ from monthly_report import monthly_html_template
 runner = Celery()
 runner.config_from_object(app.config)
 
-logging.basicConfig(filename='/root/log/worker.err.log', level=logging.INFO, format='[%(asctime)s: %(levelname)s]%(message)s')
+logging.basicConfig(level=logging.INFO, format='[%(asctime)s: %(levelname)s]%(message)s')
 
 @task_postrun.connect
 def close_sqlalchemy_session(*args, **kwargs):
@@ -64,6 +64,7 @@ from app.aws.s3accesslogs import get_object_access_logs
 from app.aws.instances import get_instance_stats, get_hourly_cpu_usage_by_tag, get_daily_cpu_usage_by_tag, get_all_instances, get_stopped_instances_report
 from app.aws.volumes import get_available_volumes
 from app.aws.elb import import_elb_infos
+from app.aws.excepthandler import except_handler
 from app.ec2reservations import get_reservation_forecast, get_on_demand_to_reserved_suggestion
 from app.compare_providers import get_providers_comparison_aws, get_providers_comparison_google
 from app.s3_space_usage import get_s3_space_usage
@@ -184,33 +185,9 @@ def process_aws_key(key_ids):
         key.error_status = None
         key.last_duration = (datetime.utcnow() - processing_start).total_seconds()
         db.session.commit()
-    except botocore.exceptions.ClientError as e:
-        if e.response['Error']['Code'] == 'NoSuchBucket':
-            aws_bucket_does_not_exist_error_email(key, traceback.format_exc())
-            key.error_status = u"no_such_bucket"
-            logging.error("[user={}][key={}] The specified billing bucket does not exists".format(key.user.email, key.pretty or key.key))
-        else:
-            aws_credentials_error(key, traceback.format_exc())
-            key.error_status = u"bad_key"
-            logging.error("[user={}][key={}] {}".format(key.user.email, key.pretty or key.key, str(e)))
+    except Exception as e:
         key.last_duration = (datetime.utcnow() - processing_start).total_seconds()
-        db.session.commit()
-    except botocore.exceptions.ClientError as e:
-        if e.response['Error']['Code'] == 'NoSuchBucket':
-            aws_bucket_does_not_exist_error_email(key, traceback.format_exc())
-            key.error_status = u"no_such_bucket"
-            logging.error("[user={}][key={}] The specified billing bucket does not exists".format(key.user.email, key.pretty or key.key))
-        else:
-            aws_credentials_error(key, traceback.format_exc())
-            key.error_status = u"bad_key"
-            logging.error("[user={}][key={}] {}".format(key.user.email, key.pretty or key.key, str(e)))
-        db.session.commit()
-    except Exception, e:
-        aws_key_processing_generic_error_email(key, traceback.format_exc())
-        key.error_status = u"processing_error"
-        key.last_duration = (datetime.utcnow() - processing_start).total_seconds()
-        db.session.commit()
-        #logging.error("[user={}][key={}] {}".format(key.user.email, key.pretty or key.key, str(e)))
+        except_handler(e, key)
 
 @runner.task
 def import_aws_client_bills(key_ids, force_import=False):
@@ -228,17 +205,8 @@ def import_aws_client_bills(key_ids, force_import=False):
         try:
             bills = prepare_bill_for_s3(key, force_import)
             prepare_bill_for_es(bills)
-        except botocore.exceptions.ClientError as e:
-            if e.response['Error']['Code'] == 'NoSuchBucket':
-                aws_bucket_does_not_exist_error_email(key, traceback.format_exc())
-                key.error_status = u"no_such_bucket"
-                logging.error("[user={}][key={}] The specified billing bucket does not exists".format(key.user.email,
-                                                                                                      key.pretty or key.key))
-                db.session.commit()
-            traceback.print_exc()
-        except:
-            aws_key_processing_generic_error_email(key, traceback.format_exc())
-            traceback.print_exc()
+        except Exception as e:
+            except_handler(e, key)
 
 
 @runner.task
@@ -253,9 +221,8 @@ def import_aws_elb_infos(key_ids):
             print 'Importing ELB infos for {}...'.format(key.pretty)
             import_elb_infos(key)
             print 'ELB infos imported for {}!'.format(key.pretty)
-        except:
-            aws_key_processing_generic_error_email(key, traceback.format_exc())
-            traceback.print_exc()
+        except Exception as e:
+            except_handler(e, key)
 
 
 @runner.task

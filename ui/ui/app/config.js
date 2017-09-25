@@ -1,3 +1,4 @@
 TRACKIT_CONFIG = {
-  apiBaseUrl: 'ENV.API_TRACKIT_DOMAIN'
+  apiBaseUrl: 'ENV.API_TRACKIT_DOMAIN',
+  notFoundUrl: 'ENV.NOT_FOUND_URL'
 };
