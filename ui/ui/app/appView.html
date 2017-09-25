@@ -40,7 +40,7 @@
             </li>
           </ul>
         </li>
-        <li uib-dropdown class="dropdown" ng-class="{'active' : currentState == 'app.costestimation' || currentState == 'app.prediction'}">
+<!--        <li uib-dropdown class="dropdown" ng-class="{'active' : currentState == 'app.costestimation' || currentState == 'app.prediction'}">
           <a href="#" class="page-scroll dropdown-toggle" uib-dropdown-toggle>Optimize</a>
           <ul class="dropdown-menu" uib-dropdown-menu>
             <li>
@@ -58,6 +58,12 @@
               <a ui-sref="app.cloudmover" ng-class="{'active' : currentState == 'app.cloudmover'}">CloudMover</a>
             </li>
           </ul>
+        </li>-->
+        <li ng-class="{'active' : currentState == 'app.costestimation'}">
+          <a ui-sref="app.costestimation" href="#" class="page-scroll">My resources</a>
+        </li>
+        <li ng-class="{'active' : currentState == 'app.prediction'}">
+          <a ui-sref="app.prediction" href="#" class="page-scroll">Prediction</a>
         </li>
       </ul>
 
