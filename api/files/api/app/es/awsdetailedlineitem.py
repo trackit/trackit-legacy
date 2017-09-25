@@ -230,6 +230,26 @@ class AWSDetailedLineitem(dsl.DocType):
 
     @classmethod
     @with_cache()
+    def get_monthly_cost(cls, keys, date_from=None, date_to=None, size=0x7FFFFFFF):
+        date_from = date_from or datetime.utcnow().replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+        date_to = date_to or date_from.replace(day=calendar.monthrange(date_from.year, date_from.month)[1], hour=23, minute=59, second=59, microsecond=999999)
+        s = cls.search()
+        s = s.filter('terms', linked_account_id=keys if isinstance(keys, list) else [keys])
+        s = s.filter('range', usage_start_date={'from': date_from.isoformat(), 'to': date_to.isoformat()})
+        agg = s.aggs.bucket('intervals', 'date_histogram', field='usage_start_date', interval='month', min_doc_count=1)
+        agg.bucket('cost', 'sum', field='cost')
+        res = client.search(index='awsdetailedlineitem', body=s.to_dict(), size=0, request_timeout=60)
+
+        res = [
+            {
+                'month': interval['key_as_string'].split('T')[0],
+                'total_cost': interval['cost']['value'],
+            } for interval in res['aggregations']['intervals']['buckets']
+        ]
+        return dict(months=res)
+
+    @classmethod
+    @with_cache()
     def get_monthly_cost_by_product(cls, keys, tagged=False, date_from=None, date_to=None, size=0x7FFFFFFF):
         date_from = date_from or datetime.utcnow().replace(day=1, hour=0, minute=0, second=0, microsecond=0)
         date_to = date_to or date_from.replace(day=calendar.monthrange(date_from.year, date_from.month)[1], hour=23, minute=59, second=59, microsecond=999999)

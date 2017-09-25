@@ -12,6 +12,9 @@ es1:
     image: elasticsearch:2.3.5
 webui:
     build: ui/
+    environment:
+        - TRACKIT_DOMAIN=${TRACKIT_HOST}
+        - API_TRACKIT_DOMAIN=http://${TRACKIT_HOST}/api
 redis:
     image: redis
 loadbalancer:

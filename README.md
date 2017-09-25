@@ -11,13 +11,10 @@
 $> git clone git@github.com:trackit/trackit.git
 ```
 
-#### #2 Start TrackIt
+#### #2 Start TrackIt and Let's Go!
 ```sh
-$> docker-compose up
+$> ./run.sh
 ```
-
-#### #3 Let's go
-Once TrackIt is started, go to [http://localhost/](http://localhost/) and let TrackIt optimize your cloud!
 
 
 ## Default credential
