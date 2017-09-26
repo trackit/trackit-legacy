@@ -19,7 +19,7 @@ jobs:
               master)
                 export VERSION=latest ;;
               *)
-                export VERSION="${CIRCLE_BRANCH}"" ;;
+                export VERSION="${CIRCLE_BRANCH}" ;;
             esac
             set +o pipefail
             docker pull "msolution/trackit_api:$VERSION" | true
