@@ -19,10 +19,10 @@ jobs:
               master)
                 export VERSION=latest ;;
               *)
-                export VERSION=${CIRCLE_BRANCH} ;;
+                export VERSION="${CIRCLE_BRANCH}" ;;
             esac
             set +o pipefail
-            docker pull msolution/trackit_api:$VERSION | true
+            docker pull "msolution/trackit_api:$VERSION" | true
       - run:
           name: Build Opensourced Trackit API Docker image
           command: |
@@ -61,8 +61,8 @@ jobs:
           command: |
             set -x
             set +o pipefail
-            docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD} | true
-            docker push msolution/trackit_api:${VERSION} | true
+            docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}" | true
+            docker push "msolution/trackit_api:${VERSION}" | true
       - deploy:
           name: Push Docker to ECR
           command: |
