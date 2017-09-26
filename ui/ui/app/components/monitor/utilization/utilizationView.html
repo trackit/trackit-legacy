@@ -1,3 +1,9 @@
+<style>
+.panel-body {
+	height: 80vh;
+}
+</style>
+
 <div class="container-fluid">
 	<div ng-hide="keyExist" class="container">
 		<div class="row m-b-20">
@@ -14,12 +20,12 @@
 		</div>
 	</div>
 	<div ng-show="showData" class="container">
-		<uib-tabset active="usageAWSActive">
-			<uib-tab index="1" select="usageAWSActive = 1" ng-if="awsSelectedKey">
+		<uib-tabset active="activeTab">
+			<uib-tab index="1" select="activeTab = 1" ng-if="awsSelectedKey">
 				<uib-tab-heading>
 					<img class="provider-icon" src="img/s3-square.png" alt=""> AWS COST/USAGE
 				</uib-tab-heading>
-				<div class="panel panel-default" ng-controller="CostUsageCtrl" ng-if="usageAWSActive == 1">
+				<div class="panel panel-default" ng-controller="CostUsageCtrl" ng-if="activeTab == 1">
 					<div class="panel-body">
 						<!-- NVD3 Chart -->
 						<nvd3 options="options" data="data" api="api" ng-show="!awsCostUsageNoDataMessage"></nvd3>
@@ -27,11 +33,11 @@
 					</div>
 				</div>
 			</uib-tab>
-			<uib-tab index="2" select="usageAWSActive = 2" ng-if="awsSelectedKey">
+			<uib-tab index="2" select="activeTab = 2" ng-if="awsSelectedKey">
 				<uib-tab-heading>
 					<img class="provider-icon" src="img/s3-square.png" alt=""> AWS CPU Usage
 				</uib-tab-heading>
-				<div class="panel panel-default" ng-controller="cpuUsageCtrl" ng-if="usageAWSActive == 2">
+				<div class="panel panel-default" ng-controller="cpuUsageCtrl" ng-if="activeTab == 2">
 					<div class="panel-body">
 						<!-- NVD3 Chart -->
 						<nvd3 options="options" data="data" api="api" ng-show="!awsCPUUsageNoDataMessage"></nvd3>
@@ -48,11 +54,11 @@
 					</div>
 				</div>
 			</uib-tab>
-			<uib-tab index="3" select="usageAWSActive = 3" ng-if="awsSelectedKey">
+			<uib-tab index="3" select="activeTab = 3" ng-if="awsSelectedKey">
 				<uib-tab-heading>
 					<img class="provider-icon" src="img/s3-square.png" alt=""> AWS CPU Usage/Tag
 				</uib-tab-heading>
-				<div class="panel panel-default" ng-controller="cpuTagCtrl" ng-if="usageAWSActive == 3">
+				<div class="panel panel-default" ng-controller="cpuTagCtrl" ng-if="activeTab == 3">
 					<div class="panel-body">
 						<div ng-if="tags.length > 0">
 							<div class="alert alert-warning alert-dismissible" role="alert" ng-if="moreThanTen">
@@ -87,13 +93,11 @@
 					</div>
 				</div>
 			</uib-tab>
-		</uib-tabset>
-		<uib-tabset active="usageGCPActive">
-			<uib-tab index="1" select="usageGCPActive = 1" ng-if="gcSelectedKey">
+			<uib-tab index="4" select="activeTab = 4" ng-if="gcSelectedKey">
 				<uib-tab-heading>
 					<img class="provider-icon" src="img/gc-square.png" alt=""> GCP COST/USAGE
 				</uib-tab-heading>
-				<div class="panel panel-default" ng-controller="GCCostUsageCtrl" ng-if="usageGCPActive == 4">
+				<div class="panel panel-default" ng-controller="GCCostUsageCtrl" ng-if="activeTab == 4">
 					<div class="panel-body">
 						<!-- NVD3 Chart -->
 						<nvd3 options="options" data="data" api="api"></nvd3>
