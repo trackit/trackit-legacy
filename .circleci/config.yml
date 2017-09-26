@@ -60,6 +60,14 @@ jobs:
           name: Push to Docker Hub
           command: |
             set -x
+            case "${CIRCLE_BRANCH}" in
+              dev)
+                export VERSION=dev ;;
+              master)
+                export VERSION=latest ;;
+              *)
+                export VERSION="${CIRCLE_BRANCH}" ;;
+            esac
             set +o pipefail
             docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}" | true
             docker push "msolution/trackit_api:${VERSION}" | true
