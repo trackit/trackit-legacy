@@ -1,19 +1,19 @@
 <div class="panel panel-default" ng-controller="ResourcesStoragesCtrl">
 	<div class="panel-body">
 		<div class="filters">
-			<md-input-container class="md-block col-md-8" style="margin-bottom:0px;">
+			<md-input-container class="md-block col-md-10" style="margin-bottom:0px;">
 				<label><i class="fa fa-search"></i> Search through your resources</label>
 				<input ng-model="searchPattern">
 			</md-input-container>
-			<div class="providers btn-group col-md-4">
+			<div class="providers btn-group col-md-2">
 				<label class="btn btn-primary" ng-model="providers.aws" uib-btn-checkbox>
-					<img class="provider-icon" src="img/s3-square.png" alt="" style="height: 24px;"> AWS
+					<img class="provider-icon" src="img/s3-square.png" alt="" style="height: 15px;"> AWS
 				</label>
 				<label class="btn btn-primary" ng-model="providers.gcp" uib-btn-checkbox>
-					<img class="provider-icon" src="img/gc-square.png" alt="" style="height: 24px;"> GCP
+					<img class="provider-icon" src="img/gc-square.png" alt="" style="height: 15px;"> GCP
 				</label>
 				<label class="btn btn-primary" ng-model="providers.azure" uib-btn-checkbox>
-					<i class="fa fa-cloud" style="height: 23px;"></i> Azure
+					<i class="fa fa-cloud" style="height: 15px;"></i> Azure
 				</label>
 			</div>
 		</div>
