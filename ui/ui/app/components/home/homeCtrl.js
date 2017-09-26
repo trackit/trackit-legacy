@@ -5,12 +5,10 @@ var module = angular.module('trackit.home');
 module.controller('HomeCtrl', ['$scope', '$http', 'Config', 'AWSKey', '$cookies',
     function($scope, $http, Config, AWSKey, $cookies) {
 
-
         var awsSelectedKey = $cookies.getObject('awsKey');
         var gcSelectedKey = $cookies.getObject('gcKey');
         $scope.awsSelectedKey = awsSelectedKey;
         $scope.gcSelectedKey = gcSelectedKey;
-
 
         if (awsSelectedKey) {
             // Retrieve key and assure that data is already processed. if not display a spinner by setting showData to false

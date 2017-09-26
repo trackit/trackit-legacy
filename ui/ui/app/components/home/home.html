@@ -67,7 +67,7 @@
                     </uib-tab-heading>
                     <div class="panel panel-default" ng-controller="BreakdownCtrl" ng-if="breakdownActive == 1">
                         <div class="panel-body">
-                          <md-tabs md-dynamic-height="true">
+                          <md-tabs md-dynamic-height="true" md-selected="1">
                             <md-tab label="3 days">
                               <!-- NVD3 Chart -->
                               <nvd3 options="optionsDailyChart" data="dailyData3Days" api="api" ng-if="dailyData3Days"></nvd3>
