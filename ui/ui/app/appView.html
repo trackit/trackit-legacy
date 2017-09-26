@@ -90,6 +90,9 @@
                   <img class="pull-left" src="img/s3-square.png" style="max-height: 20px;" alt="">
                   <span class="montslight" style="padding: 0 6px;margin-top: 4px;display: inline-block;">AWS Status</span>
                   <i class="fa  pull-right" ng-class="{'fa-check-circle' : awsSelectedKey, 'fa-minus-circle' : !awsSelectedKey}" style="font-size: 20px;"></i>
+                  <div class="aws keys" ng-repeat="key in AWSkeys" style="text-align: left; margin: 10px; margin-left: 25px; font-size: 15px; color: #777;">
+                    <i class="key fa pull-left fa-angle-right" style="font-size: 15px;"></i> {{key.pretty}}
+                  </div>
                 </span>
               </div>
               <div style="clear:both;"></div>

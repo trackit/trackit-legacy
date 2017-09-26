@@ -7,6 +7,11 @@ module.factory("AWSKey", ["$resource", "Config",
   return $resource(Config.apiUrl("/aws/accounts/:id"), {}, {
     query: { method: "GET", params: {}},
     get: { method: "GET", params: {}},
+    getMutipleKeysInfos: {
+      method: "GET",
+      params: {},
+      url: Config.apiUrl("/aws/accounts/m/:id")
+    },
     add: { method: "POST", params: {}},
     remove: { method: "DELETE", params: {}},
     change: {
