@@ -21,14 +21,16 @@ jobs:
               *)
                 export VERSION="${CIRCLE_BRANCH}" ;;
             esac
-            set +o pipefail
             docker pull "msolution/trackit_api:$VERSION" || true
+            docker pull "msolution/trackit_ui:$VERSION" || true
+            docker tag "msolution/trackit_api:$VERSION" "trackit/api" || true
+            docker tag "msolution/trackit_ui:$VERSION" "trackit/ui" || true
       - run:
           name: Build Opensourced Trackit API Docker image
           command: |
             set -x
             ln -fs Dockerfile.local api/Dockerfile
-            docker build --cache-from=msolution/trackit_api -t msolution/trackit_api api/
+            docker build --cache-from=trackit/api -t msolution/trackit_api api/
       - run:
           name: Build Trackit API Docker image
           command: |
@@ -41,7 +43,7 @@ jobs:
           command: |
             set -x
             ln -fs Dockerfile.local ui/Dockerfile
-            docker build --cache-from=msolution/trackit_ui -t msolution/trackit_ui ui/
+            docker build --cache-from=trackit/ui -t msolution/trackit_ui ui/
             echo trackit/ui >> ~/images.txt
       - run:
           name: Build Trackit UI Docker images
@@ -68,9 +70,11 @@ jobs:
               *)
                 export VERSION="${CIRCLE_BRANCH}" ;;
             esac
-            set +o pipefail
             docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}" || true
+            docker tag "msolution/trackit_api" "msolution/trackit_api:${VERSION}" || true
+            docker tag "msolution/trackit_ui" "msolution/trackit_ui:${VERSION}" || true
             docker push "msolution/trackit_api:${VERSION}" || true
+            docker push "msolution/trackit_ui:${VERSION}" || true
       - deploy:
           name: Push Docker to ECR
           command: |
