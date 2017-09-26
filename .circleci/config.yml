@@ -62,7 +62,7 @@ jobs:
             set -x
             set +o pipefail
             docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}" | true
-            docker push "msolution/trackit_api:${VERSION}"" | true
+            docker push "msolution/trackit_api:${VERSION}" | true
       - deploy:
           name: Push Docker to ECR
           command: |
