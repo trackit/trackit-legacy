@@ -515,16 +515,16 @@ class AWSDetailedLineitem(dsl.DocType):
             {
                 'rid': elb['key'],
                 'cost': elb['cost']['value'] / (date_to - date_from).days,
-                'hours': sum([
+                'hours': float(sum([
                     x['quantity']['value']
                     for x in elb['types']['buckets']
                     if x['key'].endswith('LoadBalancerUsage')
-                ]) / (date_to - date_from).days,
-                'bytes': (sum([
+                ]) / (date_to - date_from).days),
+                'bytes': float((sum([
                     x['quantity']['value']
                     for x in elb['types']['buckets']
                     if x['key'].endswith('Bytes')
-                ]) * gib) / (date_to - date_from).days,
+                ]) * gib) / (date_to - date_from).days),
             }
             for elb in res['aggregations']['rid']['buckets']
         ]
