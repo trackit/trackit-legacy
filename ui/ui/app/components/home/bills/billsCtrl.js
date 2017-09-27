@@ -69,7 +69,13 @@ angular.module('trackit.home')
                     showControls: true,
                     clipEdge: false,
                     duration: 500,
-                    stacked: true,
+                    stacked: false,
+                    margin: {
+                        top: 20,
+                        right: 20,
+                        bottom: 45,
+                        left: 85
+                    },
                     xAxis: {
                         axisLabel: 'Months',
                         tickFormat: (d) => {
@@ -79,10 +85,8 @@ angular.module('trackit.home')
                     },
                     yAxis: {
                         axisLabel: 'Cost',
-                        axisLabelDistance: 20,
-                        tickFormat: function(d) {
-                            return '$' + d3.format(',.2f')(d)
-                        }
+                        axisLabelDistance: 25,
+                        tickFormat: (d) => ('$' + d3.format(',.2f')(d))
                     }
                 }
             };

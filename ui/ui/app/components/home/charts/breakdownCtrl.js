@@ -207,7 +207,7 @@ angular.module('trackit.prediction')
 
 
 
-    $scope.options = {
+    $scope.options = {gi
       chart: {
         type: 'multiBarChart',
         height: 400,
@@ -231,9 +231,7 @@ angular.module('trackit.prediction')
         yAxis: {
           axisLabel: 'Cost',
           axisLabelDistance: 20,
-          tickFormat: function(d) {
-            return '$' + d3.format(',.2f')(d)
-          }
+          tickFormat: (d) => ('$' + d3.format(',.2f')(d))
         }
       }
     };
