@@ -41,7 +41,7 @@ class AWSDetailedLineitem(dsl.DocType):
     usage_type = dsl.String(index='not_analyzed')
 
     @classmethod
-    @with_cache(ttl=3600 * 3)
+    @with_cache(ttl=3600 * 3, worker_refresh=True)
     def keys_has_data(cls, keys, date_from=None, date_to=None):
         date_to = date_to or datetime.utcnow()
         s = cls.search()

@@ -1,5 +1,6 @@
 from redis import StrictRedis
 from app import app
+from app.runner import runner
 from zlib import compress, decompress
 from hashlib import sha256
 import json
@@ -15,13 +16,18 @@ def compressed_json(j):
 def decompressed_json(j):
     return json.loads(decompress(j))
 
+@runner.task
+def refresh(cache_var_name, i, ttl, is_json, args, kwargs):
+    c = cached_function[i].f(*args, **kwargs)
+    cache.setex(cache_var_name, ttl, compressed_json(c) if is_json else c)
 
 class CacheObject:
-    def __init__(self, f, is_json, ttl, ret):
+    def __init__(self, f, is_json, ttl, ret, worker_refresh):
         self.f = f
         self.is_json = is_json
         self.ttl = ttl
         self.ret = ret
+        self.worker_refresh = worker_refresh
         global cached_function
         cached_function.append(self)
 
@@ -42,6 +48,10 @@ class CacheObject:
             cache.setex(cache_var_name, self.ttl, compressed_json(c) if self.is_json else c)
             return self.ret(c) if self.ret else c
         c = decompressed_json(c) if self.is_json else c
+        if self.worker_refresh:
+            for i in range(len(cached_function)):
+                if cached_function[i].f.__name__ == self.f.__name__:
+                    refresh.delay(cache_var_name, i, self.ttl, self.is_json, args, kwargs)
         return self.ret(c) if self.ret else c
 
     def flush(self):
@@ -49,7 +59,7 @@ class CacheObject:
             cache.delete(cache_var_name)
 
 
-def with_cache(is_json=True, ttl=3600 * 12, ret=None):
+def with_cache(is_json=True, ttl=3600 * 12, ret=None, worker_refresh=False):
     def wrapper(f):
-        return CacheObject(f, is_json, ttl, ret)
+        return CacheObject(f, is_json, ttl, ret, worker_refresh)
     return wrapper
