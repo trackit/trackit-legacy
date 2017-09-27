@@ -24,6 +24,4 @@ then
     export TRACKIT_HOST="localhost"
 fi
 
-$DOCKER pull "msolution/trackit_ui:latest"
-$DOCKER pull "msolution/trackit_api:latest"
 $DOCKER_COMPOSE up -d && echo "TrackIt has been launched on http://$TRACKIT_HOST/ !"
