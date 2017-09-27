@@ -538,7 +538,7 @@ class AWSDetailedLineitem(dsl.DocType):
             day=calendar.monthrange(date_from.year, date_from.month)[1],
             hour=23, minute=59, second=59, microsecond=999999)
         s = cls.search()
-        s = s.extra(_source=['linked_account_id', 'usage_start_date', 'usage_type', 'availability_zone', 'resource_id'])
+        s = s.extra(_source=['usage_start_date', 'usage_type', 'availability_zone', 'resource_id'])
         s = s.filter('terms', linked_account_id=keys if isinstance(keys, list) else [keys])
         s = s.filter('range', usage_start_date={'from': date_from.isoformat(), 'to': date_to.isoformat()})
         s = s.filter("term", product_name='Amazon Elastic Compute Cloud')
@@ -552,7 +552,7 @@ class AWSDetailedLineitem(dsl.DocType):
         types = []
         refs = {}
         def add_in_types(type, rid):
-            ref_tuple = (type['account'], type['hour'], type['instance'], type['region'])
+            ref_tuple = (type['hour'], type['instance'], type['region'])
             if ref_tuple in refs:
                 refs[ref_tuple]['rids'].append(rid)
                 refs[ref_tuple]['ridCount'] += 1
@@ -563,7 +563,6 @@ class AWSDetailedLineitem(dsl.DocType):
 
         for r in res['hits']['hits']:
             elem = {
-                'account': r['_source']['linked_account_id'],
                 'hour': r['_source']['usage_start_date'],
                 'instance': r['_source']['usage_type'].split(':')[1],
                 'region': cut_region_name(r['_source']['availability_zone']) if 'availability_zone' in r['_source'] else 'unknown',
