@@ -4,14 +4,20 @@ function check_if_program_is_installed {
     CMD_PATH=$(command -v $1)
     if [ $? -ne 0 ]
     then
-        echo "$1 is not installed"
-        exit 1
+        echo "$1"
+    else
+        echo $CMD_PATH
     fi
-    echo $CMD_PATH
 }
 
 DOCKER=$(check_if_program_is_installed "docker")
 DOCKER_COMPOSE=$(check_if_program_is_installed "docker-compose")
+
+if [ "$DOCKER" == "docker" ] || [ "$DOCKER_COMPOSE" == "docker-compose" ]
+then
+    echo "Docker or docker-compose is not installed"
+    exit 
+fi
 
 if [ -z "$TRACKIT_HOST" ]
 then
@@ -20,5 +26,4 @@ fi
 
 $DOCKER pull "msolution/trackit_ui:latest"
 $DOCKER pull "msolution/trackit_api:latest"
-$DOCKER_COMPOSE up -d
-echo "TrackIt has been launched on http://$TRACKIT_HOST/ !"
+$DOCKER_COMPOSE up -d && echo "TrackIt has been launched on http://$TRACKIT_HOST/ !"
