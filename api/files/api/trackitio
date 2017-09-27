@@ -34,15 +34,8 @@ def create_default_account():
         db.session.add(user)
         db.session.flush()
         db.session.refresh(user)
-
-        key = AWSKey()
-        key.id_user = user.id
-        for data_key, data_value in config.ACCOUNT_CREATION_DEFAULT_AWS_KEY.iteritems():
-            setattr(key, data_key, data_value)
-        key.import_s3 = True
-        key.is_valid_key = True
-        db.session.add(key)
         db.session.commit()
+
         print 'Account successfuly created!'
     except Exception, e:
         print 'Error in the creating:'
@@ -96,7 +89,6 @@ def initall():
     if config.ACCOUNT_DEFAULT_CREDENTIALS:
         create_default_account()
     inites()
-    tasks.get_aws_keys_to_fetch()
 
 @manager.command
 def mysql():

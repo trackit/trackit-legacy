@@ -11,6 +11,14 @@ trackitConfig.factory("Config", ['$location', function($location) {
         config.apiBaseUrl = TRACKIT_CONFIG.apiBaseUrl;
     }
 
+    if (window.TRACKIT_CONFIG && TRACKIT_CONFIG.enableForgottenPassword) {
+        config.enableForgottenPassword = TRACKIT_CONFIG.enableForgottenPassword;
+    }
+
+    if (window.TRACKIT_CONFIG && TRACKIT_CONFIG.loginOnlyEmail) {
+        config.loginOnlyEmail = TRACKIT_CONFIG.loginOnlyEmail;
+    }
+
     if (!config.apiBaseUrl) {
         // Get current URL and use port 5000 as API Url
         config.apiBaseUrl = [$location.protocol(), '://', $location.host(), ':', 5000].join('');
