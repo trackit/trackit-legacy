@@ -207,7 +207,7 @@ angular.module('trackit.prediction')
 
 
 
-    $scope.options = {gi
+    $scope.options = {
       chart: {
         type: 'multiBarChart',
         height: 400,
