@@ -538,41 +538,38 @@ class AWSDetailedLineitem(dsl.DocType):
             day=calendar.monthrange(date_from.year, date_from.month)[1],
             hour=23, minute=59, second=59, microsecond=999999)
         s = cls.search()
+        s = s.extra(_source=['linked_account_id', 'usage_start_date', 'usage_type', 'availability_zone', 'resource_id'])
         s = s.filter('terms', linked_account_id=keys if isinstance(keys, list) else [keys])
         s = s.filter('range', usage_start_date={'from': date_from.isoformat(), 'to': date_to.isoformat()})
         s = s.filter("term", product_name='Amazon Elastic Compute Cloud')
         s = s.query('wildcard', usage_type='*BoxUsage:*')
         s = s.filter('exists', field='resource_id')
+        s = s.sort({"usage_start_date": {"order": "desc"}})
         res = client.search(index='awsdetailedlineitem', body=s.to_dict(), size=10000, request_timeout=60)
 
-        def x(s):
+        def cut_region_name(s):
             return s[:-1] if s[-1].isalpha() else s
         types = []
-
-        def add_in_types(type):
-            def check_equality(a, b):
-                for k, v in a.iteritems():
-                    if a[k] != b[k] and k != 'rids':
-                        return False
-                return True
-            for r in types:
-                if check_equality(r, type):
-                    r['rids'].append(type['rids'])
-                    return
+        refs = {}
+        def add_in_types(type, rid):
+            ref_tuple = (type['account'], type['hour'], type['instance'], type['region'])
+            if ref_tuple in refs:
+                refs[ref_tuple]['rids'].append(rid)
+                refs[ref_tuple]['ridCount'] += 1
+                return
+            type['rids'] = [rid]
             types.append(type)
-            types[-1]['rids'] = [types[-1]['rids']]
+            refs[ref_tuple] = types[-1]
 
         for r in res['hits']['hits']:
             elem = {
                 'account': r['_source']['linked_account_id'],
                 'hour': r['_source']['usage_start_date'],
                 'instance': r['_source']['usage_type'].split(':')[1],
-                'region': x(r['_source']['availability_zone']) if 'availability_zone' in r['_source'] else 'unknown',
-                'rids': r['_source']['resource_id'],
+                'region': cut_region_name(r['_source']['availability_zone']) if 'availability_zone' in r['_source'] else 'unknown',
+                'ridCount': 1,
             }
-            add_in_types(elem)
-        for type in types:
-            type['ridCount'] = len(type['rids'])
+            add_in_types(elem, r['_source']['resource_id'])
         return types
 
     @classmethod
