@@ -25,6 +25,10 @@ trackit.factory('EstimationModel', ['$resource', 'Config',
         method: "GET",
         url: Config.apiUrl("/aws/accounts/:id/s3/space_usage_tags")
       },
+      getS3BucketsPerName: {
+        method: "GET",
+        url: Config.apiUrl("/aws/accounts/:id/stats/s3bucketsizepername")
+      },
       getPrediction: {
         method: "GET",
         url: Config.apiUrl("/aws/accounts/:id/reservationforecast")
@@ -36,6 +40,10 @@ trackit.factory('EstimationModel', ['$resource', 'Config',
       getLambda: {
           method: "GET",
           url: Config.apiUrl("/aws/accounts/:id/lambda/usage")
+      },
+      getEC2: {
+          method: "GET",
+          url: Config.apiUrl("/aws/accounts/:id/stats/instancestats")
       },
       getCSVExport: {
           method: "GET",

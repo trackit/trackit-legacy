@@ -1,0 +1,41 @@
+<div class="table-responsive">
+	<table class="table table-striped estimation-table" ng-if="s3DataLoaded">
+		<thead>
+		<tr>
+			<th class="clickable" ng-click="order('name')">
+                            <span uib-tooltip="Name">
+                                <i class="fa fa-database"></i>
+                            </span>
+				<i class="fa fa-arrow-up" ng-if="predicate === 'name' && reverse"></i>
+				<i class="fa fa-arrow-down" ng-if="predicate === 'name' && !reverse"></i>
+			</th>
+			<th class="clickable" ng-click="order('used_space')">
+                            <span uib-tooltip="Used space">
+                                <i class="fa fa-pie-chart"></i>
+                            </span>
+				<i class="fa fa-arrow-up" ng-if="predicate === 'used_space' && reverse"></i>
+				<i class="fa fa-arrow-down" ng-if="predicate === 'used_space' && !reverse"></i>
+			</th>
+			<th class="transfer" ng-repeat="transfer in s3Transfers" style="width: 10%; font-size: 1em;">
+				{{transfer}}
+			</th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr class="resource-item" ng-if="!getS3Buckets().length">
+			<td colspan="{{4 + s3Transfers.length}}">
+				<strong>No results</strong>
+			</td>
+		</tr>
+		<tr class="resource-item ngfade" ng-repeat="bucket in getPaginatedS3Buckets()">
+			<td style="text-align: left;" >{{bucket.name}}</td>
+			<td><span class="used_space"><strong>{{bucket.used_space | bytes}}</strong></span></td>
+			<td ng-repeat="transfer in s3Transfers">{{bucket[transfer] | bytes}}</td>
+		</tr>
+		</tbody>
+	</table>
+	<div ng-if="getS3Buckets().length" class="pages-indicator" style="width: 100%; text-align: center;">
+		<ul uib-pagination total-items="getFilteredS3Buckets().length" ng-model="pagination.current" max-size="pagination.indicators" class="pagination-sm" boundary-link-numbers="true" style="margin: 0;"></ul>
+	</div>
+	<ng-include src="'components/monitor/resources/partials/s3bucketsInfo.html'"></ng-include>
+</div>
