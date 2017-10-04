@@ -1,28 +1,27 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
-DOCKER=$(which docker)
-DOCKER_COMPOSE=$(which docker-compose)
-
-function osx {
-    DOCKER_MACHINE=$(which docker-machine)
-    HOST=$($DOCKER_MACHINE ip)
+function check_if_program_is_installed {
+    CMD_PATH=$(command -v $1)
+    if [ $? -ne 0 ]
+    then
+        echo "$1"
+    else
+        echo $CMD_PATH
+    fi
 }
 
-function linux {
-    HOSTNAME=$(which hostname)
-    HOST=$($HOSTNAME -i)
-}
+DOCKER=$(check_if_program_is_installed "docker")
+DOCKER_COMPOSE=$(check_if_program_is_installed "docker-compose")
 
-function not_supported {
-    echo "Your OS is not supported yet."
-}
+if [ "$DOCKER" == "docker" ] || [ "$DOCKER_COMPOSE" == "docker-compose" ]
+then
+    echo "Docker or docker-compose is not installed"
+    exit 
+fi
 
-case "$OSTYPE" in
-  darwin*)  osx ;;
-  linux*)   linux ;;
-  *)        not_supported ;;
-esac
+if [ -z "$TRACKIT_HOST" ]
+then
+    export TRACKIT_HOST="localhost"
+fi
 
-export TRACKIT_HOST=$HOST
-$DOCKER_COMPOSE up -d
-echo "TrackIt has been launched on http://$HOST/ !"
+$DOCKER_COMPOSE up -d && echo "TrackIt has been launched on http://$TRACKIT_HOST/ !"

@@ -4,6 +4,10 @@ angular.module('trackit')
 
 .controller('LoginCtrl', ['$scope', '$http', 'apiBaseUrl', '$state', '$cookies', 'Config', '$uibModal',
     function($scope, $http, apiBaseUrl, $state, $cookies, Config, $uibModal) {
+        $scope.enableForgottenPassword = Config.enableForgottenPassword == "True";
+        $scope.onlyEmail = Config.loginOnlyEmail == "True";
+        $scope.emailType = ($scope.onlyEmail ? "email" : "text");
+        $scope.emailName = "Email" + ($scope.onlyEmail ? "" : " or username")
         $scope.login = function() {
             $http({
                 method: 'POST',

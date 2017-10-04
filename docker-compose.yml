@@ -1,26 +1,30 @@
-mysql:
-    image: mariadb:latest
-    environment:
-        - MYSQL_ALLOW_EMPTY_PASSWORD=True
-api:
-    build: api/
-    links:
-        - es1
-        - mysql:mysql
-        - redis
-es1:
-    image: elasticsearch:2.3.5
-webui:
-    build: ui/
-    environment:
-        - TRACKIT_DOMAIN=${TRACKIT_HOST}
-        - API_TRACKIT_DOMAIN=http://${TRACKIT_HOST}/api
-redis:
-    image: redis
-loadbalancer:
-    build: loadbalancer
-    ports:
-        - 80:80
-    links:
-        - api:api
-        - webui:webui
+version: "3"
+services:
+    mysql:
+        image: mariadb:latest
+        environment:
+            - MYSQL_ALLOW_EMPTY_PASSWORD=True
+    api:
+        image: msolution/trackit_api:latest
+        build: api/
+        links:
+            - es1
+            - mysql:mysql
+            - redis
+    es1:
+        image: elasticsearch:2.3.5
+    webui:
+        image: msolution/trackit_ui:latest
+        build: ui/
+        environment:
+            - TRACKIT_DOMAIN=${TRACKIT_HOST}
+            - API_TRACKIT_DOMAIN=http://${TRACKIT_HOST}/api
+    redis:
+        image: redis
+    loadbalancer:
+        build: loadbalancer
+        ports:
+            - 80:80
+        links:
+            - api:api
+            - webui:webui
