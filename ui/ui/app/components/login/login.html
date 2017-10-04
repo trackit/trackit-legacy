@@ -34,13 +34,13 @@
             <hr />
             <form>
                 <div class="form-group">
-                    <label for="InputEmail1"><i class="fa fa-envelope hidden-xs"></i>&nbsp;Email</label>
-                    <input type="email" class="form-control" id="inputEmail3" placeholder="Email" ng-model="email">
+                    <label for="InputEmail1"><i class="fa fa-envelope hidden-xs"></i>&nbsp;{{emailName}}</label>
+                    <input type="{{emailType}}" class="form-control" id="inputEmail3" placeholder="Email" ng-model="email">
                 </div>
                 <div class="form-group">
                     <label for="InputPassword1"><i class="fa fa-lock hidden-xs"></i>&nbsp;Password</label>
                     <input type="password" class="form-control" id="inputPassword3" placeholder="Password" ng-model="password">
-                    <a class="clickable" ng-click="openForgottenPasswordModal()" style="float:right; color: white; margin-bottom: 5px;">Forgot password ?</a>
+                    <a class="clickable" ng-if="enableForgottenPassword" ng-click="openForgottenPasswordModal()" style="float:right; color: white; margin-bottom: 5px;">Forgot password ?</a>
                     <div style="clear: both;"></div>
                 </div>
                 <div class="alert alert-warning" role="alert" ng-show="invalidCredentials"><strong>Error : </strong>Something went wrong. Please check your credentials and try again.</div>

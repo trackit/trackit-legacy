@@ -6,7 +6,7 @@ import celery
 import requests
 import math
 from celery.decorators import periodic_task
-from tasks import runner
+from app.runner import runner
 from datetime import timedelta
 
 compute_local_ssd_size = 375

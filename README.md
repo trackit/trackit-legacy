@@ -2,6 +2,10 @@
 
 ## Installation
 
+
+#### #0 Be sure all requirements below are installed
+
+
 #### #1 Clone TrackIt
 ```sh
 $> git clone git@github.com:trackit/trackit.git
@@ -10,6 +14,14 @@ $> git clone git@github.com:trackit/trackit.git
 #### #2 Start TrackIt and Let's Go!
 ```sh
 $> ./run.sh
+```
+
+
+## Default credential
+
+```
+username: admin
+password: admin
 ```
 
 

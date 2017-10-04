@@ -1,6 +1,6 @@
 from app import app
 from models import db, MultikeyGroup, MultikeyKey
-from celery import Celery
+from app.runner import runner
 from celery.signals import task_postrun
 from celery.decorators import periodic_task
 from datetime import datetime, timedelta
@@ -12,9 +12,6 @@ from send_email import send_email as f_send_email, send_email_alternative as f_s
 from app.error_email import aws_credentials_error, aws_key_processing_generic_error_email, aws_bucket_does_not_exist_error_email
 from functools import wraps
 from monthly_report import monthly_html_template
-
-runner = Celery()
-runner.config_from_object(app.config)
 
 logging.basicConfig(level=logging.INFO, format='[%(asctime)s: %(levelname)s]%(message)s')
 

@@ -52,19 +52,11 @@ IMPORT_BILLING_AWS_SECRET = ''
 LOCAL_BILLS_DIR = '/root/api/.csv/'
 ACCOUNT_DEFAULT_ENABLED = 'true'
 ACCOUNT_DEFAULT_CREDENTIALS = {
-    'email': u'demo@demo.io',
-    'password': u'mypassword',
-    'firstname': u'Demo',
-    'lastname': u'Demo',
+    'email': u'admin',
+    'password': u'admin',
+    'firstname': u'Admin',
+    'lastname': u'Admin',
     'admin': True,
-}
-
-ACCOUNT_CREATION_DEFAULT_AWS_KEY = {
-    'key': u'AKIAIP6TNMURRO3WMHTQ',
-    'secret': u'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',
-    'billing_bucket_name': u'trackit-billing-report',
-    'pretty': u'MSolution.IO',
-    'import_s3': True
 }
 
 BILLING_FILE_REGEX = re.compile(

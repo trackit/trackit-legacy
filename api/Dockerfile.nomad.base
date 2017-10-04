@@ -14,6 +14,7 @@ RUN apt-get update &&\
                        python\
                        python-dev\
                        python-setuptools\
+                       supervisor\
                        wget\
                        &&\
     rm -rf /var/lib/apt/lists/*
@@ -24,7 +25,6 @@ RUN easy_install pip && pip install -r /tmp/piprequirements.txt
 
 COPY ./files/api /root/api
 COPY ./files/api/app/templates /usr/trackit/templates
-COPY ./files/newrelic_prod.ini /root/newrelic.ini
 COPY ./files/initall.sh /root/initall.sh
 
 RUN mkdir /root/log
