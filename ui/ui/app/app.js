@@ -40,7 +40,6 @@ var trackit = angular.module('trackit', [
         'ngMaterial',
         'nvd3',
         'vcRecaptcha',
-        'react',
         'ui.router',
         'ui.bootstrap',
         'uiSwitch',
@@ -49,7 +48,6 @@ var trackit = angular.module('trackit', [
         'countUpModule',
         'trackit.menu',
         'trackit.home',
-        'trackit.cloudmover',
         'trackit.storage',
         'trackit.aws.services',
         'trackit.keyselect',
@@ -226,16 +224,6 @@ var trackit = angular.module('trackit', [
             .state('app.treemap', {
                 url: "/app/treemap",
                 templateUrl: "/components/costestimation/partials/treemap-partial.html"
-            })
-            // State enabling/disabling cloudmover feature
-            .state('app.togglemover', {
-                url: "/app/togglemover",
-                templateUrl: "/components/cloudmover/toggleCloudmover.html",
-                controller: 'ToggleCloudmoverCtrl',
-            })
-            .state('app.cloudmover', {
-                url: "/app/cloudmover",
-                templateUrl: "/components/cloudmover/cloudmover.html"
             })
             .state('app.automation', {
                 url: "/app/automation",
