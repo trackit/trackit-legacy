@@ -3,8 +3,8 @@
 angular.module('trackit.menu', [])
 
 
-.controller('MenuCtrl', ['$scope', '$rootScope', '$state', 'apiBaseUrl', '$http', '$cookies', 'Config', '$uibModal',
-        function($scope, $rootScope, $state, apiBaseUrl, $http, $cookies, Config, $uibModal) {
+.controller('MenuCtrl', ['$scope', '$rootScope', '$state', 'apiBaseUrl', '$http', '$cookies', 'Config', '$uibModal', 'AWSKey',
+        function($scope, $rootScope, $state, apiBaseUrl, $http, $cookies, Config, $uibModal, AWSKey) {
 
             var awsSelectedKey = $cookies.getObject('awsKey');
             var gcSelectedKey = $cookies.getObject('gcKey');
@@ -63,6 +63,17 @@ angular.module('trackit.menu', [])
                 $cookies.remove('userToken');
                 document.location.href = ""
             };
+
+            $scope.AWSkeys = [];
+            $scope.GCPkeys = [];
+            if (awsSelectedKey)
+                AWSKey.getMutipleKeysInfos({
+                    id: awsSelectedKey
+                }, (data) => {
+                    $scope.AWSkeys = data.accounts;
+                })
+//          if (gcSelectedKey)
+//              Get GCP Keys informations
         }
     ])
     .controller('EditUserCtrl', ['$scope', '$rootScope', '$state', 'apiBaseUrl', '$http', '$cookies', 'Config', '$uibModalInstance',

@@ -23,17 +23,49 @@
         <li ng-class="{'active' : currentState == 'app.home'}">
           <a class="page-scroll" ui-sref="app.home">Home</a>
         </li>
-        <li ng-class="{'active' : currentState == 'app.costestimation'}">
-          <a class="page-scroll" ui-sref="app.costestimation">My resources</a>
-        </li>
         <!--<li ng-class="{'active' : currentState == 'app.statistics'}">
           <a class="page-scroll" ui-sref="app.statistics">Statistics</a>
         </li>-->
-        <li ng-class="{'active' : currentState == 'app.s3map'}">
-          <a class="page-scroll" ui-sref="app.s3map">Storage Map</a>
+        <li uib-dropdown class="dropdown" ng-class="{'active' : currentState == 'app.utilization' || currentState == 'app.s3map' || currentState == 'app.resources'}">
+          <a href="#" class="page-scroll dropdown-toggle" uib-dropdown-toggle>Monitor</a>
+          <ul class="dropdown-menu" uib-dropdown-menu>
+            <li>
+              <a ui-sref="app.utilization" ng-class="{'active' : currentState == 'app.utilization'}">Utilization</a>
+            </li>
+            <li>
+              <a ui-sref="app.s3map" ng-class="{'active' : currentState == 'app.s3map'}">Storage Map</a>
+            </li>
+            <li>
+              <a ui-sref="app.resources" ng-class="{'active' : currentState == 'app.resources'}">Resources</a>
+            </li>
+          </ul>
+        </li>
+<!--        <li uib-dropdown class="dropdown" ng-class="{'active' : currentState == 'app.costestimation' || currentState == 'app.prediction'}">
+          <a href="#" class="page-scroll dropdown-toggle" uib-dropdown-toggle>Optimize</a>
+          <ul class="dropdown-menu" uib-dropdown-menu>
+            <li>
+              <a ui-sref="app.costestimation" ng-class="{'active' : currentState == 'app.costestimation'}">My resources</a>
+            </li>
+            <li>
+              <a ui-sref="app.prediction" ng-class="{'active' : currentState == 'app.prediction'}">Prediction</a>
+            </li>
+          </ul>
+        </li>
+        <li uib-dropdown class="dropdown" ng-class="{'active' : currentState == 'app.cloudmover'}">
+          <a href="#" class="page-scroll dropdown-toggle" uib-dropdown-toggle>Automate</a>
+          <ul class="dropdown-menu" uib-dropdown-menu>
+            <li>
+              <a ui-sref="app.cloudmover" ng-class="{'active' : currentState == 'app.cloudmover'}">CloudMover</a>
+            </li>
+          </ul>
+        </li>-->
+        <li ng-class="{'active' : currentState == 'app.costestimation'}">
+          <!-- My resources -->
+          <a ui-sref="app.costestimation" href="#" class="page-scroll">Optimize</a>
         </li>
         <li ng-class="{'active' : currentState == 'app.prediction'}">
-          <a class="page-scroll" ui-sref="app.prediction">Prediction</a>
+          <!-- Prediction -->
+          <a ui-sref="app.prediction" href="#" class="page-scroll">Predict</a>
         </li>
       </ul>
 
@@ -58,6 +90,9 @@
                   <img class="pull-left" src="img/s3-square.png" style="max-height: 20px;" alt="">
                   <span class="montslight" style="padding: 0 6px;margin-top: 4px;display: inline-block;">AWS Status</span>
                   <i class="fa  pull-right" ng-class="{'fa-check-circle' : awsSelectedKey, 'fa-minus-circle' : !awsSelectedKey}" style="font-size: 20px;"></i>
+                  <div class="aws keys" ng-repeat="key in AWSkeys" style="text-align: left; margin: 10px; margin-left: 25px; font-size: 15px; color: #777;">
+                    <i class="key fa pull-left fa-angle-right" style="font-size: 15px;"></i> {{key.pretty}}
+                  </div>
                 </span>
               </div>
               <div style="clear:both;"></div>

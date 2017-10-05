@@ -85,61 +85,61 @@
                     <uib-tab-heading style="font-size: 17px;">
                         <i class="fa fa-desktop"></i> VMs
                     </uib-tab-heading>
-                    <ng-include src="'components/costestimation/partials/vms-partial.html'"></ng-include>
+                    <ng-include src="'components/optimize/costestimation/partials/vms-partial.html'"></ng-include>
                 </uib-tab>
                 <uib-tab index="1" select="selectedTab(1)">
                     <uib-tab-heading style="font-size: 17px;">
                         <i class="fa fa-database"></i> AWS Databases
                     </uib-tab-heading>
-                    <ng-include src="'components/costestimation/partials/db-partial.html'"></ng-include>
+                    <ng-include src="'components/optimize/costestimation/partials/db-partial.html'"></ng-include>
                 </uib-tab>
                 <uib-tab index="2" select="selectedTab(2)">
                     <uib-tab-heading style="font-size: 17px;">
                         <i class="fa fa-archive"></i> Storage
                     </uib-tab-heading>
-                    <ng-include src="'components/costestimation/partials/storage-partial.html'"></ng-include>
+                    <ng-include src="'components/optimize/costestimation/partials/storage-partial.html'"></ng-include>
                 </uib-tab>
                 <uib-tab index="3" select="selectedTab(3)" deselect="deselectedTab(tabActive)" ng-if="awsSelectedKey">
                     <uib-tab-heading style="font-size: 14px;">
                         <img class="provider-icon" src="img/s3-square.png" alt="" style="height: 24px;"> AWS Cost/Resource
                     </uib-tab-heading>
-                    <ng-include ng-if="tabActive == 3" src="'components/costestimation/partials/aws-costbyresource.html'"></ng-include>
+                    <ng-include ng-if="tabActive == 3" src="'components/optimize/costestimation/partials/aws-costbyresource.html'"></ng-include>
                 </uib-tab>
                 <uib-tab index="4" select="selectedTab(4)" ng-if="awsSelectedKey">
                     <uib-tab-heading style="font-size: 14px;">
                         <img class="provider-icon" src="img/s3-square.png" alt="" style="height: 24px;"> AWS Cost/Tag
                     </uib-tab-heading>
-                    <ng-include ng-if="tabActive == 4" src="'components/costestimation/partials/aws-costbytag.html'"></ng-include>
+                    <ng-include ng-if="tabActive == 4" src="'components/optimize/costestimation/partials/aws-costbytag.html'"></ng-include>
                 </uib-tab>
                 <uib-tab index="5" select="selectedTab(5)" ng-if="awsSelectedKey">
                     <uib-tab-heading style="font-size: 14px;">
                         <img class="provider-icon" src="img/s3-square.png" alt="" style="height: 24px;"> ELB
                     </uib-tab-heading>
-                    <ng-include src="'components/costestimation/partials/elb-partial.html'"></ng-include>
+                    <ng-include src="'components/optimize/costestimation/partials/elb-partial.html'"></ng-include>
                 </uib-tab>
                 <uib-tab index="6" select="selectedTab(6)" ng-if="awsSelectedKey">
                     <uib-tab-heading style="font-size: 14px;">
                         <img class="provider-icon" src="img/s3-square.png" alt="" style="height: 24px;"> Bandwidth
                     </uib-tab-heading>
-                    <ng-include ng-if="tabActive == 6" src="'components/costestimation/partials/aws-bandwidth.html'"></ng-include>
+                    <ng-include ng-if="tabActive == 6" src="'components/optimize/costestimation/partials/aws-bandwidth.html'"></ng-include>
                 </uib-tab>
                 <uib-tab index="7" select="selectedTab(7)" ng-if="awsSelectedKey">
                     <uib-tab-heading style="font-size: 14px;">
                         <img class="provider-icon" src="img/s3-square.png" alt="" style="height: 24px;"> Lambda
                     </uib-tab-heading>
-                    <ng-include ng-if="tabActive == 7" src="'components/costestimation/partials/aws-lambda.html'"></ng-include>
+                    <ng-include ng-if="tabActive == 7" src="'components/optimize/costestimation/partials/aws-lambda.html'"></ng-include>
                 </uib-tab>
                 <uib-tab index="8" select="tabActive = 8" ng-if="gcSelectedKey">
                     <uib-tab-heading style="font-size: 14px;">
                         <img class="provider-icon" src="img/gc-square.png" alt="" style="height: 24px;"> GCP Cost/Resource
                     </uib-tab-heading>
-                    <ng-include ng-if="tabActive == 8" src="'components/costestimation/partials/gc-costbyresource.html'"></ng-include>
+                    <ng-include ng-if="tabActive == 8" src="'components/optimize/costestimation/partials/gc-costbyresource.html'"></ng-include>
                 </uib-tab>
                 <uib-tab index="9" select="selectedTab(9)">
                     <uib-tab-heading style="font-size: 17px;">
                         <i class="fa fa-download"></i> CSV Export
                     </uib-tab-heading>
-                    <ng-include src="'components/costestimation/partials/csv-export.html'"></ng-include>
+                    <ng-include src="'components/optimize/costestimation/partials/csv-export.html'"></ng-include>
                 </uib-tab>
             </uib-tabset>
 

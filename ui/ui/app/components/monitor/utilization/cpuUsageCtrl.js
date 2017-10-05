@@ -82,7 +82,7 @@ angular.module('trackit.home')
                 return ({
                     chart: {
                         type: 'historicalBarChart',
-                        height: 443.5,
+//                        height: 443.5,
                         margin: {
                             top: 30,
                             right: 75,

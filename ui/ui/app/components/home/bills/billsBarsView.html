@@ -1,0 +1,14 @@
+<div ng-controller="BillsCtrl">
+	<uib-tabset active="billBarsActive">
+		<uib-tab index="1" select="billBarsActive = 1">
+			<uib-tab-heading>
+				<i class="fa fa-server"></i> MONTHLY BILLS
+			</uib-tab-heading>
+			<div class="panel panel-default" ng-if="billBarsActive == 1">
+				<div class="panel-body">
+					<nvd3 options="monthsBarsOptions" data="monthsBarsData" api="monthsAPI"></nvd3>
+				</div>
+			</div>
+		</uib-tab>
+	</uib-tabset>
+</div>

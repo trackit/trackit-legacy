@@ -1,0 +1,31 @@
+<div ng-controller="BillsCtrl">
+	<uib-tabset active="billPieActive">
+		<!-- AWS BILL PIE -->
+		<uib-tab index="1" select="billPieActive = 1" ng-if="AWSkey">
+			<uib-tab-heading>
+				<img class="provider-icon" src="img/s3-square.png" alt=""> AWS BILL
+			</uib-tab-heading>
+			<div class="panel panel-default" ng-if="billPieActive == 1">
+				<div class="panel-body">
+					<h4 style="text-align: center; margin-top: 0;">{{AWSmonth}}</h4>
+					<!-- NVD3 Chart -->
+				<nvd3 options="AWSPieOptions" data="AWSdata" api="AWSapi" ng-show="!awsBillPieNoDataMessage"></nvd3>
+					<p style="text-align: center" ng-show="awsBillPieNoDataMessage">{{awsBillPieNoDataMessage}}</p>
+				</div>
+			</div>
+		</uib-tab>
+		<!-- GC BILL PIE -->
+		<uib-tab index="2" select="billPieActive = 2" ng-if="GCPkey">
+			<uib-tab-heading>
+				<img class="provider-icon" src="img/gc-square.png" alt=""> GCP BILL
+			</uib-tab-heading>
+			<div class="panel panel-default" ng-if="billPieActive == 2">
+				<div class="panel-body">
+					<h4 style="text-align: center; margin-top: 0;">{{GCPmonth}}</h4>
+					<!-- NVD3 Chart -->
+					<nvd3 options="GCPPieOptions" data="GCPdata" api="GCPapi"></nvd3>
+				</div>
+			</div>
+		</uib-tab>
+	</uib-tabset>
+</div>
