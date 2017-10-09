@@ -1,26 +1,43 @@
+<style>
+	#s3tags {
+		margin-top: 15px;
+		width: 150px;
+		background: #ee3e3d;
+		border-color: #ee3e3d;
+		color: #fff;
+	}
+	li.s3tag {
+		padding: 10px;
+	}
+	li.s3tag:hover {
+		background: #ee3e3d;
+		color: #fff;
+	}
+</style>
+
 <div class="table-responsive">
 	<div class="btn-group" uib-dropdown dropdown-append-to-body>
-		<button id="btn-append-to-body" type="button" class="btn btn-primary" uib-dropdown-toggle>
+		<button id="s3tags" type="button" class="btn btn-primary" uib-dropdown-toggle>
 			{{s3TagSelected}} <span class="caret"></span>
 		</button>
-		<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
-			<li role="menuitem" ng-repeat="tag in s3Tags" ng-click="selectTag(tag)">{{tag}}</li>
+		<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="s3tags">
+			<li class="s3tag" role="menuitem" ng-repeat="tag in s3Tags" ng-click="selectTag(tag)">{{tag}}</li>
 		</ul>
 	</div>
 	<table class="table table-striped estimation-table" ng-if="s3DataLoaded">
 		<thead>
 		<tr>
 			<th class="clickable" ng-click="order('name')">
-                            <span uib-tooltip="Name">
-                                <i class="fa fa-database"></i>
-                            </span>
+				<span uib-tooltip="Name">
+                    <i class="fa fa-database"></i>
+				</span>
 				<i class="fa fa-arrow-up" ng-if="predicate === 'name' && reverse"></i>
 				<i class="fa fa-arrow-down" ng-if="predicate === 'name' && !reverse"></i>
 			</th>
 			<th class="clickable" ng-click="order('used_space')">
-                            <span uib-tooltip="Used space">
-                                <i class="fa fa-pie-chart"></i>
-                            </span>
+				<span uib-tooltip="Used space">
+					<i class="fa fa-pie-chart"></i>
+				</span>
 				<i class="fa fa-arrow-up" ng-if="predicate === 'used_space' && reverse"></i>
 				<i class="fa fa-arrow-down" ng-if="predicate === 'used_space' && !reverse"></i>
 			</th>

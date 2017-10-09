@@ -29,6 +29,7 @@ angular.module('trackit')
             };
 
             $scope.dataLoaded = false;
+	        $scope.AWSStatsLoaded = false;
 
             if ($scope.awsSelectedKey) {
                 EstimationModel.getAWSVMs({
@@ -42,6 +43,30 @@ angular.module('trackit')
                 }, function (data) {
                     console.log(data);
                 });
+
+	            EstimationModel.getEC2({
+		            id: $scope.awsKey
+	            }, (data) => {
+		            let stat = data.stats[0];
+	            $scope.AWSstats = {
+		            total: stat.reserved + stat.stopped + stat.unreserved,
+		            reservations: stat.unused + stat.reserved,
+		            onDemand: stat.unreserved,
+		            reserved: stat.reserved,
+		            stopped: stat.stopped
+	            };
+	            $scope.reserved_report = stat.reserved_report;
+	            $scope.AWSStatsLoaded = true;
+            }, (data) => {
+		            $scope.AWSstats = {
+			            total: 'N/A',
+			            reservations: 'N/A',
+			            onDemand: 'N/A',
+			            reserved: 'N/A',
+			            stopped: 'N/A'
+		            };
+		            $scope.AWSStatsLoaded = false;
+	            });
             }
 
             if ($scope.gcSelectedKey) {
@@ -53,32 +78,6 @@ angular.module('trackit')
                     console.log(data);
                 });
             }
-
-            $scope.AWSStatsLoaded = false;
-
-            EstimationModel.getEC2({
-                id: $scope.awsKey
-            }, (data) => {
-                let stat = data.stats[0];
-                $scope.AWSstats = {
-                    total: stat.reserved + stat.stopped + stat.unreserved,
-                    reservations: stat.unused + stat.reserved,
-                    onDemand: stat.unreserved,
-                    reserved: stat.reserved,
-                    stopped: stat.stopped
-                };
-                $scope.reserved_report = stat.reserved_report;
-                $scope.AWSStatsLoaded = true;
-            }, (data) => {
-                $scope.AWSstats = {
-                    total: 'N/A',
-                    reservations: 'N/A',
-                    onDemand: 'N/A',
-                    reserved: 'N/A',
-                    stopped: 'N/A'
-                };
-                $scope.AWSStatsLoaded = false;
-            });
 
             $scope.searchPattern = "";
 
@@ -294,7 +293,7 @@ angular.module('trackit')
                 $scope.s3Buckets = [];
                 $scope.s3Transfers = [];
                 $scope.s3TransfersChart = [];
-                $scope.s3Tags = ["All"];
+                $scope.s3Tags = ["All tags"];
                 $scope.s3TagSelected = $scope.s3Tags[0];
 
                 let getS3Buckets = () => {
