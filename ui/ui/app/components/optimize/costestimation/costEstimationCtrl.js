@@ -218,7 +218,7 @@ angular.module('trackit.prediction')
 
             $scope.showStorageTreeModal = function(sto) {
                 var modalInstance = $uibModal.open({
-                    templateUrl: 'components/costestimation/storageTree.html',
+                    templateUrl: 'components/optimize/costestimation/storageTree.html',
                     controller: 'StorageTreeController',
                     scope: $scope.$new(true),
                     windowClass: 'storage-tree-modal',
@@ -468,7 +468,7 @@ angular.module('trackit.prediction')
                     animation:  true,
                     ariaLabelledBy: 'modal-title',
                     ariaDescribedBy: 'modal-body',
-                    templateUrl: 'components/costestimation/suggestionsModal.html',
+                    templateUrl: 'components/optimize/costestimation/suggestionsModal.html',
                     size: 'lg',
                     scope: $scope
                 });

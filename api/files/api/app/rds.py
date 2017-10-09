@@ -4,7 +4,7 @@ from app.aws.instances import get_rds_instances
 from app.rdspricing import get_pricing_data
 
 rds_engine_pricing_name = {
-    'aurora': 'Amazon Aurora',
+    'aurora': 'Aurora MySQL',
     'mysql': 'MySQL',
     'mariadb': 'MySQL',
     'postgres': 'PostgreSQL',

@@ -40,7 +40,6 @@ var trackit = angular.module('trackit', [
         'ngMaterial',
         'nvd3',
         'vcRecaptcha',
-        'react',
         'ui.router',
         'ui.bootstrap',
         'uiSwitch',
@@ -49,7 +48,6 @@ var trackit = angular.module('trackit', [
         'countUpModule',
         'trackit.menu',
         'trackit.home',
-        'trackit.cloudmover',
         'trackit.storage',
         'trackit.aws.services',
         'trackit.keyselect',
@@ -198,16 +196,44 @@ var trackit = angular.module('trackit', [
                     requireLogin: true
                 }
             })
+            // Monitor
             .state('app.s3map', {
                 url: "/app/s3map",
-                templateUrl: "/components/s3map/s3map.html",
+                templateUrl: "/components/monitor/s3map/s3mapView.html",
                 controller: 'S3MapCtrl'
             })
+            .state('app.utilization', {
+                url: "/app/utilization",
+                templateUrl: "/components/monitor/utilization/utilizationView.html",
+                controller: 'UtilizationCtrl'
+            })
+            .state('app.resources', {
+                url: "/app/resources",
+                templateUrl: "/components/monitor/resources/resourcesView.html"
+            })
+            // Optimize
             .state('app.costestimation', {
                 url: "/app/estimation?optprov&?selectedtab",
-                templateUrl: "/components/costestimation/costEstimationView.html",
+                templateUrl: "/components/optimize/costestimation/costEstimationView.html",
                 controller: 'CostEstimationCtrl'
             })
+            .state('app.prediction', {
+                url: "/app/prediction",
+                templateUrl: "/components/optimize/prediction/prediction.html",
+                controller: 'PredictionCtrl'
+            })
+            // Automate
+            .state('app.cloudmover', {
+                url: "/app/cloudmover",
+                templateUrl: "/components/automate/cloudmover/cloudmoverView.html"
+            })
+            //// State enabling/disabling cloudmover feature
+            .state('app.togglemover', {
+                url: "/app/togglemover",
+                templateUrl: "/components/automate/cloudmover/toggleCloudmover.html",
+                controller: 'ToggleCloudmoverCtrl',
+            })
+            // Other
             .state('app.statistics', {
                 url: "/app/statistics",
                 templateUrl: "/components/statistics/statisticsView.html",
@@ -218,24 +244,9 @@ var trackit = angular.module('trackit', [
                 templateUrl: "/components/storage/storage.html",
                 controller: "StorageCtrl",
             })
-            .state('app.prediction', {
-                url: "/app/prediction",
-                templateUrl: "/components/prediction/prediction.html",
-                controller: 'PredictionCtrl'
-            })
             .state('app.treemap', {
                 url: "/app/treemap",
-                templateUrl: "/components/costestimation/partials/treemap-partial.html"
-            })
-            // State enabling/disabling cloudmover feature
-            .state('app.togglemover', {
-                url: "/app/togglemover",
-                templateUrl: "/components/cloudmover/toggleCloudmover.html",
-                controller: 'ToggleCloudmoverCtrl',
-            })
-            .state('app.cloudmover', {
-                url: "/app/cloudmover",
-                templateUrl: "/components/cloudmover/cloudmover.html"
+                templateUrl: "/components/optimize/costestimation/partials/treemap-partial.html"
             })
             .state('app.automation', {
                 url: "/app/automation",

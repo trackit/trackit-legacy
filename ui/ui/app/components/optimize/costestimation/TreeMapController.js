@@ -146,7 +146,7 @@ angular.module('trackit.statistics')
             $scope.showStorageTreeModal = function(sto) {
                 console.log(sto);
                 var modalInstance = $uibModal.open({
-                    templateUrl: 'components/costestimation/storageTree.html',
+                    templateUrl: 'components/optimize/costestimation/storageTree.html',
                     controller: 'StorageTreeController',
                     scope: $scope.$new(true),
                     windowClass: 'storage-tree-modal',

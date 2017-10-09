@@ -62,7 +62,7 @@ angular.module('trackit.home')
         $scope.options = {
             chart: {
                 type: 'linePlusBarChart',
-                height: 500,
+//                height: 500,
                 margin: {
                     top: 30,
                     right: 75,
@@ -78,7 +78,7 @@ angular.module('trackit.home')
                 },
                 //color: ['#2ca02c', 'darkred'],
                 x: function(d, i) {
-                    return i
+                    return i;
                 },
                 xAxis: {
                     // Main X axis
@@ -89,7 +89,7 @@ angular.module('trackit.home')
                             var parts = dx.split('-').map(function(v) {
                                 return parseInt(v, 10);
                             });
-                            return d3.time.format('%x')(new Date(parts[0], parts[1] - 1, parts[2]))
+                            return d3.time.format('%x')(new Date(parts[0], parts[1] - 1, parts[2]));
 
                         }
                     }
@@ -102,7 +102,7 @@ angular.module('trackit.home')
                             var parts = dx.split('-').map(function(v) {
                                 return parseInt(v, 10);
                             });
-                            return d3.time.format('%x')(new Date(parts[0], parts[1] - 1, parts[2]))
+                            return d3.time.format('%x')(new Date(parts[0], parts[1] - 1, parts[2]));
                         }
                     },
                     showMaxMin: false
@@ -119,7 +119,7 @@ angular.module('trackit.home')
                     // Right Y Axis
                     axisLabel: 'CPU usage (%)',
                     tickFormat: function(d) {
-                        return d3.format(',.2f')(d)
+                        return d3.format(',.2f')(d);
                     }
                 }
             }
@@ -200,7 +200,7 @@ angular.module('trackit.home')
                 },
                 //color: ['#2ca02c', 'darkred'],
                 x: function(d, i) {
-                    return i
+                    return i;
                 },
                 xAxis: {
                     // Main X axis
@@ -211,7 +211,7 @@ angular.module('trackit.home')
                             var parts = dx.split('-').map(function(v) {
                                 return parseInt(v, 10);
                             });
-                            return d3.time.format('%x')(new Date(parts[0], parts[1] - 1, parts[2]))
+                            return d3.time.format('%x')(new Date(parts[0], parts[1] - 1, parts[2]));
 
                         }
                     }
@@ -224,7 +224,7 @@ angular.module('trackit.home')
                             var parts = dx.split('-').map(function(v) {
                                 return parseInt(v, 10);
                             });
-                            return d3.time.format('%x')(new Date(parts[0], parts[1] - 1, parts[2]))
+                            return d3.time.format('%x')(new Date(parts[0], parts[1] - 1, parts[2]));
                         }
                     },
                     showMaxMin: false
@@ -241,7 +241,7 @@ angular.module('trackit.home')
                     // Right Y Axis
                     axisLabel: 'CPU usage (%)',
                     tickFormat: function(d) {
-                        return d3.format(',.2f')(d)
+                        return d3.format(',.2f')(d);
                     }
                 }
             }

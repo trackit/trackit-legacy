@@ -911,6 +911,8 @@ def aws_accounts_m_stats_s3bucketsizepername(accounts):
         return csv_row
 
     def _create_csv_rows(bucket_list, account, bandwith_cost, csv_row_all):
+        if bucket_list is None:
+            return []
         for bucket in bucket_list['buckets']:
             csv_row = {
                 'account_id': account.get_aws_user_id(),
@@ -1008,6 +1010,8 @@ def aws_accounts_m_stats_s3bucketsizepertag(accounts, tag):
         return buff_row_csv
 
     def _build_csv_row_and_add_header(bucket_list_tagged, bucket_list, account, csv_header, csv_row_all):
+        if bucket_list is None:
+            return [], []
         for tag_value in bucket_list_tagged['tag_value']:
             bucket_info = _get_total_sizes_cost_and_names(tag_value['s3_buckets'], bucket_list)
             bucket_bandwith_stat = _get_bandwith_info(account, bucket_info[1])

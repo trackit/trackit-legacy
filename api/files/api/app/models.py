@@ -5,6 +5,7 @@ from app import app
 from werkzeug.security import generate_password_hash, check_password_hash
 from os import environ
 import boto3
+import botocore
 import uuid
 import os
 import base64
@@ -178,10 +179,18 @@ class AWSKey(db.Model):
         )
 
     def get_aws_user_id(self):
-        if not self.account_id and self.is_valid_key:
-            sts = self.get_boto_session().client('sts')
-            self.account_id = sts.get_caller_identity()['Account']
-            db.session.commit()
+        try:
+            if not self.account_id:
+                sts = self.get_boto_session().client('sts')
+                self.account_id = sts.get_caller_identity()['Account']
+                self.is_valid_key = True
+                db.session.commit()
+        except botocore.exceptions.ClientError, e:
+            if e.response['Error']['Code'] == 'InvalidClientTokenId':
+                self.is_valid_key = False
+                db.session.commit()
+            else:
+                raise
         return self.account_id
 
 

@@ -329,6 +329,15 @@ uib-tab-heading > i.fa, .panel-heading > i.fa {
     padding: 0;
 }
 
+.dropdown .dropdown-menu li a {
+    color: #ee3e3d;
+}
+
+.dropdown .dropdown-menu li a.active {
+    background: #ee3e3d;
+    color: #fff;
+}
+
 /* Material design tabs */
 md-tabs.md-default-theme md-ink-bar, md-tabs md-ink-bar {
     background: #ee3e3d;
