@@ -1,4 +1,12 @@
 <div class="table-responsive">
+	<div class="btn-group" uib-dropdown dropdown-append-to-body>
+		<button id="btn-append-to-body" type="button" class="btn btn-primary" uib-dropdown-toggle>
+			{{s3TagSelected}} <span class="caret"></span>
+		</button>
+		<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
+			<li role="menuitem" ng-repeat="tag in s3Tags" ng-click="selectTag(tag)">{{tag}}</li>
+		</ul>
+	</div>
 	<table class="table table-striped estimation-table" ng-if="s3DataLoaded">
 		<thead>
 		<tr>

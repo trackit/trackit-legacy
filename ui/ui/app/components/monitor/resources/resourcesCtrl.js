@@ -289,22 +289,45 @@ angular.module('trackit')
                 }, function (data) {
                     console.log(data);
                 });
+
+                $scope.s3DataLoaded = false;
+                $scope.s3Buckets = [];
+                $scope.s3Transfers = [];
+                $scope.s3TransfersChart = [];
+                $scope.s3Tags = ["All"];
+                $scope.s3TagSelected = $scope.s3Tags[0];
+
+                let getS3Buckets = () => {
+                    let setData = (data) => {
+                        $scope.s3Buckets = data.accounts;
+                        $scope.s3Transfers = getS3TransfersList();
+                        $scope.s3TransfersChart = getS3TransfersChart();
+                        $scope.s3DataLoaded = true;
+                    };
+
+                    if ($scope.s3TagSelected !== $scope.s3Tags[0])
+                        EstimationModel.getS3BucketsPerTag({
+                            id: $scope.awsKey,
+                            tag: $scope.s3TagSelected
+                        }, setData);
+                    else
+                        EstimationModel.getS3BucketsPerName({
+                            id: $scope.awsKey
+                        }, setData);
+                };
+
+                EstimationModel.getS3Tags({
+                    id: $scope.awsKey
+                }, (data) => {
+                    $scope.s3Tags = $scope.s3Tags.concat(data.tags);
+                    getS3Buckets();
+                });
+
+                $scope.selectTag = (tag) => {
+                    $scope.s3TagSelected = tag;
+                    getS3Buckets();
+                };
             }
-
-            $scope.s3DataLoaded = false;
-            $scope.s3Buckets = [];
-            $scope.s3Transfers = [];
-            $scope.s3TransfersChart = [];
-
-            EstimationModel.getS3BucketsPerName({
-                id: $scope.awsKey
-            }, (data) => {
-                $scope.s3Buckets = data.accounts;
-                $scope.s3Transfers = getS3TransfersList();
-                $scope.s3TransfersChart = getS3TransfersChart();
-                console.log($scope.s3TransfersChart);
-                $scope.s3DataLoaded = true;
-            });
 
             // GCP Instances
 
@@ -433,14 +456,9 @@ angular.module('trackit')
 
             let getS3TransfersChart = () => {
                 return $scope.s3Buckets.map((bucket) => {
-                    console.log(bucket);
                     let values = $scope.s3Transfers.map((key) => {
-                        console.log(key);
-                        console.log(key in bucket);
-                        console.log((key in bucket ? bucket[key] : 0));
                         return {x: key, y: (key in bucket ? bucket[key] : 0)};
                     });
-                    console.log("======")
                     return {key: bucket.name, values};
                 });
             };
