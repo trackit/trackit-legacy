@@ -5,6 +5,7 @@ from app.es.awsdetailedlineitem import AWSDetailedLineitem
 from app.es.awsmetric import AWSMetric
 from app.aws.instances import get_all_instances
 import app.models as models
+from app.cache import with_cache
 from collections import defaultdict
 from scipy.stats import linregress
 from datetime import date, timedelta, datetime
@@ -96,24 +97,15 @@ def get_monthly_prices(total_hours, hourly_counts, prices, ondemand_price):
 
     return prices_and_counts
 
-from cache import cache, compressed_json, decompressed_json
-
 def get_reservation_forecast(keys):
     if not isinstance(keys, list):
         keys = list(keys)
     keys = set(models.AWSKey.query.filter_by(key=k).first() if isinstance(k, basestring) else k for k in keys)
     if not all(isinstance(k, models.AWSKey) for k in keys):
         raise TypeError('All keys must be strings or AWSKeys.')
-    cache_key = 'get_reservation_forecast#' + models.MultikeyGroup.id_of(keys)
-    cached = cache.get(cache_key)
-    if cached:
-        unpacked = decompressed_json(cached)
-    else:
-        unpacked = compute_reservation_forecast(keys)
-        cache.setex(cache_key, 12 * 60 * 60, compressed_json(unpacked))
-    return unpacked
+    return compute_reservation_forecast(keys)
 
-
+@with_cache(ttl=12 * 60 * 60)
 def compute_reservation_forecast(keys):
     if isinstance(keys, models.AWSKey):
         keys = [keys]
