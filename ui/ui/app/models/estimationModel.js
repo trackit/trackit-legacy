@@ -25,9 +25,17 @@ trackit.factory('EstimationModel', ['$resource', 'Config',
         method: "GET",
         url: Config.apiUrl("/aws/accounts/:id/s3/space_usage_tags")
       },
+      getS3Tags: {
+        method: "GET",
+        url: Config.apiUrl("/aws/accounts/:id/stats/tags")
+      },
       getS3BucketsPerName: {
         method: "GET",
         url: Config.apiUrl("/aws/accounts/:id/stats/s3bucketsizepername")
+      },
+        getS3BucketsPerTag: {
+        method: "GET",
+        url: Config.apiUrl("/aws/accounts/:id/stats/s3bucketsizepertag/:tag")
       },
       getPrediction: {
         method: "GET",
