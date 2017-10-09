@@ -189,6 +189,8 @@ class AWSKey(db.Model):
             if e.response['Error']['Code'] == 'InvalidClientTokenId':
                 self.is_valid_key = False
                 db.session.commit()
+            else
+                raise
         return self.account_id
 
 
