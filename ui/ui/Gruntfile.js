@@ -101,17 +101,7 @@ module.exports = function(grunt) {
         babel: {
             options: {
                 sourceMap: true,
-                presets: ['babel-preset-es2015', 'react']
-            },
-            dist: {
-                files: {
-                    'app/components/react/testComponent.js': 'app/react-src/testComponent.js',
-                    'app/components/react/cloudMoverComponent.js': 'app/react-src/cloudMoverComponent.js',
-                    'app/components/react/treeviewComponent.js': 'app/react-src/treeviewComponent.js',
-                    'app/components/react/stateViewerComponent.js': 'app/react-src/stateViewerComponent.js',
-                    'app/components/react/transfersViewerComponent.js': 'app/react-src/transfersViewerComponent.js',
-
-                }
+                presets: ['babel-preset-es2015']
             }
         },
         wiredep: {
@@ -138,15 +128,6 @@ module.exports = function(grunt) {
             },
             fileList: ['app/index.html'],
             dirList: []
-        },
-        watch: {
-            src: {
-                files: 'app/react-src/*.js',
-                tasks: ['build'],
-                options: {
-                    livereload: true,
-                },
-            },
         }
     });
 

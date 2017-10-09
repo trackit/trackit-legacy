@@ -8,13 +8,14 @@
 
 #### #1 Clone TrackIt
 ```sh
-$> git clone git@github.com:trackit/trackit.git
+$> git clone https://github.com/trackit/trackit.git
 ```
 
 #### #2 Start TrackIt and Let's Go!
 ```sh
 $> ./run.sh
 ```
+_You can set the **TRACKIT_HOST** environment variable to change the IP where TrackIt will listen._
 
 
 ## Default credential

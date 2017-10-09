@@ -28,9 +28,7 @@
     "angular-material": "^1.1.0",
     "countUp.js": "1.8.5",
     "inspire-tree": "1.10.3",
-    "ngReact": "^0.3.0",
     "angular-recaptcha": "^4.0.4",
-    "react-treeview": "^0.4.6",
     "mxgraph": "^3.7.2"
   },
   "overrides": {
@@ -45,7 +43,6 @@
     }
   },
   "resolutions": {
-    "angular": "^1.4.8",
-    "react": ">=0.15.0"
+    "angular": "^1.4.8"
   }
 }
