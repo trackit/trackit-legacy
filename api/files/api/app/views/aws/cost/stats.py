@@ -1010,7 +1010,7 @@ def aws_accounts_m_stats_s3bucketsizepertag(accounts, tag):
         return buff_row_csv
 
     def _build_csv_row_and_add_header(bucket_list_tagged, bucket_list, account, csv_header, csv_row_all):
-        if bucket_list is None:
+        if bucket_list_tagged is None:
             return [], []
         for tag_value in bucket_list_tagged['tag_value']:
             bucket_info = _get_total_sizes_cost_and_names(tag_value['s3_buckets'], bucket_list)
