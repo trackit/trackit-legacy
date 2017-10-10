@@ -880,6 +880,19 @@ def _append_to_header_list(header_list, new_data):
     return header_list
 
 
+@app.route('/aws/accounts/<aws_key_ids:account_ids>/stats/s3buckettags')
+@with_login()
+@with_multiple_aws_accounts()
+def aws_get_resource_tags_for_s3(accounts):
+    tags = list(set(itertools.chain.from_iterable(
+        AWSDetailedLineitem.get_available_tags(
+            account.get_aws_user_id(),
+            product_name='Simple Storage Service',
+        )['tags']
+        for account in accounts
+    )))
+    return jsonify(tags=sorted(tags, key=unicode.lower))
+
 
 @app.route('/aws/accounts/<aws_key_ids:account_ids>/stats/s3bucketsizepername')
 @with_login()
