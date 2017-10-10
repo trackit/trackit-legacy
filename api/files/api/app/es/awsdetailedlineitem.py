@@ -95,9 +95,11 @@ class AWSDetailedLineitem(dsl.DocType):
 
     @classmethod
     @with_cache(6 * 3600)
-    def get_available_tags(cls, keys, only_with_data=None):
+    def get_available_tags(cls, keys, only_with_data=None, product_name=None):
         s = cls.search()
         s = s.filter('terms', linked_account_id=keys if isinstance(keys, list) else [keys])
+        if product_name:
+            s = s.filter('term', product_name=product_name)
         s.aggs.bucket('tag_key', 'terms', field='tag.key')
         res = client.search(index='awsdetailedlineitem', body=s.to_dict(), size=0, request_timeout=60)
 
