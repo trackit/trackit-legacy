@@ -41,6 +41,27 @@
 				<i class="fa fa-arrow-up" ng-if="predicate === 'used_space' && reverse"></i>
 				<i class="fa fa-arrow-down" ng-if="predicate === 'used_space' && !reverse"></i>
 			</th>
+			<th class="clickable" ng-click="order('storage_cost')">
+				<span uib-tooltip="Name">
+                    Storage Cost
+				</span>
+				<i class="fa fa-arrow-up" ng-if="predicate === 'storage_cost' && reverse"></i>
+				<i class="fa fa-arrow-down" ng-if="predicate === 'storage_cost' && !reverse"></i>
+			</th>
+			<th class="clickable" ng-click="order('bandwidth_cost')">
+				<span uib-tooltip="Name">
+                    Bandwidth Cost
+				</span>
+				<i class="fa fa-arrow-up" ng-if="predicate === 'bandwidth_cost' && reverse"></i>
+				<i class="fa fa-arrow-down" ng-if="predicate === 'bandwidth_cost' && !reverse"></i>
+			</th>
+			<th class="clickable" ng-click="order('total_cost')">
+				<span uib-tooltip="Name">
+                    Total Cost
+				</span>
+				<i class="fa fa-arrow-up" ng-if="predicate === 'total_cost' && reverse"></i>
+				<i class="fa fa-arrow-down" ng-if="predicate === 'total_cost' && !reverse"></i>
+			</th>
 			<th class="transfer" ng-repeat="transfer in s3Transfers" style="width: 10%; font-size: 1em;">
 				{{transfer}}
 			</th>
@@ -55,6 +76,9 @@
 		<tr class="resource-item ngfade" ng-repeat="bucket in getPaginatedS3Buckets()">
 			<td style="text-align: left;" >{{bucket.name}}</td>
 			<td><span class="used_space"><strong>{{bucket.used_space | bytes}}</strong></span></td>
+			<td>{{bucket.storage_cost | currency:'$':3}}</td>
+			<td>{{bucket.bandwidth_cost | currency:'$':3}}</td>
+			<td>{{bucket.total_cost | currency:'$':3}}</td>
 			<td ng-repeat="transfer in s3Transfers">{{bucket[transfer] | bytes}}</td>
 		</tr>
 		</tbody>

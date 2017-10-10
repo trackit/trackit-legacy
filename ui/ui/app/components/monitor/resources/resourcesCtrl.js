@@ -300,8 +300,10 @@ angular.module('trackit')
                     let setData = (data) => {
                         $scope.s3Buckets = data.accounts;
                         $scope.s3Transfers = getS3TransfersList();
-                        $scope.s3TransfersChart = getS3TransfersChart();
-                        $scope.s3DataLoaded = true;
+                        setTimeout(() => {
+                            $scope.s3TransfersChart = getS3TransfersChart();
+                            $scope.s3DataLoaded = true;
+                        }, 300);
                     };
 
                     if ($scope.s3TagSelected !== $scope.s3Tags[0])
