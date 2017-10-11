@@ -211,10 +211,13 @@ module.controller('KeyselectCtrl', ['$scope', 'AWSKey', '$cookies', 'Config', '$
                 var tk = AWSKey.query({}, function() {
                     // Sorting the keys by their pretty name alphabetic values
                     tk.accounts = tk.accounts.sort(function(a, b) {
+                      if (a.pretty) {
                         if (a.pretty.toUpperCase() < b.pretty.toUpperCase())
                             return -1;
                         else
                             return 1;
+                      }
+                      return 1;
                     });
                     // Set $scope.keys only when the values have arrived
                     // to avoid displaying an empty list for an instant.
