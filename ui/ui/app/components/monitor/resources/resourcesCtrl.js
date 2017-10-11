@@ -300,10 +300,11 @@ angular.module('trackit')
                     let setData = (data) => {
                         $scope.s3Buckets = data.accounts;
                         $scope.s3Transfers = getS3TransfersList();
-                        setTimeout(() => {
-                            $scope.s3TransfersChart = getS3TransfersChart();
-                            $scope.s3DataLoaded = true;
-                        }, 300);
+	                    $scope.s3TransfersChart = getS3TransfersChart();
+	                    $scope.s3DataLoaded = true;
+	                    setTimeout(() => {
+		                    window.dispatchEvent(new Event('resize'));
+	                    }, 1000);
                     };
 
                     if ($scope.s3TagSelected !== $scope.s3Tags[0])
@@ -456,6 +457,8 @@ angular.module('trackit')
             };
 
             let getS3TransfersChart = () => {
+                if (!$scope.awsSelectedKey)
+                    return {};
                 return $scope.s3Buckets.map((bucket) => {
                     let values = $scope.s3Transfers.map((key) => {
                         return {x: key, y: (key in bucket ? bucket[key] : 0)};
