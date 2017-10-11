@@ -16,7 +16,7 @@ DOCKER_COMPOSE=$(check_if_program_is_installed "docker-compose")
 if [ "$DOCKER" == "docker" ] || [ "$DOCKER_COMPOSE" == "docker-compose" ]
 then
     echo "Docker or docker-compose is not installed"
-    exit 
+    exit
 fi
 
 if [ -z "$TRACKIT_HOST" ]
@@ -24,4 +24,6 @@ then
     export TRACKIT_HOST="localhost"
 fi
 
+$DOCKER pull msolution/trackit_api
+$DOCKER pull msolution/trackit_ui
 $DOCKER_COMPOSE up -d && echo "TrackIt has been launched on http://$TRACKIT_HOST/ !"

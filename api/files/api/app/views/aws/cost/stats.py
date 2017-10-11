@@ -904,11 +904,11 @@ def aws_accounts_m_stats_s3bucketsizepername(accounts):
             - aws
         produces:
             - application/csv
-        description: &desc Stats about cost and usage of bandwith and storag on s3 buckets, organised by name
+        description: &desc Stats about cost and usage of bandwidth and storag on s3 buckets, organised by name
         summary: *desc
         responses:
             200:
-                description: Stats about cost and usage of bandwith and storag on s3 buckets, organised by name
+                description: Stats about cost and usage of bandwidth and storag on s3 buckets, organised by name
             403:
                 description: Not logged in
             404:
@@ -916,14 +916,14 @@ def aws_accounts_m_stats_s3bucketsizepername(accounts):
     """
 
 
-    def _create_bandwith_breakdown(transfer_types_list, csv_row, bucket_bandwith_stat):
+    def _create_bandwidth_breakdown(transfer_types_list, csv_row, bucket_bandwidth_stat):
         for elem in transfer_types_list:
-            _current_transfer_type = _check_if_in_list(bucket_bandwith_stat['transfer_stats'], elem, 'type')
+            _current_transfer_type = _check_if_in_list(bucket_bandwidth_stat['transfer_stats'], elem, 'type')
             if _current_transfer_type is not None:
                 csv_row[elem] = _current_transfer_type['data'] * 1024 * 1024 * 1024 # The is by default given in GB
         return csv_row
 
-    def _create_csv_rows(bucket_list, account, bandwith_cost, csv_row_all):
+    def _create_csv_rows(bucket_list, account, bandwidth_cost, csv_row_all):
         if bucket_list is None:
             return []
         for bucket in bucket_list['buckets']:
@@ -933,16 +933,16 @@ def aws_accounts_m_stats_s3bucketsizepername(accounts):
                 'name': bucket['name'],
                 'storage_cost': _check_if_in_list(bucket['prices'], bucket['provider'], 'provider')['cost']
             }
-            bucket_bandwith_stat = _check_if_in_list(bandwith_cost, bucket['name'], 'bucket_name')
-            if bucket_bandwith_stat is not None:
-                csv_row = _create_bandwith_breakdown(transfer_types_list, csv_row, bucket_bandwith_stat)
-            csv_row['bandwith_cost'] = bucket_bandwith_stat['cost'] if bucket_bandwith_stat is not None else 0
-            csv_row['total_cost'] = csv_row['storage_cost'] + csv_row['bandwith_cost']
+            bucket_bandwidth_stat = _check_if_in_list(bandwidth_cost, bucket['name'], 'bucket_name')
+            if bucket_bandwidth_stat is not None:
+                csv_row = _create_bandwidth_breakdown(transfer_types_list, csv_row, bucket_bandwidth_stat)
+            csv_row['bandwidth_cost'] = bucket_bandwidth_stat['cost'] if bucket_bandwidth_stat is not None else 0
+            csv_row['total_cost'] = csv_row['storage_cost'] + csv_row['bandwidth_cost']
             csv_row_all.append(csv_row)
         return csv_row_all
 
     assert len(accounts) > 0
-    csv_header = ['account_id', 'name', 'used_space', 'storage_cost', 'bandwith_cost', 'total_cost']
+    csv_header = ['account_id', 'name', 'used_space', 'storage_cost', 'bandwidth_cost', 'total_cost']
     csv_row_all = []
     for account in accounts:
         bucket_list = AWSStat.latest_s3_space_usage(account)
@@ -950,10 +950,10 @@ def aws_accounts_m_stats_s3bucketsizepername(accounts):
             bucket['name']
             for bucket in (bucket_list['buckets'] if bucket_list is not None else [])
         ]
-        bandwith_cost = AWSDetailedLineitem.get_s3_bandwith_info_and_cost_per_name(account.get_aws_user_id(), bucket_ids)
-        transfer_types_list = _build_list_used_transfer_types(bandwith_cost)
+        bandwidth_cost = AWSDetailedLineitem.get_s3_bandwidth_info_and_cost_per_name(account.get_aws_user_id(), bucket_ids)
+        transfer_types_list = _build_list_used_transfer_types(bandwidth_cost)
         csv_header = _append_to_header_list(csv_header, transfer_types_list)
-        csv_row_all = _create_csv_rows(bucket_list, account, bandwith_cost, csv_row_all)
+        csv_row_all = _create_csv_rows(bucket_list, account, bandwidth_cost, csv_row_all)
 
     if len(csv_row_all) > 0 and csv_row_all[0] is None:
         csv_row_all = []
@@ -972,11 +972,11 @@ def aws_accounts_m_stats_s3bucketsizepertag(accounts, tag):
             - aws
         produces:
             - application/csv
-        description: &desc Stats about cost and usage of bandwith and storag on s3 buckets, organised by tag
+        description: &desc Stats about cost and usage of bandwidth and storag on s3 buckets, organised by tag
         summary: *desc
         responses:
             200:
-                description: Stats about cost and usage of bandwith and storag on s3 buckets, organised by tag
+                description: Stats about cost and usage of bandwidth and storag on s3 buckets, organised by tag
             403:
                 description: Not logged in
             404:
@@ -995,31 +995,31 @@ def aws_accounts_m_stats_s3bucketsizepertag(accounts, tag):
                 names += bucket['name'] + ", "
         return total_size, names[:-2], total_cost
 
-    def _get_bandwith_info(account, bucket_names):
+    def _get_bandwidth_info(account, bucket_names):
         bucket_ids = [
             bucket
             for bucket in (bucket_names if isinstance(bucket_names, list) else [bucket_names])
         ]
-        bandwith_cost = AWSDetailedLineitem.get_s3_bandwith_info_and_cost_per_name(account.get_aws_user_id(), bucket_ids)
-        return bandwith_cost
+        bandwidth_cost = AWSDetailedLineitem.get_s3_bandwidth_info_and_cost_per_name(account.get_aws_user_id(), bucket_ids)
+        return bandwidth_cost
 
 
-    def _iterate_over_buckets_in_tag_for_total(bucket_bandwith_stat):
+    def _iterate_over_buckets_in_tag_for_total(bucket_bandwidth_stat):
         total_cost = 0
-        for bucket in (bucket_bandwith_stat if bucket_bandwith_stat is not None else []):
+        for bucket in (bucket_bandwidth_stat if bucket_bandwidth_stat is not None else []):
             total_cost += bucket['cost']
         return total_cost
 
-    def _iterate_over_buckets_and_make_breakdown_bandwith_stat(bucket_bandwith_stat, buff_row_csv, tag_value):
-        bandwith_cost = 0
-        for bucket in bucket_bandwith_stat:
-            bandwith_cost += bucket['cost']
+    def _iterate_over_buckets_and_make_breakdown_bandwidth_stat(bucket_bandwidth_stat, buff_row_csv, tag_value):
+        bandwidth_cost = 0
+        for bucket in bucket_bandwidth_stat:
+            bandwidth_cost += bucket['cost']
             for elem in bucket['transfer_stats']:
                 if elem['type'] in buff_row_csv:
                     buff_row_csv[elem['type']] += (elem['data'] * 1024 * 1024 * 1024)
                 else:
                     buff_row_csv[elem['type']] = (elem['data'] * 1024 * 1024 * 1024)
-        buff_row_csv['bandwith_cost'] = bandwith_cost
+        buff_row_csv['bandwidth_cost'] = bandwidth_cost
         return buff_row_csv
 
     def _build_csv_row_and_add_header(bucket_list_tagged, bucket_list, account, csv_header, csv_row_all):
@@ -1027,8 +1027,8 @@ def aws_accounts_m_stats_s3bucketsizepertag(accounts, tag):
             return [], []
         for tag_value in bucket_list_tagged['tag_value']:
             bucket_info = _get_total_sizes_cost_and_names(tag_value['s3_buckets'], bucket_list)
-            bucket_bandwith_stat = _get_bandwith_info(account, bucket_info[1])
-            csv_header = _append_to_header_list(csv_header, _build_list_used_transfer_types(bucket_bandwith_stat))
+            bucket_bandwidth_stat = _get_bandwidth_info(account, bucket_info[1])
+            csv_header = _append_to_header_list(csv_header, _build_list_used_transfer_types(bucket_bandwidth_stat))
             csv_row = {
                 "tag_key": bucket_list_tagged['tag_key'].split(':')[1],
                 "tag_value": tag_value['tag_value'],
@@ -1037,8 +1037,8 @@ def aws_accounts_m_stats_s3bucketsizepertag(accounts, tag):
                 "bucket_names": bucket_info[1],
                 "storage_cost": bucket_info[2],
             }
-            csv_row = _iterate_over_buckets_and_make_breakdown_bandwith_stat(bucket_bandwith_stat, csv_row, tag_value)
-            csv_row['total_cost'] = csv_row['storage_cost'] + csv_row['bandwith_cost']
+            csv_row = _iterate_over_buckets_and_make_breakdown_bandwidth_stat(bucket_bandwidth_stat, csv_row, tag_value)
+            csv_row['total_cost'] = csv_row['storage_cost'] + csv_row['bandwidth_cost']
             csv_row_all.append(csv_row)
         return csv_header, csv_row_all
 
@@ -1047,7 +1047,7 @@ def aws_accounts_m_stats_s3bucketsizepertag(accounts, tag):
             if tag in bucket_list_tagged['tag_key'].split(':')[1]:
                 return bucket_list_tagged
 
-    csv_header = ["account_id", "tag_key", "tag_value", "total_size", "bucket_names", "bandwith_cost", "storage_cost", "total_cost"]
+    csv_header = ["account_id", "tag_key", "tag_value", "total_size", "bucket_names", "bandwidth_cost", "storage_cost", "total_cost"]
     csv_data = []
     for account in accounts:
         bucket_list_per_tag = AWSDetailedLineitem.get_s3_buckets_per_tag(account.get_aws_user_id())

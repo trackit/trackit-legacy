@@ -3,20 +3,20 @@
         height: 100%;
     }
 
-    .logo-wrapper > img {
+    img#logo {
         display: block;
         margin: auto;
-        width: 40%;
+        width: 60%;
         max-width: 450px;
         min-width: 300px;
-        margin-top: 40px;
     }
 
     .form-wrapper {
-        background-color: #08C;
+        background-color: #404041;
         padding: 30px;
         color: white;
-        border-radius: 10px;
+        border-radius: 3px;
+        margin-top: 60px;
         -webkit-box-shadow: 2px 6px 10px 0px rgba(0, 0, 0, 0.6);
         -moz-box-shadow: 2px 6px 10px 0px rgba(0, 0, 0, 0.6);
         box-shadow: 2px 6px 10px 0px rgba(0, 0, 0, 0.6);
@@ -30,10 +30,7 @@
 
 
 <div class="wrapper">
-    <div class="logo-wrapper">
-        <img ng-src="img/logo.png" alt="">
-    </div>
-    
+
     <div id="success-register" class="col-md-6 col-md-offset-3 col-xs-8 col-xs-offset-2" ng-show="successRegister">
         <div id="success-register-info" class="monts">You have been successfully register.</div>
         <div id="success-register-help">If you aren't be redirecting in 5 sec. <a href="/#/login">Click here</a>.</div>
@@ -41,40 +38,41 @@
 
     <div class="row monts" style="margin-top: 40px;">
         <div class="col-md-6 col-md-offset-3 col-xs-8 col-xs-offset-2 form-wrapper">
-            <form>
+            <img id="logo" ng-src="img/logo.png" alt="TrackIt">
+            <form name="signupForm">
                 <div class="form-group">
                     <label for=""><i class="fa fa-envelope hidden-xs"></i>&nbsp;Email</label>
-                    <input type="email" class="form-control" id="inputEmail3" placeholder="Email" ng-model="email">
+                    <input type="email" class="form-control" id="inputEmail3" placeholder="Email" ng-model="email" required>
                     <span class="help-block">{{ errorFields.email.join(' ') }}</span>
                 </div>
 
                 <div class="form-group">
                     <label for="">First name</label>
-                    <input type="text" class="form-control" id="inputFName3" placeholder="First Name" ng-model="firstname">
+                    <input type="text" class="form-control" id="inputFName3" placeholder="First Name" ng-model="firstname" required>
                     <span class="help-block">{{ errorFields.firstname.join(' ') }}</span>
                 </div>
 
                 <div class="form-group">
                     <label for="">Last name</label>
-                    <input type="text" class="form-control" id="inputLName3" placeholder="Last Name" ng-model="lastname">
+                    <input type="text" class="form-control" id="inputLName3" placeholder="Last Name" ng-model="lastname" required>
                     <span class="help-block">{{ errorFields.lastname.join(' ') }}</span>
                 </div>
 
                 <div class="form-group">
                     <label for=""><i class="fa fa-lock"></i> Password</label>
-                    <input type="password" class="form-control" id="inputPassword3" placeholder="Password" ng-model="password">
+                    <input type="password" class="form-control" id="inputPassword3" placeholder="Password" ng-model="password" required>
                     <span class="help-block">{{ errorFields.password.join(' ') }}</span>
                 </div>
 
                 <div class="form-group">
                     <label for=""><i class="fa fa-lock"></i> Confirm</label>
-                    <input type="password" class="form-control" id="inputPassword3" placeholder="Confirm Password" ng-model="password2">
+                    <input type="password" class="form-control" id="inputPassword3" placeholder="Confirm Password" ng-model="password2" required>
                     <span class="help-block">{{ errorFields.password2.join(' ') }}</span>
                 </div>
 
 
 
-                <button type="submit" class="btn btn-default btn-fullwidth" ng-click="signUp()" style="margin-top: 30px; background-color: #F7F7F7;color: #002A66;">Sign up</button>
+                <button type="submit" class="btn btn-default btn-fullwidth" ng-disabled="signupForm.$invalid" ng-click="signUp()" style="margin-top: 30px; background-color: #F7F7F7;color: #002A66;">Sign up</button>
                 <hr>
                 <button class="btn btn-default btn-google btn-fullwidth" ng-click="authenticate('google')">Sign-up with Google</button>
             </form>
