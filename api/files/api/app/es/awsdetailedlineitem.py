@@ -671,7 +671,7 @@ class AWSDetailedLineitem(dsl.DocType):
 
     @classmethod
     @with_cache()
-    def get_s3_bandwith_info_and_cost_per_name(cls, key, bucket_resource_ids, date_from=None, date_to=None):
+    def get_s3_bandwidth_info_and_cost_per_name(cls, key, bucket_resource_ids, date_from=None, date_to=None):
         date_from = date_from or (datetime.utcnow() - relativedelta(month=1)).replace(day=1, hour=0, minute=0, second=0, microsecond=0)
         date_to = date_to or date_from.replace(
             day=calendar.monthrange(date_from.year, date_from.month)[1],
