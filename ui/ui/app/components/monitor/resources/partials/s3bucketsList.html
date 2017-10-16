@@ -84,7 +84,7 @@
 		</tbody>
 	</table>
 	<div ng-if="getS3Buckets().length" class="pages-indicator" style="width: 100%; text-align: center;">
-		<ul uib-pagination total-items="getFilteredS3Buckets().length" ng-model="pagination.current" max-size="pagination.indicators" class="pagination-sm" boundary-link-numbers="true" style="margin: 0;"></ul>
+		<ul uib-pagination total-items="getFilteredS3Buckets().length" ng-change="updateCharts()" ng-model="pagination.current" max-size="pagination.indicators" class="pagination-sm" boundary-link-numbers="true" style="margin: 0;"></ul>
 	</div>
 	<ng-include src="'components/monitor/resources/partials/s3bucketsInfo.html'"></ng-include>
 </div>
