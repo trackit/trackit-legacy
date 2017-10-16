@@ -6,7 +6,7 @@
 			</uib-tab-heading>
 			<div class="panel panel-default" ng-if="billBarsActive == 1">
 				<div class="panel-body">
-					<nvd3 options="monthsBarsOptions" data="monthsBarsData" api="monthsAPI"></nvd3>
+					<nvd3 options="monthsBarsOptions" data="monthsBarsData" api="monthsAPI" ng-if="monthsBarsIsLoaded"></nvd3>
 				</div>
 			</div>
 		</uib-tab>
