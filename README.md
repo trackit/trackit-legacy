@@ -2,7 +2,7 @@
 
 ## Don't want to self-host TrackIt?
 
-We can provide you an ourself hosted UI, just check our website [TrackIt.IO](https://trackit.io/)
+We run our own version, check it out at [TrackIt.IO](https://trackit.io/)
 
 
 ## Installation
