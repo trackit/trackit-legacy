@@ -29,6 +29,9 @@ angular.module('trackit.home')
                   $scope.cpuUsageDay = cpuUsageDay;
                   $scope.data = $scope.cpuUsageDay;
                 }
+                setTimeout(() => {
+                    window.dispatchEvent(new Event('resize'));
+                }, 1000);
             });
 
             BillModel.getCpuUsageHour({
@@ -49,6 +52,9 @@ angular.module('trackit.home')
                 }
                 cpuUsageHour.push(cpu);
                 $scope.cpuUsageHour = cpuUsageHour;
+                setTimeout(() => {
+                    window.dispatchEvent(new Event('resize'));
+                }, 1000);
             });
 
             $scope.toggle = true;

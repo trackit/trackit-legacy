@@ -21,7 +21,7 @@ angular.module('trackit.home')
                 BillModel.getTags({
                     id: $cookies.getObject('awsKey')
                 }, function(data2) {
-                    if (data.tags.length != data2.tags.length) {
+                    if (data.tags.length !== data2.tags.length) {
                         $scope.tagWithNoData = true;
                     }
                 }, function(data2) {
@@ -29,6 +29,9 @@ angular.module('trackit.home')
                 });
 
                 $scope.selectTag($scope.tags[0]);
+                setTimeout(() => {
+                    window.dispatchEvent(new Event('resize'));
+                }, 1000);
             }
         }, function(data) {
             console.log(data);
@@ -64,6 +67,9 @@ angular.module('trackit.home')
                         $scope.data.length >= 10 ? $scope.moreThanTen = true : $scope.moreThanTen = false;
 
                     }
+                    setTimeout(() => {
+                        window.dispatchEvent(new Event('resize'));
+                    }, 1000);
                 }, function(data) {
                     console.log(data);
                 });
@@ -97,6 +103,9 @@ angular.module('trackit.home')
                         $scope.data.length >= 10 ? $scope.moreThanTen = true : $scope.moreThanTen = false;
 
                     }
+                     setTimeout(() => {
+                        window.dispatchEvent(new Event('resize'));
+                    }, 1000);
                 }, function(data) {
                     console.log(data);
                 });
@@ -128,7 +137,7 @@ angular.module('trackit.home')
         $scope.options = {
             chart: {
                 type: 'lineChart',
-//                height: 443.5,
+                height: 500,
                 margin: {
                     top: 30,
                     right: 75,
