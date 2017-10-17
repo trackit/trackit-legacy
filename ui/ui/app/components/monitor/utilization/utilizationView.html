@@ -21,7 +21,7 @@
 	</div>
 	<div ng-show="showData" class="container">
 		<uib-tabset active="activeTab">
-			<uib-tab index="1" select="activeTab = 1" ng-if="awsSelectedKey">
+			<uib-tab index="1" select="changeTab(1)" ng-if="awsSelectedKey">
 				<uib-tab-heading>
 					<img class="provider-icon" src="img/s3-square.png" alt=""> AWS COST/USAGE
 				</uib-tab-heading>
@@ -33,7 +33,7 @@
 					</div>
 				</div>
 			</uib-tab>
-			<uib-tab index="2" select="activeTab = 2" ng-if="awsSelectedKey">
+			<uib-tab index="2" select="changeTab(2)" ng-if="awsSelectedKey">
 				<uib-tab-heading>
 					<img class="provider-icon" src="img/s3-square.png" alt=""> AWS CPU Usage
 				</uib-tab-heading>
@@ -54,7 +54,7 @@
 					</div>
 				</div>
 			</uib-tab>
-			<uib-tab index="3" select="activeTab = 3" ng-if="awsSelectedKey">
+			<uib-tab index="3" select="changeTab(3)" ng-if="awsSelectedKey">
 				<uib-tab-heading>
 					<img class="provider-icon" src="img/s3-square.png" alt=""> AWS CPU Usage/Tag
 				</uib-tab-heading>
@@ -93,7 +93,7 @@
 					</div>
 				</div>
 			</uib-tab>
-			<uib-tab index="4" select="activeTab = 4" ng-if="gcSelectedKey">
+			<uib-tab index="4" select="changeTab(4)" ng-if="gcSelectedKey">
 				<uib-tab-heading>
 					<img class="provider-icon" src="img/gc-square.png" alt=""> GCP COST/USAGE
 				</uib-tab-heading>

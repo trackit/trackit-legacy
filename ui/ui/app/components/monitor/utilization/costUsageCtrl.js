@@ -51,6 +51,9 @@ angular.module('trackit.home')
 
                   // Setting retrieved data to scope binding
                   $scope.data = chartData;
+                  setTimeout(() => {
+                      window.dispatchEvent(new Event('resize'));
+                  }, 1000);
                 }
             },
             function(data) {
