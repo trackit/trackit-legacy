@@ -7,9 +7,9 @@
             <input ng-model="dbresourceSearch">
         </md-input-container>
         <div class="table-responsive" style="overflow-x: scroll; overflow-y: hidden;">
-            <h4 style="text-align: center" ng-show="!awsDBsNoDataMessage && !dataLoaded">No data available. Please try again later.</h4>
-            <h4 style="text-align: center" ng-show="awsDBsNoDataMessage && !dataLoaded">{{awsDBsNoDataMessage}}</h4>
-            <table class="table table-striped estimation-table" ng-if="dataLoaded">
+            <h4 style="text-align: center" ng-show="!awsDBsNoDataMessage && !dbs.length">No data available. Please try again later.</h4>
+            <h4 style="text-align: center" ng-show="awsDBsNoDataMessage && !dbs.length">{{awsDBsNoDataMessage}}</h4>
+            <table class="table table-striped estimation-table" ng-if="dbs.length">
                 <thead>
                     <tr>
                         <!--<th>
