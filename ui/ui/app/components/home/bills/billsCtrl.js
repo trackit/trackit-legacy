@@ -92,6 +92,7 @@ angular.module('trackit.home')
             };
 
             $scope.monthsBarsData = [];
+            $scope.monthsBarsIsLoaded = false;
 
             // Retrieve the data from the model for AWS
             if ($scope.AWSkey) {
@@ -121,6 +122,7 @@ angular.module('trackit.home')
                         key: "AWS",
                         values: values
                     });
+                    $scope.monthsBarsIsLoaded = true;
                 })
             }
 
@@ -153,43 +155,6 @@ angular.module('trackit.home')
                 })
                 */
             }
-
-            $scope.monthsData = [
-                {
-                    key: "AWS",
-                    values: [
-                        {
-                            x: "2017-07",
-                            y: 84
-                        },
-                        {
-                            x: "2017-08",
-                            y: 21
-                        },
-                        {
-                            x: "2017-09",
-                            y: 42
-                        }
-                    ]
-                },
-                {
-                    key: "GCP",
-                    values: [
-                        {
-                            x: "2017-07",
-                            y: 42
-                        },
-                        {
-                            x: "2017-08",
-                            y: 84
-                        },
-                        {
-                            x: "2017-09",
-                            y: 21
-                        }
-                    ]
-                }
-            ];
 
             // Get bill total
             function getPieTotal(data) {
