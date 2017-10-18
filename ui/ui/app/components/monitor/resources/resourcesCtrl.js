@@ -29,7 +29,7 @@ angular.module('trackit')
             };
 
             $scope.dataLoaded = false;
-	        $scope.AWSStatsLoaded = false;
+	          $scope.AWSStatsLoaded = false;
 
             if ($scope.awsSelectedKey) {
                 EstimationModel.getAWSVMs({
@@ -243,8 +243,14 @@ angular.module('trackit')
     .controller('ResourcesStoragesCtrl', ['$scope', 'EstimationModel', 'AWSKey', '$cookies', '$filter',
         function($scope, EstimationModel, AWSKey, $cookies, $filter) {
 
-            // Providers information
+            $scope.changeResourceActive = (index) => {
+                $scope.resourceActive = index;
+                setTimeout(() => {
+                    window.dispatchEvent(new Event('resize'));
+                }, 500);
+            };
 
+            // Providers information
             $scope.awsSelectedKey = $cookies.getObject('awsKey');
             $scope.gcSelectedKey = $cookies.getObject('gcKey');
 
@@ -460,6 +466,9 @@ angular.module('trackit')
             $scope.updateCharts = () => {
                 $scope.s3TransfersChart = getS3TransfersChart();
                 $scope.s3TransfersAPI.api.refresh();
+                setTimeout(() => {
+                    window.dispatchEvent(new Event('resize'));
+                }, 1000);
             };
 
             let getS3TransfersChart = () => {

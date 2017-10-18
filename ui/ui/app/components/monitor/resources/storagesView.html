@@ -23,13 +23,13 @@
 			</div>
 		</div>
 		<uib-tabset active="resourceActive">
-			<uib-tab index="1" select="resourceActive = 1">
+			<uib-tab index="1" select="changeResourceActive(1)">
 				<uib-tab-heading>
 					<i class="fa fa-archive"></i> Global
 				</uib-tab-heading>
 				<ng-include src="'components/monitor/resources/partials/storageList.html'" ng-if="resourceActive == 1"></ng-include>
 			</uib-tab>
-			<uib-tab index="2" select="resourceActive = 2" ng-if="providers.aws && instances.aws.length">
+			<uib-tab index="2" select="changeResourceActive(2)" ng-if="providers.aws && instances.aws.length">
 				<uib-tab-heading>
 					<img class="provider-icon" src="img/s3-square.png" alt="" style="height: 15px;"> S3 Buckets
 				</uib-tab-heading>
