@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('trackit.statistics')
-    .controller('TreeMapController', ['$scope', 'EstimationModel', '$cookies', '$filter', 'BillModel', '$uibModal', 'TreemapMockFactory', 'apiBaseUrl', '$http',
-        function($scope, EstimationModel, $cookies, $filter, BillModel, $uibModal, TreemapMockFactory, apiBaseUrl, $http) {
+    .controller('TreeMapController', ['$scope', 'EstimationModel', '$cookies', '$filter', 'BillModel', '$uibModal', 'TreemapMockFactory', 'apiBaseUrl', '$http', 'AWSKey',
+        function($scope, EstimationModel, $cookies, $filter, BillModel, $uibModal, TreemapMockFactory, apiBaseUrl, $http, AWSKey) {
 
             $scope.hoveredBucket = {};
 
@@ -12,9 +12,14 @@ angular.module('trackit.statistics')
                 light: "#81C784",
                 medium: "#FFB74D",
                 hard: "#E65100"
-            }
+            };
             $scope.mapColorScheme = mapColorScheme;
 
+            AWSKey.getMutipleKeysInfos({
+                id: $cookies.getObject('awsKey')
+            }, (data) => {
+                console.log(data);
+            });
 
             $http({
                 method: 'GET',
@@ -263,7 +268,8 @@ angular.module('trackit.statistics')
                 } else {
                     // GETTING DEMO data
                     // Used to set demo data instead of real data
-                    function setDemoData() {
+                    // Async imitation
+                    setTimeout(() => {
                         // MOCK DATA
                         var mockData = new TreemapMockFactory();
                         console.log(mockData);
@@ -278,10 +284,7 @@ angular.module('trackit.statistics')
                         };
                         if ($scope.data.children)
                             drawTreeMap();
-                    }
-
-                    // Async imitation
-                    setTimeout(setDemoData, 1000);
+                    }, 1000);
                 }
 
             }
@@ -358,7 +361,7 @@ angular.module('trackit.statistics')
                         console.log(d);
                         $scope.showStorageTreeModal(d.name);
                         d3.event.stopPropagation();
-                    });;
+                    });
 
 
 
@@ -426,7 +429,6 @@ angular.module('trackit.statistics')
                         //appendTooltip(d);
                         $scope.setHovered(d);
                     });
-
 
 
                 d3.select(window).on("click", function() {

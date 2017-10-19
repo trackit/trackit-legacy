@@ -1,6 +1,11 @@
+<style>
+	.tab-content .tab-content {
+		border-top: 1px solid #ddd;
+	}
+</style>
 <div class="panel panel-default" ng-controller="ResourcesStoragesCtrl">
 	<div class="panel-body">
-		<div class="filters">
+		<div class="filters" style="height: 100px;">
 			<md-input-container class="md-block col-md-9" style="margin-bottom:0px;">
 				<label><i class="fa fa-search"></i> Search through your resources</label>
 				<input ng-model="searchPattern">
@@ -17,68 +22,19 @@
 				</label>
 			</div>
 		</div>
-		<div class="table-responsive">
-			<table class="table table-striped estimation-table" ng-if="dataLoaded">
-				<thead>
-				<tr>
-					<th class="clickable" ng-click="order('location')">
-                            <span uib-tooltip="Location">
-                                <i class="fa fa-globe"></i>
-                            </span>
-						<i class="fa fa-arrow-up" ng-if="predicate === 'location' && reverse"></i>
-						<i class="fa fa-arrow-down" ng-if="predicate === 'location' && !reverse"></i>
-					</th>
-					<th class="clickable" ng-click="order('name')">
-                            <span uib-tooltip="Name">
-                                <i class="fa fa-globe"></i>
-                            </span>
-						<i class="fa fa-arrow-up" ng-if="predicate === 'name' && reverse"></i>
-						<i class="fa fa-arrow-down" ng-if="predicate === 'name' && !reverse"></i>
-					</th>
-					<th class="clickable" ng-click="order('type')">
-							<span uib-tooltip="Type">
-								<i class="fa fa-cogs"></i>
-							</span>
-						<i class="fa fa-arrow-up" ng-if="predicate === 'region' && reverse"></i>
-						<i class="fa fa-arrow-down" ng-if="predicate === 'region' && !reverse"></i>
-					</th>
-					<th class="clickable" ng-click="order('used_space')">
-                            <span uib-tooltip="Used space">
-                                <i class="fa fa-pie-chart"></i>
-                            </span>
-						<i class="fa fa-arrow-up" ng-if="predicate === 'used_space' && reverse"></i>
-						<i class="fa fa-arrow-down" ng-if="predicate === 'used_space' && !reverse"></i>
-					</th>
-					<th class="clickable" ng-click="order('provider')">
-						<span uib-tooltip="Provider">
-							<i class="fa fa-bolt"></i>
-						</span>
-						<i class="fa fa-arrow-up" ng-if="predicate === 'provider' && reverse"></i>
-						<i class="fa fa-arrow-down" ng-if="predicate === 'provider' && !reverse"></i>
-					</th>
-				</tr>
-				</thead>
-				<tbody>
-				<tr class="resource-item" ng-if="!getInstances().length">
-					<td colspan="5">
-						<strong>No results</strong>
-					</td>
-				</tr>
-				<tr class="resource-item ngfade" ng-repeat="instance in getPaginatedInstances()">
-					<td>{{instance.location}}</td>
-					<td style="text-align: left;" >{{instance.name}}</td>
-					<td><span class="badge" style="font-size: 12px; font-weight: 500;">{{instance.type}}</span></td>
-					<td><span class="used_space"><strong>{{instance.used_space | bytes}}</strong></span></td>
-					<td>
-						<img ng-if="instance.provider == 'aws'" class="provider-icon" src="img/s3-square.png" alt="">
-						<img ng-if="instance.provider == 'gcloud'" class="provider-icon" src="img/gc-square.png" alt="">
-					</td>
-				</tr>
-				</tbody>
-			</table>
-		</div>
-		<div ng-if="getInstances().length" class="pages-indicator" style="width: 100%; text-align: center;">
-			<ul uib-pagination total-items="getFilteredInstances().length" ng-model="pagination.current" max-size="pagination.indicators" class="pagination-sm" boundary-link-numbers="true" style="margin: 0;"></ul>
-		</div>
+		<uib-tabset active="resourceActive">
+			<uib-tab index="1" select="changeResourceActive(1)">
+				<uib-tab-heading>
+					<i class="fa fa-archive"></i> Global
+				</uib-tab-heading>
+				<ng-include src="'components/monitor/resources/partials/storageList.html'" ng-if="resourceActive == 1"></ng-include>
+			</uib-tab>
+			<uib-tab index="2" select="changeResourceActive(2)" ng-if="providers.aws && instances.aws.length">
+				<uib-tab-heading>
+					<img class="provider-icon" src="img/s3-square.png" alt="" style="height: 15px;"> S3 Buckets
+				</uib-tab-heading>
+				<ng-include src="'components/monitor/resources/partials/s3bucketsList.html'" ng-if="resourceActive == 2"></ng-include>
+			</uib-tab>
+		</uib-tabset>
 	</div>
 </div>
