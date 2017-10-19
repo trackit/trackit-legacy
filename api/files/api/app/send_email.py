@@ -78,3 +78,23 @@ def send_email_alternative(email, subject, content_plain, content_html, bypass_d
     server.ehlo()
     server.login(smtp_username, smtp_password)
     server.sendmail(fromaddr, toaddrs, msg.as_string())
+
+def send_raw_email(sender, recipient, content_mime):
+    if app.debug:
+        print('RAW EMAIL')
+    else:
+        smtp_server = config.SMTP_SERVER
+        smtp_username = config.SMTP_USERNAME
+        smtp_password = config.SMTP_PASSWORD
+        smtp_port = config.SMTP_PORT
+        smtp_do_tls = True
+        server = smtplib.SMTP(
+            host = smtp_server,
+            port = smtp_port,
+            timeout = 10
+        )
+        server.set_debuglevel(10)
+        server.starttls()
+        server.ehlo()
+        server.login(smtp_username, smtp_password)
+        server.sendmail(sender, recipient, content)
