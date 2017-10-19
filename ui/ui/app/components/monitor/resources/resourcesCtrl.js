@@ -433,6 +433,18 @@ angular.module('trackit')
                 return buckets.slice(first, last);
             };
 
+            $scope.getPaginatedS3Transfers = () => {
+              let transfers = [];
+              $scope.getPaginatedS3Buckets().forEach((bucket) => {
+                Object.keys(bucket).forEach((key) => {
+                  if (key.endsWith("-Bytes") && bucket[key] > 0 && transfers.indexOf(key) === -1)
+                    transfers.push(key);
+                });
+              });
+              transfers.sort();
+              return transfers;
+            };
+
             // S3 Buckets charts
 
             $scope.s3ChartsOptions = {
@@ -475,7 +487,7 @@ angular.module('trackit')
                 if (!$scope.awsSelectedKey)
                     return {};
                 return $scope.getPaginatedS3Buckets().map((bucket) => {
-                    let values = $scope.s3Transfers.map((key) => {
+                    let values = $scope.getPaginatedS3Transfers().map((key) => {
                         return {x: key, y: (key in bucket ? bucket[key] : 0)};
                     });
                     return {key: bucket.name, values};
