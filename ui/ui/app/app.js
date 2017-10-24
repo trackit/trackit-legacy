@@ -246,7 +246,7 @@ var trackit = angular.module('trackit', [
             })
             .state('app.treemap', {
                 url: "/app/treemap",
-                templateUrl: "/components/optimize/costestimation/partials/treemap-partial.html"
+                templateUrl: "/components/monitor/s3map/TreeMapView.html"
             })
             .state('app.automation', {
                 url: "/app/automation",
