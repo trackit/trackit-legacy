@@ -219,7 +219,7 @@ var trackit = angular.module('trackit', [
             })
             .state('app.prediction', {
                 url: "/app/prediction",
-                templateUrl: "/components/optimize/prediction/prediction.html",
+                templateUrl: "/components/predict/prediction.html",
                 controller: 'PredictionCtrl'
             })
             // Automate
