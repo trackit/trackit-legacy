@@ -26,14 +26,11 @@
         <!--<li ng-class="{'active' : currentState == 'app.statistics'}">
           <a class="page-scroll" ui-sref="app.statistics">Statistics</a>
         </li>-->
-        <li uib-dropdown class="dropdown" ng-class="{'active' : currentState == 'app.utilization' || currentState == 'app.s3map' || currentState == 'app.resources'}">
+        <li uib-dropdown class="dropdown" ng-class="{'active' : currentState == 'app.utilization' || currentState == 'app.resources'}">
           <a href="#" class="page-scroll dropdown-toggle" uib-dropdown-toggle>Monitor</a>
           <ul class="dropdown-menu" uib-dropdown-menu>
             <li>
               <a ui-sref="app.utilization" ng-class="{'active' : currentState == 'app.utilization'}">Utilization</a>
-            </li>
-            <li>
-              <a ui-sref="app.s3map" ng-class="{'active' : currentState == 'app.s3map'}">Storage Map</a>
             </li>
             <li>
               <a ui-sref="app.resources" ng-class="{'active' : currentState == 'app.resources'}">Resources</a>
@@ -59,6 +56,10 @@
             </li>
           </ul>
         </li>-->
+        <li ng-class="{'active' : currentState == 'app.s3map'}">
+          <!-- My resources -->
+          <a ui-sref="app.s3map" href="#" class="page-scroll">Storage Map</a>
+        </li>
         <li ng-class="{'active' : currentState == 'app.costestimation'}">
           <!-- My resources -->
           <a ui-sref="app.costestimation" href="#" class="page-scroll">Optimize</a>

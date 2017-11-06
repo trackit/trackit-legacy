@@ -199,7 +199,7 @@ var trackit = angular.module('trackit', [
             // Monitor
             .state('app.s3map', {
                 url: "/app/s3map",
-                templateUrl: "/components/monitor/s3map/s3mapView.html",
+                templateUrl: "/components/s3map/s3mapView.html",
                 controller: 'S3MapCtrl'
             })
             .state('app.utilization', {
@@ -246,7 +246,7 @@ var trackit = angular.module('trackit', [
             })
             .state('app.treemap', {
                 url: "/app/treemap",
-                templateUrl: "/components/monitor/s3map/TreeMapView.html"
+                templateUrl: "/components/s3map/TreeMapView.html"
             })
             .state('app.automation', {
                 url: "/app/automation",
