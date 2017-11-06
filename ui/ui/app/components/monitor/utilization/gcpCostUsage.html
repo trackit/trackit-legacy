@@ -1,0 +1,15 @@
+<div>
+	<uib-tabset active="gcpCostUsage">
+		<uib-tab index="1" select="gcpCostUsage = 1" ng-if="gcSelectedKey">
+			<uib-tab-heading>
+				<img class="provider-icon" src="img/gc-square.png" alt=""> GCP COST/USAGE
+			</uib-tab-heading>
+			<div class="panel panel-default" ng-controller="GCCostUsageCtrl" ng-if="gcpCostUsage == 1">
+				<div class="panel-body">
+					<!-- NVD3 Chart -->
+					<nvd3 options="options" data="data" api="api"></nvd3>
+				</div>
+			</div>
+		</uib-tab>
+	</uib-tabset>
+</div>

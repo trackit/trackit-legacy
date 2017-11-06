@@ -65,7 +65,7 @@ angular.module('trackit.home')
         $scope.options = {
             chart: {
                 type: 'linePlusBarChart',
-//                height: 500,
+                height: 500,
                 margin: {
                     top: 30,
                     right: 75,

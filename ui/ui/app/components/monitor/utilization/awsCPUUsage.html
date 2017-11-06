@@ -1,0 +1,25 @@
+<div>
+	<uib-tabset active="awsCPUUsage">
+		<uib-tab index="1" select="awsCPUUsage = 1" ng-if="awsSelectedKey">
+			<uib-tab-heading>
+				<img class="provider-icon" src="img/s3-square.png" alt=""> AWS CPU Usage
+			</uib-tab-heading>
+			<div class="panel panel-default" ng-controller="cpuUsageCtrl" ng-if="awsCPUUsage == 1">
+				<div class="panel-body">
+					<!-- NVD3 Chart -->
+					<nvd3 options="options" data="data" api="api" ng-show="!awsCPUUsageNoDataMessage"></nvd3>
+					<p style="text-align: center" ng-show="awsCPUUsageNoDataMessage">{{awsCPUUsageNoDataMessage}}</p>
+					<div ng-show="dataReady" style="text-align: center; margin-top: 10px;">
+						<div>
+							<label class="switch">
+								<input type="checkbox" ng-click="onChange()">
+								<div class="slider round"></div>
+							</label>
+						</div>
+						<span style="font-weight: bold; font-size: 12px;">Per day / per hour</span>
+					</div>
+				</div>
+			</div>
+		</uib-tab>
+	</uib-tabset>
+</div>
