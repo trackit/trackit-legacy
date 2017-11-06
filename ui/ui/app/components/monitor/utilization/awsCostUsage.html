@@ -1,0 +1,16 @@
+<div>
+	<uib-tabset active="awsCostUsage">
+		<uib-tab index="1" select="awsCostUsage = 1" ng-if="awsSelectedKey">
+			<uib-tab-heading>
+				<img class="provider-icon" src="img/s3-square.png" alt=""> AWS COST/USAGE
+			</uib-tab-heading>
+			<div class="panel panel-default" ng-controller="CostUsageCtrl" ng-if="awsCostUsage == 1">
+				<div class="panel-body">
+					<!-- NVD3 Chart -->
+					<nvd3 options="options" data="data" api="api" ng-show="!awsCostUsageNoDataMessage"></nvd3>
+					<p style="text-align: center" ng-show="awsCostUsageNoDataMessage">{{awsCostUsageNoDataMessage}}</p>
+				</div>
+			</div>
+		</uib-tab>
+	</uib-tabset>
+</div>

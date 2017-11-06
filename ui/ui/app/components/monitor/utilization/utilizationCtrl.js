@@ -35,13 +35,4 @@ angular.module('trackit')
                 $scope.dataReady = true;
             }
 
-            $scope.activeTab = 1;
-
-            $scope.changeTab = (tab) => {
-                $scope.activeTab = tab;
-                setTimeout(() => {
-                    window.dispatchEvent(new Event('resize'));
-                }, 1000);
-            }
-
         }]);
