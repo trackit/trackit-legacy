@@ -7,6 +7,11 @@
               <input ng-model="resourceSearch">
           </md-input-container>
 
+
+        <button type="button" class="btn btn-primary" ng-model="togglePricing" uib-btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">
+            {{(togglePricing ? "Hide" : "Show")}} providers pricing
+        </button>
+
         <div class="table-responsive">
             <h4 style="text-align: center" ng-show="!awsVMsNoDataMessage && !dataLoaded">No data available. Please try again later.</h4>
             <h4 style="text-align: center" ng-show="awsVMsNoDataMessage && !dataLoaded">{{awsVMsNoDataMessage}}</h4>
@@ -38,19 +43,25 @@
                             </span>
                         </th>
 
-                        <th class="clickable" ng-click="order('aws')">
+                        <th ng-if="!togglePricing">
+                            <span uib-tooltip="Cost ($)">
+                                <i class="fa fa-dollar"></i>
+                            </span>
+                        </th>
+
+                        <th class="clickable" ng-if="togglePricing" ng-click="order('aws')">
                             <span uib-tooltip="AWS ($)"><img src="img/s3-square.png" style="width: 30px" alt=""></span>
                             <i class="fa fa-arrow-up" ng-if="predicate === 'aws' && reverse"></i>
                             <i class="fa fa-arrow-down" ng-if="predicate === 'aws' && !reverse"></i>
                         </th>
 
-                        <th class="clickable" ng-click="order('gcloud')">
+                        <th class="clickable" ng-if="togglePricing" ng-click="order('gcloud')">
                             <span uib-tooltip="Google Cloud ($)"><img src="img/gc-square.png" style="width: 30px" alt=""></span>
                             <i class="fa fa-arrow-up" ng-if="predicate === 'gcloud' && reverse"></i>
                             <i class="fa fa-arrow-down" ng-if="predicate === 'gcloud' && !reverse"></i>
                         </th>
 
-                        <th class="clickable" ng-click="order('azure')">
+                        <th class="clickable" ng-if="togglePricing" ng-click="order('azure')">
                              <span uib-tooltip="Azure ($)"><img src="img/ms-square.png" style="width: 30px" alt=""></span>
                             <i class="fa fa-arrow-up" ng-if="predicate === 'azure' && reverse"></i>
                             <i class="fa fa-arrow-down" ng-if="predicate === 'azure' && !reverse"></i>
@@ -80,9 +91,12 @@
                             <img ng-if="estimation.provider == 'aws'" class="provider-icon" src="img/s3-square.png" alt="">
                             <img ng-if="estimation.provider == 'gcloud'" class="provider-icon" src="img/gc-square.png" alt="">
                         </td>
-                        <td ng-class="{'selectedPrice' : estimation.provider == 'aws', 'unselectedPrice' : estimation.provider != 'aws'}">{{getCostForProvider('aws', estimation.prices) | currency:'$':3}}/hr</td>
-                        <td ng-class="{'selectedPrice' : estimation.provider == 'gcloud', 'unselectedPrice' : estimation.provider != 'gcloud'}">{{getCostForProvider('gcloud', estimation.prices) | currency:'$':3}}/hr</td>
-                        <td ng-class="{'selectedPrice' : estimation.provider == 'azure', 'unselectedPrice' : estimation.provider != 'azure'}">{{getCostForProvider('azure', estimation.prices) | currency:'$':3}}/hr</td>
+                        <td ng-if="!togglePricing">
+                            {{getCostForProvider(estimation.provider, estimation.prices) | currency:'$':3}}/hr
+                        </td>
+                        <td ng-if="togglePricing" ng-class="{'selectedPrice' : estimation.provider == 'aws', 'unselectedPrice' : estimation.provider != 'aws'}">{{getCostForProvider('aws', estimation.prices) | currency:'$':3}}/hr</td>
+                        <td ng-if="togglePricing" ng-class="{'selectedPrice' : estimation.provider == 'gcloud', 'unselectedPrice' : estimation.provider != 'gcloud'}">{{getCostForProvider('gcloud', estimation.prices) | currency:'$':3}}/hr</td>
+                        <td ng-if="togglePricing" ng-class="{'selectedPrice' : estimation.provider == 'azure', 'unselectedPrice' : estimation.provider != 'azure'}">{{getCostForProvider('azure', estimation.prices) | currency:'$':3}}/hr</td>
                     </tr>
                     <tr ng-if="show < estimations.length && itemsLength > 0">
                         <td colspan="2"><strong>...</strong></td>
