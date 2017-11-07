@@ -3,148 +3,162 @@
         <i class="fa fa-question-circle fa-2x pull-right" uib-popover-html="searchHelp" popover-trigger="mouseenter" popover-placement="bottom"></i>
         <md-input-container class="md-block" style="margin-bottom:0px;">
             <label><i class="fa fa-search"></i> Search through your storages</label>
-            <input ng-model="storageResourceSearch">
+            <input type="text" ng-model="search.pattern">
         </md-input-container>
-        <div class="table-responsive">
-            <h4 style="text-align: center" ng-show="!awsStorageNoDataMessage && !storage.length">No data available. Please try again later.</h4>
-            <h4 style="text-align: center" ng-show="awsStorageNoDataMessage && !storageLoaded">{{awsStorageNoDataMessage}}</h4>
-            <table class="table table-striped estimation-table" ng-if="storageLoaded">
-                <thead>
-                    <tr>
-                        <th>
-                            <button class="btn btn-xs" ng-click="selectAll(storage, 'storage')"><i class="fa fa-arrow-down"></i> Select </button>
-                        </th>
-                        <th class="clickable" ng-click="orderStorage('location')">
+
+        <uib-tabset active="resourceActive">
+            <uib-tab index="1" select="changeResourceActive(1)">
+                <uib-tab-heading>
+                    <i class="fa fa-archive"></i> Global
+                </uib-tab-heading>
+                <div class="table-responsive" ng-if="resourceActive == 1">
+                    <h4 style="text-align: center" ng-show="!awsStorageNoDataMessage && !storage.length">No data available. Please try again later.</h4>
+                    <h4 style="text-align: center" ng-show="awsStorageNoDataMessage && !storageLoaded">{{awsStorageNoDataMessage}}</h4>
+                    <table class="table table-striped estimation-table" ng-if="storageLoaded">
+                        <thead>
+                        <tr>
+                            <th>
+                                <button class="btn btn-xs" ng-click="selectAll(storage, 'storage')"><i class="fa fa-arrow-down"></i> Select </button>
+                            </th>
+                            <th class="clickable" ng-click="orderStorage('location')">
                             <span uib-tooltip="Location">
                                 <i class="fa fa-globe"></i>
                             </span>
-                            <i class="fa fa-arrow-up" ng-if="predicateStorage === 'location' && reverseStorage"></i>
-                            <i class="fa fa-arrow-down" ng-if="predicateStorage === 'location' && !reverseStorage"></i>
-                        </th>
+                                <i class="fa fa-arrow-up" ng-if="predicateStorage === 'location' && reverseStorage"></i>
+                                <i class="fa fa-arrow-down" ng-if="predicateStorage === 'location' && !reverseStorage"></i>
+                            </th>
 
-                        <th class="clickable" ng-click="orderStorage('name')">
+                            <th class="clickable" ng-click="orderStorage('name')">
                             <span uib-tooltip="Name">
                                 <i class="fa fa-database"></i>
                             </span>
-                            <i class="fa fa-arrow-up" ng-if="predicateStorage === 'name' && reverseStorage"></i>
-                            <i class="fa fa-arrow-down" ng-if="predicateStorage === 'name' && !reverseStorage"></i>
-                        </th>
+                                <i class="fa fa-arrow-up" ng-if="predicateStorage === 'name' && reverseStorage"></i>
+                                <i class="fa fa-arrow-down" ng-if="predicateStorage === 'name' && !reverseStorage"></i>
+                            </th>
 
 
-                        <th class="clickable" ng-click="orderStorage('type')">
+                            <th class="clickable" ng-click="orderStorage('type')">
                             <span uib-tooltip="Type">
                                 <i class="fa fa-cogs"></i>
                             </span>
-                            <i class="fa fa-arrow-up" ng-if="predicateStorage === 'type' && reverseStorage"></i>
-                            <i class="fa fa-arrow-down" ng-if="predicateStorage === 'type' && !reverseStorage"></i>
-                        </th>
+                                <i class="fa fa-arrow-up" ng-if="predicateStorage === 'type' && reverseStorage"></i>
+                                <i class="fa fa-arrow-down" ng-if="predicateStorage === 'type' && !reverseStorage"></i>
+                            </th>
 
-                        <th class="clickable" ng-click="orderStorage('used_space')">
+                            <th class="clickable" ng-click="orderStorage('used_space')">
                             <span uib-tooltip="Used space">
                                 <i class="fa fa-pie-chart"></i>
                             </span>
-                            <i class="fa fa-arrow-up" ng-if="predicateStorage === 'used_space' && reverseStorage"></i>
-                            <i class="fa fa-arrow-down" ng-if="predicateStorage === 'used_space' && !reverseStorage"></i>
-                        </th>
+                                <i class="fa fa-arrow-up" ng-if="predicateStorage === 'used_space' && reverseStorage"></i>
+                                <i class="fa fa-arrow-down" ng-if="predicateStorage === 'used_space' && !reverseStorage"></i>
+                            </th>
 
-                        <th class="clickable" ng-click="orderStorage('provider')">
+                            <th class="clickable" ng-click="orderStorage('provider')">
                             <span uib-tooltip="Provider">
                                 <i class="fa fa-bolt"></i>
                             </span>
-                            <i class="fa fa-arrow-up" ng-if="predicateStorage === 'provider' && reverseStorage"></i>
-                            <i class="fa fa-arrow-down" ng-if="predicateStorage === 'provider' && !reverseStorage"></i>
-                        </th>
-                        <th class="clickable" ng-click="orderStorage('aws')">
+                                <i class="fa fa-arrow-up" ng-if="predicateStorage === 'provider' && reverseStorage"></i>
+                                <i class="fa fa-arrow-down" ng-if="predicateStorage === 'provider' && !reverseStorage"></i>
+                            </th>
+                            <th class="clickable" ng-click="orderStorage('aws')">
                             <span uib-tooltip="AWS">
                                 <img src="img/s3-square.png" style="width: 30px" alt="">
                             </span>
-                            <i class="fa fa-arrow-up" ng-if="predicateStorage === 'aws' && reverseStorage"></i>
-                            <i class="fa fa-arrow-down" ng-if="predicateStorage === 'aws' && !reverseStorage"></i>
-                        </th>
-                        <th class="clickable" ng-click="orderStorage('gcloud')">
+                                <i class="fa fa-arrow-up" ng-if="predicateStorage === 'aws' && reverseStorage"></i>
+                                <i class="fa fa-arrow-down" ng-if="predicateStorage === 'aws' && !reverseStorage"></i>
+                            </th>
+                            <th class="clickable" ng-click="orderStorage('gcloud')">
                             <span uib-tooltip="Google Cloud">
                                 <img src="img/gc-square.png" style="width: 30px" alt="">
                             </span>
-                            <i class="fa fa-arrow-up" ng-if="predicateStorage === 'gcloud' && reverseStorage"></i>
-                            <i class="fa fa-arrow-down" ng-if="predicateStorage === 'gcloud' && !reverseStorage"></i>
-                        </th>
+                                <i class="fa fa-arrow-up" ng-if="predicateStorage === 'gcloud' && reverseStorage"></i>
+                                <i class="fa fa-arrow-down" ng-if="predicateStorage === 'gcloud' && !reverseStorage"></i>
+                            </th>
 
-                        <th class="clickable" ng-click="orderStorage('azure')">
+                            <th class="clickable" ng-click="orderStorage('azure')">
                             <span uib-tooltip="Azure">
                                 <img src="img/ms-square.png" style="width: 30px" alt="">
                             </span>
-                            <i class="fa fa-arrow-up" ng-if="predicateStorage === 'azure' && reverseStorage"></i>
-                            <i class="fa fa-arrow-down" ng-if="predicateStorage === 'azure' && !reverseStorage"></i>
-                        </th>
+                                <i class="fa fa-arrow-up" ng-if="predicateStorage === 'azure' && reverseStorage"></i>
+                                <i class="fa fa-arrow-down" ng-if="predicateStorage === 'azure' && !reverseStorage"></i>
+                            </th>
 
-                        <th class="clickable" ng-if="optionalProvider">
-                            <span ng-if="optionalProvider == 'qumulo' "><img src="img/qumulo-logo.png" style="width: 90px" alt=""></span>
-                            <span ng-if="optionalProvider == 'ddn' "><img src="img/ddn-logo.jpg" style="width: 70px" alt=""></span>
-                            <span ng-if="optionalProvider == 'scality' "><img src="img/scality-logo.png" style="width: 90px;" alt=""> </span>
-                            <span ng-if="optionalProvider == 'dell' "><img src="img/dell-logo.png" style="width: 90px" alt=""></span>
-                            <span ng-if="optionalProvider == 'backblaze' "><img src="img/backblaze-logo.png" style="width: 90px" alt=""></span>
-                            <span ng-if="optionalProvider == 'netapp' "><img src="img/netapp-logo.png" style="width: 40px" alt=""> </span>
-                            <span ng-if="optionalProvider == 'quantum' "><img src="img/quantum-logo.png" style="width: 90px" alt=""></span>
+                            <th class="clickable" ng-if="optionalProvider">
+                                <span ng-if="optionalProvider == 'qumulo' "><img src="img/qumulo-logo.png" style="width: 90px" alt=""></span>
+                                <span ng-if="optionalProvider == 'ddn' "><img src="img/ddn-logo.jpg" style="width: 70px" alt=""></span>
+                                <span ng-if="optionalProvider == 'scality' "><img src="img/scality-logo.png" style="width: 90px;" alt=""> </span>
+                                <span ng-if="optionalProvider == 'dell' "><img src="img/dell-logo.png" style="width: 90px" alt=""></span>
+                                <span ng-if="optionalProvider == 'backblaze' "><img src="img/backblaze-logo.png" style="width: 90px" alt=""></span>
+                                <span ng-if="optionalProvider == 'netapp' "><img src="img/netapp-logo.png" style="width: 40px" alt=""> </span>
+                                <span ng-if="optionalProvider == 'quantum' "><img src="img/quantum-logo.png" style="width: 90px" alt=""></span>
 
-                        </th>
+                            </th>
 
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="storage-item ngfade" ng-repeat="sto in (storagePageFilteredEstimations = ($parent.searchResults = storageFilteredEstimations = (storage |  regex:storageResourceSearch )) | limitTo:show)">
-                        <td>
-                            <button uib-tooltip="Add to selection" ng-if="!isInSelection(sto)" ng-click="addToSelection(sto, 'storage')" class="btn btn-xs" style="background-color: #C3C3C3;"><i class="fa fa-plus"></i></button>
-                            <button uib-tooltip="Remove from selection" ng-if="isInSelection(sto)" ng-click="removeFromSelection(sto)" class="btn btn-xs"><i class="fa fa-check"></i></button>
-                        </td>
-                        <td><strong>{{sto.location}}</strong></td>
-                        <td>
-                            {{sto.name}}
-                            <a href ng-if="sto.metadata" ng-click="showStorageTreeModal(sto)"><i class="fa fa-folder-open"></i></a>
-                        </td>
-                        <td>
-                            <span class="badge">{{sto.type}}</span>
-                        </td>
-                        <td>
-                            <span class="used_space"><strong>{{sto.used_space | bytes}}</strong></span>
-                        </td>
-                        <td>
-                            <img ng-if="sto.provider == 'aws'" class="provider-icon" src="img/s3-square.png" alt="">
-                            <img ng-if="sto.provider == 'gcloud'" class="provider-icon" src="img/gc-square.png" alt="">
-                        </td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="storage-item ngfade" ng-repeat="sto in (storagePageFilteredEstimations = ($parent.searchResults = storageFilteredEstimations = (storage |  regex:search.pattern )) | limitTo:show)">
+                            <td>
+                                <button uib-tooltip="Add to selection" ng-if="!isInSelection(sto)" ng-click="addToSelection(sto, 'storage')" class="btn btn-xs" style="background-color: #C3C3C3;"><i class="fa fa-plus"></i></button>
+                                <button uib-tooltip="Remove from selection" ng-if="isInSelection(sto)" ng-click="removeFromSelection(sto)" class="btn btn-xs"><i class="fa fa-check"></i></button>
+                            </td>
+                            <td><strong>{{sto.location}}</strong></td>
+                            <td>
+                                {{sto.name}}
+                                <a href ng-if="sto.metadata" ng-click="showStorageTreeModal(sto)"><i class="fa fa-folder-open"></i></a>
+                            </td>
+                            <td>
+                                <span class="badge">{{sto.type}}</span>
+                            </td>
+                            <td>
+                                <span class="used_space"><strong>{{sto.used_space | bytes}}</strong></span>
+                            </td>
+                            <td>
+                                <img ng-if="sto.provider == 'aws'" class="provider-icon" src="img/s3-square.png" alt="">
+                                <img ng-if="sto.provider == 'gcloud'" class="provider-icon" src="img/gc-square.png" alt="">
+                            </td>
 
-                        <td ng-class="{'selectedPrice' : sto.provider == 'aws', 'unselectedPrice' : sto.provider != 'aws'}">{{getCostForProvider('aws', sto.prices) | currency:'$':3}}/mth</td>
-                        <td ng-class="{'selectedPrice' : sto.provider == 'gcloud', 'unselectedPrice' : sto.provider != 'gcloud'}">{{getCostForProvider('gcloud', sto.prices) | currency:'$':3}}/mth</td>
-                        <td ng-class="{'selectedPrice' : sto.provider == 'azure', 'unselectedPrice' : sto.provider != 'azure'}">{{getCostForProvider('azure', sto.prices) | currency:'$':3}}/mth</td>
-                        <td class="unselectedPrice" ng-if="optionalProvider">{{getCostForOptionalProvider(sto.used_space) | currency:'$':3 }}</td>
-                    </tr>
+                            <td ng-class="{'selectedPrice' : sto.provider == 'aws', 'unselectedPrice' : sto.provider != 'aws'}">{{getCostForProvider('aws', sto.prices) | currency:'$':3}}/mth</td>
+                            <td ng-class="{'selectedPrice' : sto.provider == 'gcloud', 'unselectedPrice' : sto.provider != 'gcloud'}">{{getCostForProvider('gcloud', sto.prices) | currency:'$':3}}/mth</td>
+                            <td ng-class="{'selectedPrice' : sto.provider == 'azure', 'unselectedPrice' : sto.provider != 'azure'}">{{getCostForProvider('azure', sto.prices) | currency:'$':3}}/mth</td>
+                            <td class="unselectedPrice" ng-if="optionalProvider">{{getCostForOptionalProvider(sto.used_space) | currency:'$':3 }}</td>
+                        </tr>
 
-                    <tr ng-if="show < storage.length && storageItemsLength > 0">
-                        <td><strong>...</strong></td>
-                        <td><strong>...</strong></td>
+                        <tr ng-if="show < storage.length && storageItemsLength > 0">
+                            <td><strong>...</strong></td>
+                            <td><strong>...</strong></td>
 
-                        <td colspan="{{optionalProvider ? 6 : 5}}"><strong><button class="btn" ng-click="showMore()">Show more</button></strong></td>
+                            <td colspan="{{optionalProvider ? 6 : 5}}"><strong><button class="btn" ng-click="showMore()">Show more</button></strong></td>
 
-                        <td><strong>...</strong></td>
-                        <td><strong>...</strong></td>
+                            <td><strong>...</strong></td>
+                            <td><strong>...</strong></td>
 
-                    </tr>
-                </tbody>
+                        </tr>
+                        </tbody>
 
-                <tfoot>
+                        <tfoot>
 
-                    <tr>
-                        <td colspan="6"><strong>TOTAL / PROVIDER</strong></td>
-                        <td class="total-value">{{storageAwsTotal | currency:'$':3}}/mth</td>
-                        <td class="total-value">{{storageGcloudTotal | currency:'$':3}}/mth</td>
-                        <td class="total-value">{{storageAzureTotal | currency:'$':3}}/mth</td>
-                        <td class="total-value" ng-if="optionalProvider">{{0 | currency:'$':3}}/mth</td>
-                    </tr>
-                    <tr>
-                        <td colspan="{{optionalProvider ? 7 : 6}}"><strong>GRAND TOTAL</strong></td>
-                        <td colspan="3" class="total-value">{{storageGrandTotal | currency:'$':3}}/mth</td>
-                    </tr>
-                </tfoot>
-            </table>
-        </div>
+                        <tr>
+                            <td colspan="6"><strong>TOTAL / PROVIDER</strong></td>
+                            <td class="total-value">{{storageAwsTotal | currency:'$':3}}/mth</td>
+                            <td class="total-value">{{storageGcloudTotal | currency:'$':3}}/mth</td>
+                            <td class="total-value">{{storageAzureTotal | currency:'$':3}}/mth</td>
+                            <td class="total-value" ng-if="optionalProvider">{{0 | currency:'$':3}}/mth</td>
+                        </tr>
+                        <tr>
+                            <td colspan="{{optionalProvider ? 7 : 6}}"><strong>GRAND TOTAL</strong></td>
+                            <td colspan="3" class="total-value">{{storageGrandTotal | currency:'$':3}}/mth</td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </uib-tab>
+            <uib-tab index="2" select="changeResourceActive(2)" ng-if="awsSelectedKey">
+                <uib-tab-heading>
+                    <img class="provider-icon" src="img/s3-square.png" alt="" style="height: 15px;"> S3 Buckets
+                </uib-tab-heading>
+                <ng-include src="'components/optimize/costestimation/partials/s3bucketsList.html'" ng-if="resourceActive == 2"></ng-include>
+            </uib-tab>
+        </uib-tabset>
     </div>
 </div>

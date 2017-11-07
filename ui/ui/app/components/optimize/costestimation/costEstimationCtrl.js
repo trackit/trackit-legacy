@@ -9,10 +9,16 @@ angular.module('trackit.prediction')
                 $scope.optionalProvider = $stateParams.optprov;
             }
 
+            $scope.toggleMetrics = true;
 
+            $scope.search = {};
 
-            console.log($stateParams);
-
+            $scope.changeResourceActive = (index) => {
+            $scope.resourceActive = index;
+            setTimeout(() => {
+              window.dispatchEvent(new Event('resize'));
+            }, 500);
+          };
 
             $scope.getCostForOptionalProvider = function(byteSize) {
                 var baseCost = 0.016;
@@ -602,6 +608,72 @@ angular.module('trackit.prediction')
                 }, function(data) {
                     console.log(data);
                 });
+
+              EstimationModel.getEC2({
+                id: $scope.awsKey
+              }, (data) => {
+                let stat = data.stats[0];
+                $scope.AWSstats = {
+                  total: stat.reserved + stat.stopped + stat.unreserved,
+                  reservations: stat.unused + stat.reserved,
+                  onDemand: stat.unreserved,
+                  reserved: stat.reserved,
+                  stopped: stat.stopped
+                };
+                $scope.reserved_report = stat.reserved_report;
+                $scope.AWSStatsLoaded = true;
+              }, (data) => {
+                $scope.AWSstats = {
+                  total: 'N/A',
+                  reservations: 'N/A',
+                  onDemand: 'N/A',
+                  reserved: 'N/A',
+                  stopped: 'N/A'
+                };
+                $scope.AWSStatsLoaded = false;
+              });
+
+              $scope.s3DataLoaded = false;
+              $scope.s3Buckets = [];
+              $scope.s3Transfers = [];
+              $scope.s3TransfersChart = [];
+              $scope.s3Tags = ["All tags"];
+              $scope.s3TagSelected = $scope.s3Tags[0];
+
+              let getS3Buckets = () => {
+                let setData = (data) => {
+                  $scope.s3Buckets = data.accounts;
+                  $scope.s3Transfers = getS3TransfersList();
+                  $scope.s3TransfersChart = getS3TransfersChart();
+                  $scope.s3DataLoaded = true;
+                  setTimeout(() => {
+                    window.dispatchEvent(new Event('resize'));
+                  }, 1000);
+                };
+
+                if ($scope.s3TagSelected !== $scope.s3Tags[0])
+                  EstimationModel.getS3BucketsPerTag({
+                    id: $scope.awsKey,
+                    tag: $scope.s3TagSelected
+                  }, setData);
+                else
+                  EstimationModel.getS3BucketsPerName({
+                    id: $scope.awsKey
+                  }, setData);
+              };
+
+              EstimationModel.getS3Tags({
+                id: $scope.awsKey
+              }, (data) => {
+                $scope.s3Tags = $scope.s3Tags.concat(data.tags);
+                getS3Buckets();
+              });
+
+              $scope.selectTag = (tag) => {
+                $scope.s3TagSelected = tag;
+                getS3Buckets();
+              };
+
             }
             /* END ACTIVE AWS */
 
@@ -636,6 +708,113 @@ angular.module('trackit.prediction')
                     console.log(data);
                 });
             }
+
+              // S3 Buckets list
+
+            let getS3TransfersList = () => {
+            let transfers = [];
+            $scope.s3Buckets.forEach((bucket) => {
+              Object.keys(bucket).forEach((key) => {
+                if (key.endsWith("-Bytes") && transfers.indexOf(key) === -1)
+                  transfers.push(key);
+              });
+            });
+            transfers.sort();
+            return transfers;
+          };
+
+            $scope.getS3Buckets = () => {
+            return $scope.s3Buckets;
+          };
+
+            $scope.getFilteredS3Buckets = () => {
+            let buckets = $scope.getS3Buckets();
+            if (!$scope.search.pattern || !$scope.search.pattern.length)
+              return buckets;
+            return $filter('regex')(buckets, $scope.search.pattern)
+          };
+
+            $scope.getOrderedS3Buckets = () => {
+            let buckets = $scope.getFilteredS3Buckets();
+            if (!$scope.predicate || !$scope.predicate.length)
+              return buckets;
+            return $filter('orderBy')(buckets, $scope.predicate, $scope.reverse);
+          };
+
+
+            $scope.pagination = {
+            size: 10,
+            current: 1,
+            indicators: 5
+          };
+
+            $scope.getPaginatedS3Buckets = () => {
+              let buckets = $scope.getOrderedS3Buckets();
+              let first = ($scope.pagination.current - 1) * $scope.pagination.size;
+              let last = first + $scope.pagination.size;
+              return buckets.slice(first, last);
+            };
+
+            $scope.getPaginatedS3Transfers = () => {
+            let transfers = [];
+            $scope.getPaginatedS3Buckets().forEach((bucket) => {
+              Object.keys(bucket).forEach((key) => {
+                if (key.endsWith("-Bytes") && bucket[key] > 0 && transfers.indexOf(key) === -1)
+                  transfers.push(key);
+              });
+            });
+            transfers.sort();
+            return transfers;
+          };
+
+            // S3 Buckets charts
+
+            $scope.s3ChartsOptions = {
+            chart: {
+              type: 'multiBarChart',
+              height: 400,
+              margin: {
+                top: 20,
+                right: 20,
+                bottom: 45,
+                left: 85
+              },
+              showControls: true,
+              clipEdge: false,
+              duration: 500,
+              stacked: true,
+              xAxis: {
+                axisLabel: 'Transfer'
+              },
+              yAxis: {
+                axisLabel: 'Size',
+                axisLabelDistance: 20,
+                tickFormat: function(d) {
+                  return $filter("bytes")(d);
+                }
+              }
+            }
+          };
+
+            $scope.s3TransfersAPI = {};
+            $scope.updateCharts = () => {
+            $scope.s3TransfersChart = getS3TransfersChart();
+            $scope.s3TransfersAPI.api.refresh();
+            setTimeout(() => {
+              window.dispatchEvent(new Event('resize'));
+            }, 1000);
+          };
+
+            let getS3TransfersChart = () => {
+            if (!$scope.awsSelectedKey)
+              return {};
+            return $scope.getPaginatedS3Buckets().map((bucket) => {
+              let values = $scope.getPaginatedS3Transfers().map((key) => {
+                return {x: key, y: (key in bucket ? bucket[key] : 0)};
+              });
+              return {key: bucket.name, values};
+            });
+          };
         }
     ])
 
