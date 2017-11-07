@@ -26,16 +26,9 @@
         <!--<li ng-class="{'active' : currentState == 'app.statistics'}">
           <a class="page-scroll" ui-sref="app.statistics">Statistics</a>
         </li>-->
-        <li uib-dropdown class="dropdown" ng-class="{'active' : currentState == 'app.utilization' || currentState == 'app.resources'}">
-          <a href="#" class="page-scroll dropdown-toggle" uib-dropdown-toggle>Monitor</a>
-          <ul class="dropdown-menu" uib-dropdown-menu>
-            <li>
-              <a ui-sref="app.utilization" ng-class="{'active' : currentState == 'app.utilization'}">Utilization</a>
-            </li>
-            <li>
-              <a ui-sref="app.resources" ng-class="{'active' : currentState == 'app.resources'}">Resources</a>
-            </li>
-          </ul>
+        <li ng-class="{'active' : currentState == 'app.monitor'}">
+          <!-- My resources -->
+          <a ui-sref="app.monitor" href="#" class="page-scroll">Monitor</a>
         </li>
 <!--        <li uib-dropdown class="dropdown" ng-class="{'active' : currentState == 'app.costestimation' || currentState == 'app.prediction'}">
           <a href="#" class="page-scroll dropdown-toggle" uib-dropdown-toggle>Optimize</a>

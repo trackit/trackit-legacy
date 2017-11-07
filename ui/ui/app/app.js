@@ -202,8 +202,8 @@ var trackit = angular.module('trackit', [
                 templateUrl: "/components/s3map/s3mapView.html",
                 controller: 'S3MapCtrl'
             })
-            .state('app.utilization', {
-                url: "/app/utilization",
+            .state('app.monitor', {
+                url: "/app/monitor",
                 templateUrl: "/components/monitor/utilization/utilizationView.html",
                 controller: 'UtilizationCtrl'
             })
