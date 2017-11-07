@@ -207,10 +207,6 @@ var trackit = angular.module('trackit', [
                 templateUrl: "/components/monitor/utilization/utilizationView.html",
                 controller: 'UtilizationCtrl'
             })
-            .state('app.resources', {
-                url: "/app/resources",
-                templateUrl: "/components/monitor/resources/resourcesView.html"
-            })
             // Optimize
             .state('app.costestimation', {
                 url: "/app/estimation?optprov&?selectedtab",
