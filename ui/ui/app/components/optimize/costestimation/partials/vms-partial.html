@@ -1,11 +1,132 @@
+<style>
+	button.btn-primary#toggleMetrics,
+	button.btn-primary#togglePricing {
+      background: #ee3e3d;
+      border-color: #ee3e3d;
+  }
+    .toggles {
+        margin-bottom: 20px;
+    }
+    .panel-content {
+        box-shadow: none !important;
+    }
+</style>
+
 <div class="panel panel-default ">
     <div class="panel-body">
+
+        <div class="panel panel-default large-font" ng-if="awsSelectedKey && AWSStatsLoaded">
+            <div class="panel-heading">
+                <img class="provider-icon" src="img/s3-square.png" alt=""> EC2 Instances ({{AWSstats.total}})
+            </div>
+            <div class="panel-body panel-content">
+                <div>
+                    <div class="col-lg-3 m-b-10 clickable" uib-tooltip="Click for more details" tooltip-placement="top" ng-click="toggleReservedDetails()">
+                        RESERVED :
+                        <span class="badge pull-right" style="margin-right: 25px;">{{AWSstats.reserved}}</span>
+                    </div>
+                    <div class="col-lg-3 m-b-10">
+                        ON-DEMAND :
+                        <span class="badge pull-right" style="margin-right: 25px;">{{AWSstats.onDemand}}</span>
+                    </div>
+                    <div class="col-lg-3 m-b-10">
+                        RESERVATIONS :
+                        <span class="badge pull-right" style="margin-right: 25px;">{{AWSstats.reservations}}</span>
+                    </div>
+                    <div class="col-lg-3 m-b-10">
+                        STOPPED :
+                        <span class="badge pull-right" style="margin-right: 25px;">{{AWSstats.stopped}}</span>
+                    </div>
+                </div>
+                <div ng-show="show_reserved_report && reserved_report.length" class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-body monts panel-content">
+                            <button class="btn btn-default pull-right" ng-click="toggleReservedDetails()">
+                                <i  class="fa fa-times"/>
+                                &nbsp;Close
+                            </button>
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>
+                              <span>
+                                  <i class="fa fa-server"></i>
+                              </span>
+                                            Size
+                                        </th>
+                                        <th>
+                              <span>
+                                  <i class="fa fa-globe"></i>
+                              </span>
+                                            Location
+                                        </th>
+                                        <th>
+                                            Reservation type
+                                        </th>
+                                        <th>
+                                            Count
+                                        </th>
+                                        <th>
+                              <span>
+                                  <i class="fa fa-calendar"></i>
+                              </span>
+                                            Contract start
+                                        </th>
+                                        <th>
+                              <span>
+                                  <i class="fa fa-calendar"></i>
+                              </span>
+                                            Contract end
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr class="resource-item ngfade" ng-repeat="reserved_instances in reserved_report">
+                                        <td style="text-align: left;" >
+                                            <strong class="pull-left">{{reserved_instances.instance_type}}</strong>
+                                        </td>
+                                        <td style="text-align: left;" >
+                                            {{reserved_instances.location}}
+                                        </td>
+                                        <td style="text-align: left;" >
+                                            {{reserved_instances.offer}}
+                                        </td>
+                                        <td style="text-align: left;" >
+                                            {{reserved_instances.count}}
+                                        </td>
+                                        <td style="text-align: left;" >
+                                            {{getFormattedDateFromUnixTimestamp(reserved_instances.start)}}
+                                        </td>
+                                        <td style="text-align: left;" >
+                                            {{getFormattedDateFromUnixTimestamp(reserved_instances.end)}}
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <i class="fa fa-question-circle fa-2x pull-right" uib-popover-html="searchHelp" popover-trigger="mouseenter" popover-placement="bottom"></i>
         <span class="pull-right"  style="font-size:12px;">Last update: <span class="blue">{{vmsLastUpdated ? getFormattedDate(vmsLastUpdated) : 'never'}}</span> Next planned update : <span class="blue">in {{vmsNextUpdate ? vmsNextUpdate : '6'}} hours</span></span>
           <md-input-container class="md-block" style="margin-bottom:0px;">
               <label><i class="fa fa-search"></i> Search through your resources</label>
               <input ng-model="resourceSearch">
           </md-input-container>
+
+        <div class="toggles pull-right">
+            <button type="button" id="toggleMetrics" class="btn btn-primary" ng-model="toggleMetrics" uib-btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">
+                {{(toggleMetrics ? "Hide" : "Show")}} metrics
+            </button>
+
+            <button type="button" id="togglePricing" class="btn btn-primary" ng-model="togglePricing" uib-btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">
+                {{(togglePricing ? "Hide" : "Show")}} providers pricing
+            </button>
+        </div>
 
         <div class="table-responsive">
             <h4 style="text-align: center" ng-show="!awsVMsNoDataMessage && !dataLoaded">No data available. Please try again later.</h4>
@@ -32,25 +153,49 @@
                             <i class="fa fa-arrow-down" ng-if="predicate === 'region' && !reverse"></i>
                         </th>
 
+                        <th ng-if="toggleMetrics">
+                            <span ng-click="order('cpu_usage')" class="clickable" uib-tooltip="%CPU Usage over the last month">
+                                <img src="img/cpu.png" style="width: 20px" alt="">
+                            </span>
+                            <i class="fa fa-arrow-up" ng-if="predicate === 'cpu_usage' && reverse"></i>
+                            <i class="fa fa-arrow-down" ng-if="predicate === 'cpu_usage' && !reverse"></i> |
+                            <span ng-click="order('bandwidth_usage')" class="clickable" uib-tooltip="%Bandwidth Usage over the last month">
+                                <img src="img/bandwidth.png" style="width: 20px" alt="">
+                            </span>
+                            <i class="fa fa-arrow-up" ng-if="predicate === 'bandwidth_usage' && reverse"></i>
+                            <i class="fa fa-arrow-down" ng-if="predicate === 'bandwidth_usage' && !reverse"></i> |
+                            <span ng-click="order('io_usage')" class="clickable" uib-tooltip="%I/O Usage over the last month">
+                                <img src="img/storage.png" style="width: 20px" alt="">
+                            </span>
+                            <i class="fa fa-arrow-up" ng-if="predicate === 'io_usage' && reverse"></i>
+                            <i class="fa fa-arrow-down" ng-if="predicate === 'io_usage' && !reverse"></i>
+                        </th>
+
                         <th>
                             <span uib-tooltip="Provider">
                                 <i class="fa fa-bolt"></i>
                             </span>
                         </th>
 
-                        <th class="clickable" ng-click="order('aws')">
+                        <th ng-if="!togglePricing">
+                            <span uib-tooltip="Cost ($)">
+                                <i class="fa fa-dollar"></i>
+                            </span>
+                        </th>
+
+                        <th class="clickable" ng-if="togglePricing" ng-click="order('aws')">
                             <span uib-tooltip="AWS ($)"><img src="img/s3-square.png" style="width: 30px" alt=""></span>
                             <i class="fa fa-arrow-up" ng-if="predicate === 'aws' && reverse"></i>
                             <i class="fa fa-arrow-down" ng-if="predicate === 'aws' && !reverse"></i>
                         </th>
 
-                        <th class="clickable" ng-click="order('gcloud')">
+                        <th class="clickable" ng-if="togglePricing" ng-click="order('gcloud')">
                             <span uib-tooltip="Google Cloud ($)"><img src="img/gc-square.png" style="width: 30px" alt=""></span>
                             <i class="fa fa-arrow-up" ng-if="predicate === 'gcloud' && reverse"></i>
                             <i class="fa fa-arrow-down" ng-if="predicate === 'gcloud' && !reverse"></i>
                         </th>
 
-                        <th class="clickable" ng-click="order('azure')">
+                        <th class="clickable" ng-if="togglePricing" ng-click="order('azure')">
                              <span uib-tooltip="Azure ($)"><img src="img/ms-square.png" style="width: 30px" alt=""></span>
                             <i class="fa fa-arrow-up" ng-if="predicate === 'azure' && reverse"></i>
                             <i class="fa fa-arrow-down" ng-if="predicate === 'azure' && !reverse"></i>
@@ -76,13 +221,21 @@
                           <span class="badge pull-right" style="font-size: 12px; font-weight: 500;">{{estimation.size}}</span>
                         </td>
                         <td>{{estimation.region}}</td>
+                        <td ng-if="toggleMetrics" style="min-width: 110px;">
+                            <uib-progressbar uib-tooltip="CPU {{estimation.cpu_usage.toFixed(1)}}%" value="estimation.cpu_usage" type="{{getProgressType(estimation.cpu_usage)}}"></uib-progressbar>
+                            <uib-progressbar uib-tooltip="Bandwidth {{estimation.bandwidth_usage.toFixed(1)}}%" value="estimation.bandwidth_usage" type="{{getProgressType(estimation.bandwidth_usage)}}"></uib-progressbar>
+                            <uib-progressbar uib-tooltip="I/O {{estimation.io_usage.toFixed(1)}}%" value="estimation.io_usage" type="{{getProgressType(estimation.io_usage)}}"></uib-progressbar>
+                        </td>
                         <td>
                             <img ng-if="estimation.provider == 'aws'" class="provider-icon" src="img/s3-square.png" alt="">
                             <img ng-if="estimation.provider == 'gcloud'" class="provider-icon" src="img/gc-square.png" alt="">
                         </td>
-                        <td ng-class="{'selectedPrice' : estimation.provider == 'aws', 'unselectedPrice' : estimation.provider != 'aws'}">{{getCostForProvider('aws', estimation.prices) | currency:'$':3}}/hr</td>
-                        <td ng-class="{'selectedPrice' : estimation.provider == 'gcloud', 'unselectedPrice' : estimation.provider != 'gcloud'}">{{getCostForProvider('gcloud', estimation.prices) | currency:'$':3}}/hr</td>
-                        <td ng-class="{'selectedPrice' : estimation.provider == 'azure', 'unselectedPrice' : estimation.provider != 'azure'}">{{getCostForProvider('azure', estimation.prices) | currency:'$':3}}/hr</td>
+                        <td ng-if="!togglePricing">
+                            {{getCostForProvider(estimation.provider, estimation.prices) | currency:'$':3}}/hr
+                        </td>
+                        <td ng-if="togglePricing" ng-class="{'selectedPrice' : estimation.provider == 'aws', 'unselectedPrice' : estimation.provider != 'aws'}">{{getCostForProvider('aws', estimation.prices) | currency:'$':3}}/hr</td>
+                        <td ng-if="togglePricing" ng-class="{'selectedPrice' : estimation.provider == 'gcloud', 'unselectedPrice' : estimation.provider != 'gcloud'}">{{getCostForProvider('gcloud', estimation.prices) | currency:'$':3}}/hr</td>
+                        <td ng-if="togglePricing" ng-class="{'selectedPrice' : estimation.provider == 'azure', 'unselectedPrice' : estimation.provider != 'azure'}">{{getCostForProvider('azure', estimation.prices) | currency:'$':3}}/hr</td>
                     </tr>
                     <tr ng-if="show < estimations.length && itemsLength > 0">
                         <td colspan="2"><strong>...</strong></td>
@@ -94,20 +247,21 @@
 
                 <tfoot>
 
-                    <tr>
-                        <td colspan="4"><strong>TOTAL / PROVIDER</strong></td>
+                    <tr ng-if="togglePricing">
+                        <td colspan="{{4 + (toggleMetrics ? 1 : 0)}}"><strong>TOTAL / PROVIDER</strong></td>
                         <td class="total-value">{{awsTotal | currency:'$':3}}/hr</td>
                         <td class="total-value">{{gcloudTotal | currency:'$':3}}/hr</td>
                         <td class="total-value">{{azureTotal | currency:'$':3}}/hr</td>
                     </tr>
                     <tr>
-                        <td colspan="4"><strong>GRAND TOTAL</strong></td>
+                        <td colspan="{{4 + (toggleMetrics ? 1 : 0)}}"><strong>GRAND TOTAL</strong></td>
                         <td colspan="3" class="total-value">{{grandTotal | currency:'$':3}}/hr</td>
                     </tr>
                     <tr>
-                        <td colspan="4"><strong>COST ESTIMATION</strong></td>
+                        <td colspan="{{4 + (toggleMetrics ? 1 : 0)}}"><strong>COST ESTIMATION</strong></td>
                         <td colspan="3" class="total-value">{{getMonthEstimation(grandTotal) | currency}}/month</td>
                     </tr>
+
                 </tfoot>
             </table>
         </div>

@@ -199,17 +199,13 @@ var trackit = angular.module('trackit', [
             // Monitor
             .state('app.s3map', {
                 url: "/app/s3map",
-                templateUrl: "/components/monitor/s3map/s3mapView.html",
+                templateUrl: "/components/s3map/s3mapView.html",
                 controller: 'S3MapCtrl'
             })
-            .state('app.utilization', {
-                url: "/app/utilization",
+            .state('app.monitor', {
+                url: "/app/monitor",
                 templateUrl: "/components/monitor/utilization/utilizationView.html",
                 controller: 'UtilizationCtrl'
-            })
-            .state('app.resources', {
-                url: "/app/resources",
-                templateUrl: "/components/monitor/resources/resourcesView.html"
             })
             // Optimize
             .state('app.costestimation', {
@@ -219,7 +215,7 @@ var trackit = angular.module('trackit', [
             })
             .state('app.prediction', {
                 url: "/app/prediction",
-                templateUrl: "/components/optimize/prediction/prediction.html",
+                templateUrl: "/components/predict/prediction.html",
                 controller: 'PredictionCtrl'
             })
             // Automate
@@ -246,7 +242,7 @@ var trackit = angular.module('trackit', [
             })
             .state('app.treemap', {
                 url: "/app/treemap",
-                templateUrl: "/components/monitor/s3map/TreeMapView.html"
+                templateUrl: "/components/s3map/TreeMapView.html"
             })
             .state('app.automation', {
                 url: "/app/automation",
