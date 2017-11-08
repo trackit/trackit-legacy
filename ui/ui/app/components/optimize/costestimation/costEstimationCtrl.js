@@ -815,6 +815,11 @@ angular.module('trackit.prediction')
               return {key: bucket.name, values};
             });
           };
+
+            $scope.show_reserved_report = false;
+            $scope.toggleReservedDetails = function() {
+              $scope.show_reserved_report = !$scope.show_reserved_report;
+            };
         }
     ])
 
