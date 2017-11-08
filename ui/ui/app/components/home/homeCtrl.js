@@ -40,10 +40,5 @@ module.controller('HomeCtrl', ['$scope', '$http', 'Config', 'AWSKey', '$cookies'
         }
 
 
-      $scope.getFormattedDateFromUnixTimestamp = function(timestamp) {
-          var tmp = new Date(timestamp*1000);
-          return tmp.toLocaleString();
-      };
-
     }
 ]);

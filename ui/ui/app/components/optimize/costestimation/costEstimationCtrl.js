@@ -820,6 +820,11 @@ angular.module('trackit.prediction')
             $scope.toggleReservedDetails = function() {
               $scope.show_reserved_report = !$scope.show_reserved_report;
             };
+
+            $scope.getFormattedDateFromUnixTimestamp = function(timestamp) {
+              var tmp = new Date(timestamp*1000);
+              return tmp.toLocaleString();
+            };
         }
     ])
 
