@@ -6,6 +6,7 @@ angular.module('trackit')
         function($scope, $http, apiBaseUrl, $state, Config, $cookies, $timeout, $location, $stateParams) {
 
             $scope.demoMode = $stateParams.demo;
+            $scope.showForm = true;
 
             $scope.companySizes = [
                 "Less than 100",
