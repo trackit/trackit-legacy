@@ -111,7 +111,6 @@ jobs:
                 docker push "${image_address}"
               done
               cd deployer/
-              ./deploy-landing.sh
               ./deploy.sh
             fi
 
