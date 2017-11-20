@@ -7,6 +7,7 @@ from app.models import db, User, UserSessionToken, AWSKey
 import app.models as models
 from app.intercom import add_intercom_user
 from app.tasks import send_email, send_email_alternative
+from app.send_email import send_email_alternative as send_email_alternative_synchrone
 from app.onboarding_email import onboarding_email
 from app.g_recaptcha import with_g_recaptcha
 import uuid
@@ -161,13 +162,20 @@ def prospect(data, type):
         return jsonify(error="Internal database access error"), 500
     try:
         email_txt, email_html = render_prospect_email(prospect)
-        send_email_alternative.delay(
+        send_email_alternative_synchrone(
             app.config['NEW_USER_EMAIL'],
             "New {} prospect".format(type),
             email_txt,
             email_html,
             bypass_debug=True,
         )
+        # send_email_alternative.delay(
+        #     app.config['NEW_USER_EMAIL'],
+        #     "New {} prospect".format(type),
+        #     email_txt,
+        #     email_html,
+        #     bypass_debug=True,
+        # )
     except:
         traceback.print_exc()
     return jsonify(prospect.to_dict()), 200
