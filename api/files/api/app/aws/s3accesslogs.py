@@ -31,7 +31,10 @@ def get_gets(client, bucket_name, since=None):
     def ls(**kw):
         return client.list_objects_v2(Bucket=bucket_name, **kw)
     if since:
-        prefixes = ls(Delimiter='/')['CommonPrefixes']
+        ls_res = ls(Delimiter='/')
+        if not 'CommonPrefixes' in ls_res:
+            return
+        prefixes = ls_res['CommonPrefixes']
         for prefix in prefixes:
             prefix = prefix['Prefix'] + since.strftime('%Y-%m-%d-%H-%M-%S-')
             res = ls(StartAfter=prefix)
