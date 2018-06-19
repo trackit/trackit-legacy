@@ -12,7 +12,7 @@ We run our own version, check it out at [TrackIt.IO](https://trackit.io/)
 
 #### #1 Clone TrackIt
 ```sh
-$> git clone https://github.com/trackit/trackit.git && cd trackit
+$> git clone https://github.com/trackit/trackit-legacy.git && cd trackit-legacy
 ```
 
 #### #2 Start TrackIt and Let's Go!
