@@ -52,7 +52,7 @@ requests-aws4auth==0.9
 scipy==0.17.1
 statsd==3.2.1
 url==0.2.0
-urllib3==1.14
+urllib3==1.26.5
 watchdog==0.8.3
 azure==2.0.0rc6
 azure-mgmt-commerce==0.30.0rc6
